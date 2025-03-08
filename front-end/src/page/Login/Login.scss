@@ -1,0 +1,32 @@
+#Login {
+  
+  .cu {
+    background-color: black;
+    border-radius:40px;
+    height: 400px;
+    width: 100px;
+  }
+  .input-container{
+    padding-top:5px;
+    width: 450px;
+    height: 35px;
+  }
+  .input {
+    width:450px;
+    height: 30px;
+  }
+  .button {
+    width:450px;
+    height: 30px;
+  }
+  .container{
+    padding-bottom:30px;
+    border: 1px solid black;
+    padding: 2.57em;
+    width:600px;
+    height:400px;
+    display:flex;
+    flex-direction: column;
+
+  }
+}
