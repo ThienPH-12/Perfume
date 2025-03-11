@@ -27,9 +27,9 @@ export default function Header() {
             </div>
             {/* the item in the header,had an optional format when mobile user use it */}
             <div className="link-container">
-              <a href="/">CÂU TRUYỆN THƯƠNG HIỆU</a>
+              <a href="/about">CÂU TRUYỆN THƯƠNG HIỆU</a>
               <a href="/products">SẢN PHẨM</a>
-              <a href="/about">BLOG</a>
+              <a href="/">BLOG</a>
               <a href="/contact">LIÊN HỆ</a>
             </div>
             <div className="auth-container">

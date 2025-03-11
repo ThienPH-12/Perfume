@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import Header from "../../components/Header";
 import "./Home.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -51,7 +50,6 @@ export default function Home() {
 
   return (
     <div id="Home">
-      <Header />
       <div className="hero-section">
         <div
           id="carouselExampleControls"

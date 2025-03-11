@@ -8,7 +8,6 @@
     background-color: Black;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     .logo {
-      padding-left: 30px;
       font-size: 1.5rem;
       font-weight: 700;
       color: #333;
@@ -25,6 +24,7 @@
       width: 30%;
       display: flex;
       justify-content: space-between;
+      
     }
     .auth-container {
       width: 10%;
