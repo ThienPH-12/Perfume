@@ -4,13 +4,18 @@
  */
 package com.example.Perfume.service;
 
+import com.example.Perfume.am.OtpService;
 import com.example.Perfume.api.bean.req.RegisterReq;
 import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.jpa.repository.UserRepository;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +33,14 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private OtpService otpService;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    private Map<String, String> otpStorage = new HashMap<>();
+    private Map<String, Long> otpExpiry = new HashMap<>();
 
     public void register(RegisterReq req) {
         logger.info("Registering user: {}", req.getUsername());
@@ -47,5 +60,36 @@ public class UserService {
 
         userRepository.save(user);
         logger.info("User registered successfully: {}", user.getUsername());
+
+        String otp = otpService.generateOtp();
+        otpStorage.put(req.getEmail(), otp);
+        otpExpiry.put(req.getEmail(), System.currentTimeMillis() + 60000); // 1 minute expiry
+
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(req.getEmail());
+        simpleMailMessage.setSubject("Your OTP Code");
+        simpleMailMessage.setText("Your OTP code is: " + otp);
+
+        javaMailSender.send(simpleMailMessage);
+    }
+
+    public boolean verifyOtp(String email, String otp) {
+        if (otpStorage.containsKey(email) && otpStorage.get(email).equals(otp)) {
+            if (System.currentTimeMillis() <= otpExpiry.get(email)) {
+                otpStorage.remove(email);
+                otpExpiry.remove(email);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void saveUser(RegisterReq req) {
+        User user = new User();
+        user.setUserName(req.getUsername());
+        user.setEmail(req.getEmail());
+        user.setPassword(req.getPassword());
+        user.setGender(req.getGender());
+        userRepository.save(user);
     }
 }

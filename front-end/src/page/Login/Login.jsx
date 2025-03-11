@@ -1,39 +1,64 @@
-import React, { useState } from "react";
-import "./Login.scss";
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+import './Login.scss';
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Login = () => {
+  const [credentials, setCredentials] = useState({ identifier: '', password: '' });
+  const [error, setError] = useState('');
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login Attempt:", { username, password });
-    // Add your authentication logic here
+    if (validateIdentifier(credentials.identifier)) {
+      try {
+        setError('');
+        await login(credentials);
+        navigate('/');
+      } catch (err) {
+        setError('Invalid username/email or password.');
+      }
+    } else {
+      setError('Please enter a valid username or email.');
+    }
+  };
+
+  const validateIdentifier = (identifier) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(identifier) || /^[a-zA-Z0-9_]+$/.test(identifier);
   };
 
   return (
-    <div id="Login" className="d-flex" style={{ marginTop: "50px" }}>
+    <div id="Login" className="d-flex" style={{ marginTop: '50px' }}>
       <div className="container">
         <h2>Đăng nhập</h2>
-        <form onSubmit={handleLogin}>
-          <div className="input-container">
-            Tên tài khoản hoặc địa chỉ email *:
-          </div>
+         <div className="error-message">{error}</div>
+        <form onSubmit={handleSubmit}>
           <div className="input-container">
             <input
               className="input"
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              name="identifier"
+              placeholder="Tên tài khoản hoặc địa chỉ email *"
+              value={credentials.identifier}
+              onChange={handleChange}
+              autoComplete="username"
             />
           </div>
-          <div className="input-container">Mật khẩu *:</div>
           <div className="input-container">
             <input
               className="input"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              placeholder="Mật khẩu *"
+              value={credentials.password}
+              onChange={handleChange}
+              autoComplete="current-password"
             />
           </div>
           <button className="button" type="submit">Login</button>
@@ -41,4 +66,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;

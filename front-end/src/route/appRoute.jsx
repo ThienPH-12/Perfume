@@ -1,16 +1,33 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "../page/Login/Login.jsx";
-import Register from "../page/Register/Register.jsx";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, AuthContext } from '../context/AuthContext';
+import Login from '../page/Login/Login.jsx';
+import Register from '../page/Register/Register.jsx';
+import Home from '../page/Home/Home.jsx';
+import About from '../page/About/About.jsx';
+
+function useAuth() {
+  return React.useContext(AuthContext);
+}
+
+function PrivateRoute({ children }) {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" />;
+}
 
 function AppRoute() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Home />} /> 
+          <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} /> 
+          <Route path="*" element={<Navigate to="/" />} /> 
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

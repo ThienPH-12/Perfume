@@ -1,7 +1,9 @@
-#Login {
-  .container {
+#Register {
+  .register-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
     background-color: #000; // Black background
     border-radius: 3px;
@@ -10,6 +12,13 @@
     height:450px;
     margin: 0 auto;
   }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
   h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -19,33 +28,44 @@
   .error-message {
     color: red;
 height:20px;
-align-self: center;
     margin-bottom: 20px;
   }
- 
-  .input-container {
+  
+  .register-input {
     margin-bottom: 15px;
-
-    .input {
-      width: 360px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: #333; // Dark background
-      color: #fff; // White text
-    }
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #333; // Dark background
+    color: #fff; // White text
   }
-  .button {
+  
+  .gender-container {
+    width:100px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .gender-container label {
+    display: flex;
+    align-items: center;
+    color: #fff; // White text
+  }
+  
+  .register-button {
     padding: 10px;
     background-color: #fff; // White background
     color: #000; // Black text
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px; 
+    font-size: 16px;
   }
-  .button:hover {
+  
+  .register-button:hover {
     background-color: #ccc; // Light gray background on hover
   }
-
+  
 }
+

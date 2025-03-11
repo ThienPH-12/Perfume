@@ -1,12 +1,15 @@
-import React from "react";
+import React from 'react';
+import { AuthProvider } from './context/AuthContext';
 import AppRoute from "./route/appRoute.jsx";
 import "./App.scss";
+
 export default function App() {
   return (
-    <div id="App">
-    ngu
-      <AppRoute />
-    </div>
+    <AuthProvider>
+      <div id="App">
+        <AppRoute />
+      </div>
+    </AuthProvider>
   );
 }
 

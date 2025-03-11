@@ -17,6 +17,7 @@ import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.jpa.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
@@ -66,7 +67,10 @@ public class AuthenticationService {
 
     public void logout(LogoutReq req) {
         try {
-            logger.info("User with token {} logged out successfully.", req);
+            // Invalidate the token (implementation depends on your token management strategy)
+            jwtUtil.invalidateToken(req.getToken());
+            SecurityContextHolder.clearContext(); // Add this line
+            logger.info("User with token {} logged out successfully.", req.getToken());
         } catch (Exception e) {
             logger.error("Logout failed. Reason: {}", e.getMessage());
             throw new RuntimeException("Logout failed", e);
@@ -84,8 +88,10 @@ public class AuthenticationService {
                 response.setUsername(user.getUsername());
                 response.setAuthority(user.getAuthority());
                 response.setMessage("Successfully Refreshed Token");
-                  response.setAccessToken(jwt);
+                response.setAccessToken(jwt);
                 response.setRefreshToken(req.getOldRefreshToken());
+                // Invalidate the old access token
+                jwtUtil.invalidateToken(req.getOldAccessToken());
             }
             return response;
         } catch (AuthenticationException e) {

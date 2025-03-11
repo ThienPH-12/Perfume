@@ -5,7 +5,7 @@ public class AuthenticationRes {
     private String tokenType;    // "Bearer"
     private String id;           // User's ID
     private String username;     // User's username
-    private String authority;       // User's authority (e.g., role)
+    private String authority;    // User's authority (e.g., role)
     private String message;      // Any custom message (e.g., login success)
     private String accessToken;  // Access token
     private String refreshToken; // Refresh token

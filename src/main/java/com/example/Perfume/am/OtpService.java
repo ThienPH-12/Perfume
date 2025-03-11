@@ -10,7 +10,7 @@ package com.example.Perfume.am;
  */
 public class OtpService {
 
-    public static String genarateOtp() {
+    public static String generateOtp() {
         String numbers = "0123456789";
         StringBuilder sb = new StringBuilder(6);
         for (int i = 0; i < 6; i++) {

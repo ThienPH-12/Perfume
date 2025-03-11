@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 
 @Component
@@ -25,6 +27,7 @@ public class JwtUtil {
 
     private final Key key;
     private final long jwtExpiration;
+    private final Set<String> invalidatedTokens = new HashSet<>();
 
     public JwtUtil(@Value("${jwt.expiration}") long jwtExpiration) {
         this.jwtExpiration = jwtExpiration;
@@ -54,16 +57,20 @@ public class JwtUtil {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
- 
-       final Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        final Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         return claimsResolver.apply(claims);
     }
+
     public boolean isTokenValid(String token, String userName) {
         final String extractedUserName = extractUsername(token);
-        return (extractedUserName.equals(userName) && !isTokenExpired(token));
+        return (extractedUserName.equals(userName) && !isTokenExpired(token) && !invalidatedTokens.contains(token));
     }
 
     public boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
+    }
+
+    public void invalidateToken(String token) {
+        invalidatedTokens.add(token);
     }
 }
