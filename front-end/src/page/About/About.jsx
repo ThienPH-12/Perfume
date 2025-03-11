@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import './About.scss';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function About() {
+    const { checkAuth } = useContext(AuthContext);
+  
+    useEffect(() => {
+      checkAuth();
+    }, [checkAuth]);
+  
   return (
     <div id="About" className="d-flex" style={{ marginTop: '50px' }}>
       <div className="container">

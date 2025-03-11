@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "./Header.scss";
+import Logo from "../img/logo2.png";
 
 export default function Header() {
   const { user, logout } = useContext(AuthContext);
@@ -22,14 +23,14 @@ export default function Header() {
           {/* display the header in row,all item is white color*/}
           <div className="header-container">
             <div id="logo" className="flex-col logo">
-              <img src="/src/img/logo.png" alt="Logo" className="logo" />
+              <img style={{height:55}} src={Logo} alt="Perfume" className="logo" />
             </div>
             {/* the item in the header,had an optional format when mobile user use it */}
             <div className="link-container">
-              <a href="/">Home</a>
-              <a href="/products">Products</a>
-              <a href="/about">About</a>
-              <a href="/contact">Contact</a>
+              <a href="/">CÂU TRUYỆN THƯƠNG HIỆU</a>
+              <a href="/products">SẢN PHẨM</a>
+              <a href="/about">BLOG</a>
+              <a href="/contact">LIÊN HỆ</a>
             </div>
             <div className="auth-container">
               {user ? (

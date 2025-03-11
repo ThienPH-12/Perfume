@@ -24,6 +24,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 
 @Service
 public class AuthenticationService {
@@ -98,5 +99,10 @@ public class AuthenticationService {
             logger.error("Authentication failed. Reason: {}", e.getMessage());
             throw new RuntimeException("Authentication failed", e);
         }
+    }
+
+    public boolean checkAuth() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated();
     }
 }

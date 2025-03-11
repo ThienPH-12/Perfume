@@ -81,4 +81,10 @@ public class AuthenticationController {
                     .body("Error during sendmail: " + ex.getMessage());
         }
     }
+    
+    @GetMapping("/check-auth")
+    public ResponseEntity<?> checkAuth() {
+        boolean isAuthenticated = authenticationService.checkAuth();
+        return ResponseEntity.ok(isAuthenticated);
+    }
 }

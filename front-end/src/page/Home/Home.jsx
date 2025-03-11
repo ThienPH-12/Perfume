@@ -1,10 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import Header from "../../components/Header";
 import "./Home.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import image1 from "../../img/R.jpg";
+import image2 from "../../img/R - Copy.jpg";
+import image3 from "../../img/R - Copy (2).jpg";
 const products = [
   {
     id: 1,
@@ -41,17 +43,11 @@ const products = [
 ];
 
 export default function Home() {
-  const { user, logout, checkAuth } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { checkAuth } = useContext(AuthContext);
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
 
   return (
     <div id="Home">
@@ -64,13 +60,13 @@ export default function Home() {
         >
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img class="d-block w-100" src="/front-end/src/logo.png" alt="First slide" />
+              <img class="d-block w-100" src={image1} alt="First slide" />
             </div>
             <div class="carousel-item">
-              <img class="d-block w-100" src="/front-end/src/logo.png" alt="Second slide" />
+              <img class="d-block w-100" src={image2} alt="Second slide" />
             </div>
             <div class="carousel-item">
-              <img class="d-block w-100" src="/front-end/src/logo.png" alt="Third slide" />
+              <img class="d-block w-100" src={image3} alt="Third slide" />
             </div>
           </div>
           <a
