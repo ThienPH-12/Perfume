@@ -4,7 +4,9 @@ import apiPaths from "./apiPath";
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/api",
   headers: {
+    'Access-Control-Allow-Origin': '*',
     "Content-Type": "application/json",
+    "Referrer-Policy": "strict-origin-when-cross-origin", // Added header
   },
 });
 
@@ -28,13 +30,6 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export async function login(credentials) {
-  const response = await apiClient.post(apiPaths.login, credentials);
-  const { token, user } = response.data;
-  apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  return { token, user };
-}
 
 export function logout() {
   delete apiClient.defaults.headers.common["Authorization"];
@@ -67,11 +62,6 @@ export async function initUserInfo(username) {
     throw new Error("Failed to fetch user info");
   }
 
-  return response.data;
-}
-
-export async function checkAuth() {
-  const response = await apiClient.get(apiPaths.checkAuth);
   return response.data;
 }
 

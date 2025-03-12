@@ -82,9 +82,4 @@ public class AuthenticationController {
         }
     }
     
-    @GetMapping("/check-auth")
-    public ResponseEntity<?> checkAuth() {
-        boolean isAuthenticated = authenticationService.checkAuth();
-        return ResponseEntity.ok(isAuthenticated);
-    }
 }

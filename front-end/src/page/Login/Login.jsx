@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../auth/auth";
 import "./Login.scss";
-import { login } from "../../api/apiClient";
+import apiPaths from "../../api/apiPath";
+import apiClient from "../../api/apiClient";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -15,15 +16,43 @@ const Login = () => {
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Validate if username and password are not empty
+    if (!credentials.username || !credentials.password) {
+      setError("Username and password cannot be empty.");
+      return;
+    }
     try {
       setError("");
-      login(credentials).then((data) => {
-        setToken(data.token);
-      });
-      navigate("/");
+      const response = await fetch(
+        "http://localhost:8080/api" + apiPaths.login,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      const accessToken = data.accessToken;
+      console.log(accessToken);
+      apiClient.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${accessToken}`;
+      setToken(accessToken);
+      window.location.reload();
     } catch (err) {
       setError("Invalid username/email or password.");
     }

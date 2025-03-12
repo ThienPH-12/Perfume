@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import "./Header.scss";
 import Logo from "../img/logo2.png";
 import { logout } from "../api/apiClient";
-import { getUserInfoFromToken } from "../auth/auth";
 
 export default function Header() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userInfo = getUserInfoFromToken();
-    setUser(userInfo);
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      console.log(decodedToken);
+      setUser(decodedToken);
+    }
   }, []);
 
   const handleLogout = () => {
     logout();
+    setUser(null);
     navigate("/");
   };
 
@@ -43,13 +48,14 @@ export default function Header() {
         <div className="auth-container">
           {user ? (
             <>
-              <span>{user.username}</span>
-              <button onClick={handleLogout}>Logout</button>
+              <span>Welcome {user.sub}!</span>
+              <button className="buttonCus" onClick={handleLogout}>Logout</button>
             </>
           ) : (
             <>
-              <button onClick={() => navigate("/login")}>Login</button>
-              <button onClick={() => navigate("/register")}>Register</button>
+            
+              <button className="buttonCus" onClick={() => navigate("/login")}>Login</button>
+              <button className="buttonCus" onClick={() => navigate("/register")}>Register</button>
             </>
           )}
         </div>
