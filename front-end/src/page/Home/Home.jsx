@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { AuthContext } from "../../context/AuthContext";
 import "./Home.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -42,11 +41,6 @@ const products = [
 ];
 
 export default function Home() {
-  const { checkAuth } = useContext(AuthContext);
-
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
 
   return (
     <div id="Home">

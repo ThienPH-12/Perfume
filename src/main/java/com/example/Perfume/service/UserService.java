@@ -92,4 +92,8 @@ public class UserService {
         user.setGender(req.getGender());
         userRepository.save(user);
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUserName(username);
+    }
 }

@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { setToken } from "../../auth/auth";
 import "./Login.scss";
+import { login } from "../../api/apiClient";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -9,7 +10,6 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,7 +20,9 @@ const Login = () => {
     e.preventDefault();
     try {
       setError("");
-      await login(credentials);
+      login(credentials).then((data) => {
+        setToken(data.token);
+      });
       navigate("/");
     } catch (err) {
       setError("Invalid username/email or password.");
@@ -56,7 +58,7 @@ const Login = () => {
             />
           </div>
           <button className="button" type="submit">
-            Login
+            Đăng nhập
           </button>
         </form>
       </div>

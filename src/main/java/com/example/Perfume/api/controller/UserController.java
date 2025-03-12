@@ -6,6 +6,7 @@ package com.example.Perfume.api.controller;
 
 import com.example.Perfume.api.bean.req.OtpReq;
 import com.example.Perfume.api.bean.req.RegisterReq;
+import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -60,13 +62,16 @@ public class UserController {
     }
     
     @GetMapping("/initUserInfo")
-    public ResponseEntity<?> initUserInfo(@RequestBody RegisterReq registerRequest) {
-//        try {
-//            userService.register(registerRequest);
-            return ResponseEntity.ok("User do what successfully");
-//        } catch (Exception ex) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body("Error during registration: " + ex.getMessage());
-//        }
+    public ResponseEntity<?> initUserInfo(@RequestParam String username) {
+        try {
+            User user = userService.findByUsername(username);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+            return ResponseEntity.ok(user);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error during fetching user info: " + ex.getMessage());
+        }
     }
 }

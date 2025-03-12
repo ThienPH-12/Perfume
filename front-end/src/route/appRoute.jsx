@@ -5,36 +5,34 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider, AuthContext } from "../context/AuthContext";
+import { isAuthenticated } from "../auth/auth";
 import Login from "../page/Login/Login.jsx";
 import Register from "../page/Register/Register.jsx";
 import Home from "../page/Home/Home.jsx";
 import About from "../page/About/About.jsx";
+import ContactPage from "../page/ContactPage/ContactPage.jsx"; // Import ContactPage
+import BlogPage from "../page/BlogPage/BlogPage.jsx"; // Import BlogPage
 import Header from "../components/Header.jsx";
-function useAuth() {
-  return React.useContext(AuthContext);
-}
 
 function PrivateRoute({ children }) {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/login" />;
+  return isAuthenticated() ? children : <Navigate to="/login" />;
 }
 
 function AppRoute() {
   return (
-    <AuthProvider>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          {/* <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />  */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<ContactPage />} /> {/* Add ContactPage route */}
+        <Route path="/blog" element={<BlogPage />} /> {/* Add BlogPage route */}
+        {/* <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />  */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 }
 

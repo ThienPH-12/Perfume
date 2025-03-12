@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import apiPaths from "../../api/apiPath";
 import "./Register.scss"; // Add this line to import the CSS file
@@ -13,7 +12,6 @@ const Register = () => {
     gender: "",
   });
   const [error, setError] = useState("");
-  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,7 +26,6 @@ const Register = () => {
     e.preventDefault();
     try {
       await axios.post(apiPaths.REGISTER, credentials);
-      await login({ email: credentials.email, password: credentials.password });
       navigate("/");
     } catch (error) {
       setError("Registration failed. Please try again.");
@@ -37,15 +34,15 @@ const Register = () => {
   };
 
   return (
-    <div id="Register">
+    <div id="Register" style={{ marginTop: "50px" }}>
       <div className="register-container">
-        <h2>Register</h2>
+        <h2>Đăng ký</h2>
         <div className="error-message">{error}</div>
         <form onSubmit={handleSubmit} className="register-form">
           <input
             type="text"
             name="name"
-            placeholder="Name"
+            placeholder="Nhập tên của bạn*"
             value={credentials.name}
             onChange={handleChange}
             className="register-input"
@@ -53,7 +50,7 @@ const Register = () => {
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Nhập Email*"
             value={credentials.email}
             onChange={handleChange}
             className="register-input"
@@ -61,7 +58,7 @@ const Register = () => {
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Nhập mật khẩu*"
             value={credentials.password}
             onChange={handleChange}
             className="register-input"
@@ -75,7 +72,7 @@ const Register = () => {
                 checked={credentials.gender === "0"}
                 onChange={handleGenderChange}
               />
-              Male
+              Nam
             </label>
             <label>
               <input
@@ -85,11 +82,11 @@ const Register = () => {
                 checked={credentials.gender === "1"}
                 onChange={handleGenderChange}
               />
-              Female
+              Nữ
             </label>
           </div>
           <button type="submit" className="register-button">
-            Register
+            Đăng ký
           </button>
         </form>
       </div>
