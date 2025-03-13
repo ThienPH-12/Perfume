@@ -1,10 +1,12 @@
-
 const apiPaths = {
-  comments: "/comments",
+  blog: "/blogs",
+  blogAdd: "/blog/add",
+
   login: "/auth/login",
+  logout: "/auth/logout",
+
   register: "/user/register",
-  userinfo: "/user/info",
-  sendotp: "/auth/send-otp",
+  verifyOtp: "/auth//user/verify-otp",
   initUserInfo: "/user/initUserInfo",
 };
 

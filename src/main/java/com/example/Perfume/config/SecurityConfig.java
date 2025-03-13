@@ -29,31 +29,47 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-      @Autowired
+    @Autowired
     private UserDetailsServiceImpl UserDetailsService;
-      
+
     @Autowired
     private JWTRequestFilter jwtRequestFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                .requestMatchers( "/api/auth/login").permitAll()// Allow access to /api/auth/register
+                .cors().and()
+                .authorizeHttpRequests(api -> api
+                .requestMatchers("/api/auth/login", "/api/user/register").permitAll() // Allow access to /api/auth/login and /api/user/register
                 .requestMatchers("/api/admin").hasAnyAuthority("1")
-                .anyRequest().authenticated()
+                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                ) .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtRequestFilter, UsernamePasswordAuthenticationFilter.class
-                );
+                ).authenticationProvider(authenticationProvider()).addFilterBefore(
+                jwtRequestFilter, UsernamePasswordAuthenticationFilter.class
+        );
         return http.build();
     }
- @Bean
+
+    @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(UserDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.addAllowedOrigin("http://localhost:3000"); // Corrected URL
+        corsConfig.addAllowedMethod("*");
+        corsConfig.addAllowedHeader("*");
+        corsConfig.setAllowCredentials(true); // Add this line
+
+        UrlBasedCorsConfigurationSource urlBasedCorsConfig = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfig.registerCorsConfiguration("/**", corsConfig);
+        return new CorsFilter(urlBasedCorsConfig);
     }
 
     @Bean
@@ -65,17 +81,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    @Bean 
-    public CorsFilter corsFilter(){
-       CorsConfiguration corsConfig=new CorsConfiguration();
-       corsConfig.addAllowedOrigin("http://localhost:3000"); // Corrected URL
-       corsConfig.addAllowedMethod("*");
-       corsConfig.addAllowedHeader("*");
-       corsConfig.setAllowCredentials(true); // Add this line
-       
-        UrlBasedCorsConfigurationSource urlBasedCorsConfig =new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfig.registerCorsConfiguration("/**", corsConfig);
-       return new CorsFilter(urlBasedCorsConfig);
-    }
-    
+
 }

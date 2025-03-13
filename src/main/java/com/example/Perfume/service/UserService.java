@@ -49,18 +49,6 @@ public class UserService {
             throw new RuntimeException("Username already taken");
         }
 
-        User user = new User();
-        user.setUserName(req.getUsername());
-        user.setPassword(passwordEncoder.encode(req.getPassword()));  // Encoding password
-        user.setEmail(req.getEmail());
-        user.setGender(req.getGender());
-        user.setAuthority("0");  // Default authority
-        user.setCreateDateTime(new Date());
-        user.setCreateUserId("system");
-
-        userRepository.save(user);
-        logger.info("User registered successfully: {}", user.getUsername());
-
         String otp = otpService.generateOtp();
         otpStorage.put(req.getEmail(), otp);
         otpExpiry.put(req.getEmail(), System.currentTimeMillis() + 60000); // 1 minute expiry
@@ -87,10 +75,15 @@ public class UserService {
     public void saveUser(RegisterReq req) {
         User user = new User();
         user.setUserName(req.getUsername());
+        user.setPassword(passwordEncoder.encode(req.getPassword()));  // Encoding password
         user.setEmail(req.getEmail());
-        user.setPassword(req.getPassword());
         user.setGender(req.getGender());
+        user.setAuthority("0");  // Default authority
+        user.setCreateDateTime(new Date());
+        user.setCreateUserId("system");
+
         userRepository.save(user);
+        logger.info("User registered successfully: {}", user.getUsername());
     }
 
     public User findByUsername(String username) {

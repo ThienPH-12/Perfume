@@ -4,6 +4,7 @@ import { setToken } from "../../auth/auth";
 import "./Login.scss";
 import apiPaths from "../../api/apiPath";
 import apiClient from "../../api/apiClient";
+import axios from "axios"; // Add axios import
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -32,25 +33,13 @@ const Login = () => {
     }
     try {
       setError("");
-      const response = await fetch(
-        "http://localhost:8080/api" + apiPaths.login,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        }
+      const response = await apiClient.post(
+         apiPaths.login,
+        credentials
       );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
+      const data = response.data;
       const accessToken = data.accessToken;
       console.log(accessToken);
-      apiClient.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${accessToken}`;
       setToken(accessToken);
       window.location.reload();
     } catch (err) {

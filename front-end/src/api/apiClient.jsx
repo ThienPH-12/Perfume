@@ -4,16 +4,17 @@ import apiPaths from "./apiPath";
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/api",
   headers: {
-    'Access-Control-Allow-Origin': '*',
     "Content-Type": "application/json",
-    "Referrer-Policy": "strict-origin-when-cross-origin", // Added header
   },
 });
 
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+
+  if (!config.headers["Authorization"]) {
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
   }
   return config;
 });
@@ -23,46 +24,76 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (error.response.status === 403) {
+      console.log("Access denied", error);
+    }
     if (error.response.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+      console.log("Unauthorized", error);
     }
     return Promise.reject(error);
   }
 );
 
-export function logout() {
-  delete apiClient.defaults.headers.common["Authorization"];
-  localStorage.removeItem("token");
+export async function getBlogs() {
+  try {
+    const response = await apiClient.get(apiPaths.blogs);
+    return response.data;
+  } catch (error) {
+    console.error("Fetching blogs failed", error);
+    throw error;
+  }
 }
 
-export function registerUser(username, email, password, gender) {
-  return apiClient.post(apiPaths.register, {
-    username,
-    email,
-    password,
-    gender,
-  });
+export async function registerUser(username, email, password, gender) {
+  try {
+    const response = await apiClient.post(apiPaths.register, {
+      username,
+      email,
+      password,
+      gender,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("User registration failed", error);
+    throw error;
+  }
 }
 
-export function sendOtp(email) {
-  return apiClient.post(apiPaths.sendotp, { email });
-}
-
-export function verifyOtp(email, otp) {
-  return apiClient.post(apiPaths.verifyOtp, { email, otp });
+export async function verifyOtp(email, otp) {
+  try {
+    const response = await apiClient.post(apiPaths.verifyOtp, { email, otp });
+    return response.data;
+  } catch (error) {
+    console.error("OTP verification failed", error);
+    throw error;
+  }
 }
 
 export async function initUserInfo(username) {
-  const response = await apiClient.get(apiPaths.initUserInfo, {
-    params: { username },
-  });
+  try {
+    const response = await apiClient.get(apiPaths.initUserInfo, {
+      params: { username },
+    });
 
-  if (response.status !== 200) {
-    throw new Error("Failed to fetch user info");
+    if (response.status !== 200) {
+      throw new Error("Failed to fetch user info");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Fetching user info failed", error);
+    throw error;
   }
+}
 
-  return response.data;
+export async function addBlog(blogData) {
+  try {
+    const response = await apiClient.post(apiPaths.blogAdd, blogData);
+    return response.data;
+  } catch (error) {
+    console.error("Adding blog failed", error);
+    throw error;
+  }
 }
 
 export default apiClient;

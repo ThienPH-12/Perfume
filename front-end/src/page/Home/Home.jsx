@@ -3,10 +3,11 @@ import "./Home.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import Carousel from "react-bootstrap/Carousel";
-import { ArrowRightSquare } from 'react-bootstrap-icons';
-import image1 from "../../img/R.jpg";
-import image2 from "../../img/R - Copy.jpg";
-import image3 from "../../img/R - Copy (2).jpg";
+import { ArrowRightSquare } from "react-bootstrap-icons";
+import image1 from "../../img/slide.jpg";
+import image2 from "../../img/slide2.webp";
+import image3 from "../../img/slide3.jpg";
+import logo from "../../img/logo.png";
 
 const products = [
   {
@@ -58,7 +59,7 @@ export default function Home() {
           {slides.map((slide, index) => (
             <Carousel.Item interval={3000}>
               <img
-                style={{ height: "75vh" }}
+                style={{ height: "85vh" }}
                 className="
                 d-block w-100"
                 src={slide.img}
@@ -71,7 +72,7 @@ export default function Home() {
           ))}
         </Carousel>
       </div>
-      <div className="products-section">
+      <div className="section">
         <h1>Bộ Sưu Tập Cá Nhân</h1>
         <p>
           Mỗi vùng đất mỗi vùng văn hóa đều có những nét đặc trưng riêng điều ấy
@@ -82,22 +83,37 @@ export default function Home() {
           tả hình ảnh văn hóa, tính cách mang đến giá trị cho khách hàng sử
           dụng.
         </p>
-     
       </div>
-      <div className="products-section">
-        <h1>CODEDECO</h1>
-        <p>
-          Mỗi vùng đất mỗi vùng văn hóa đều có những nét đặc trưng riêng điều ấy
-          không chỉ phác thảo bằng những giá trị hữu hình mà còn ẩn chứa trong
-          đó những giá trị vô hình, và ta cảm nhận bằng tâm hồn, trái tim trong
-          đó nổi bật có thể kể đến đó là mùi hương. Tại CODEDECO chúng tôi tạo
-          ra các mùi hương đa dạng theo phong cách của bạn. CODEDECO cố gắng lột
-          tả hình ảnh văn hóa, tính cách mang đến giá trị cho khách hàng sử
-          dụng.
-        </p>
-        <button className="watch-more" ><a href="/about">Xem chi tiết <ArrowRightSquare></ArrowRightSquare></a> </button>
+
+      <div className="section2">
+        <div className="d-flex justify-content-center">
+          <img
+            style={{ height: "50%", width: "45%", paddingRight: "10px" }}
+            className=""
+            src={logo}
+            alt="Logo"
+          />
+          <div className="d-flex flex-column align-items-center" style={{ backgroundColor: "burlywood" }}>
+            <h1>CODEDECO</h1>
+            <p>
+              Mỗi vùng đất mỗi vùng văn hóa đều có những nét đặc trưng riêng
+              điều ấy không chỉ phác thảo bằng những giá trị hữu hình mà còn ẩn
+              chứa trong đó những giá trị vô hình, và ta cảm nhận bằng tâm hồn,
+              trái tim trong đó nổi bật có thể kể đến đó là mùi hương. Tại
+              CODEDECO chúng tôi tạo ra các mùi hương đa dạng theo phong cách
+              của bạn. CODEDECO cố gắng lột tả hình ảnh văn hóa, tính cách mang
+              đến giá trị cho khách hàng sử dụng.
+            </p>
+            <button className="watch-more">
+              <a href="/about">
+                Xem chi tiết <ArrowRightSquare></ArrowRightSquare>
+              </a>{" "}
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="products-section">
+
+      <div className="section3">
         <h2>Sản phẩm bán chạy</h2>
         <div className="products-container">
           {products.map((product) => (

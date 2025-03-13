@@ -5,7 +5,6 @@
 package com.example.Perfume.api.controller;
 
 import com.example.Perfume.api.bean.req.AuthenticationReq;
-import com.example.Perfume.api.bean.req.EmailReq;
 import com.example.Perfume.api.bean.req.LogoutReq;
 import com.example.Perfume.api.bean.req.RefreshReq;
 import com.example.Perfume.api.bean.res.AuthenticationRes;
@@ -13,7 +12,6 @@ import com.example.Perfume.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
 public class AuthenticationController {
 
     @Autowired

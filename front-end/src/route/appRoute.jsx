@@ -14,6 +14,7 @@ import ContactPage from "../page/ContactPage/ContactPage.jsx"; // Import Contact
 import BlogPage from "../page/BlogPage/BlogPage.jsx"; // Import BlogPage
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx"; // Import Footer
+import Product from "../page/Product/Product.jsx"; // Import Product
 
 function PrivateRoute({ children }) {
   return isAuthenticated() ? children : <Navigate to="/login" />;
@@ -30,6 +31,7 @@ function AppRoute() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactPage />} /> {/* Add ContactPage route */}
         <Route path="/blog" element={<BlogPage />} /> {/* Add BlogPage route */}
+        <Route path="/product" element={<Product />} /> {/* Add Product route */}
         {/* <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />  */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./Header.scss";
 import Logo from "../img/logo2.png";
-import { logout } from "../api/apiClient";
+import apiClient from "../api/apiClient";
+import apiPaths from "../api/apiPath";
 
 export default function Header() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-
+  const [token, setToken] = useState({
+    token: "",
+  });
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -18,10 +21,21 @@ export default function Header() {
     }
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    setUser(null);
-    navigate("/");
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      setToken({ token: localStorage.getItem("token") });
+      const response = await apiClient.post(apiPaths.logout, token);
+      delete apiClient.defaults.headers.common["Authorization"];
+      localStorage.removeItem("token");
+
+      console.log(response.data);
+      setUser(null);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed", error);
+      throw error;
+    }
   };
 
   return (
@@ -49,13 +63,21 @@ export default function Header() {
           {user ? (
             <>
               <span>Welcome {user.sub}!</span>
-              <button className="buttonCus" onClick={handleLogout}>Logout</button>
+              <button className="buttonCus" onClick={handleLogout}>
+                Logout
+              </button>
             </>
           ) : (
             <>
-            
-              <button className="buttonCus" onClick={() => navigate("/login")}>Login</button>
-              <button className="buttonCus" onClick={() => navigate("/register")}>Register</button>
+              <button className="buttonCus" onClick={() => navigate("/login")}>
+                Login
+              </button>
+              <button
+                className="buttonCus"
+                onClick={() => navigate("/register")}
+              >
+                Register
+              </button>
             </>
           )}
         </div>
