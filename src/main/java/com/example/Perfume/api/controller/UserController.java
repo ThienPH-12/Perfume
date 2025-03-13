@@ -24,13 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
  * 
  */
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class UserController {
     
     @Autowired
     private UserService userService;
     
-    @PostMapping("/register")
+    @PostMapping("/user/register")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
         try {
             userService.register(req);
@@ -41,7 +41,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/verify-otp")
+    @PostMapping("/user/verify-otp")
     public ResponseEntity<?> verifyOtp(@RequestBody OtpReq req) {
         if (userService.verifyOtp(req.getEmail(), req.getOtp())) {
             return ResponseEntity.ok("OTP verified");
@@ -50,7 +50,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/save-user")
+    @PostMapping("/user/save-user")
     public ResponseEntity<?> saveUser(@RequestBody RegisterReq req) {
         try {
             userService.saveUser(req);
@@ -61,7 +61,7 @@ public class UserController {
         }
     }
     
-    @GetMapping("/initUserInfo")
+    @GetMapping("/user/initUserInfo")
     public ResponseEntity<?> initUserInfo(@RequestParam String username) {
         try {
             User user = userService.findByUsername(username);

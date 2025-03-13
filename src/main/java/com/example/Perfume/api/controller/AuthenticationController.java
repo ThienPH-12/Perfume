@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.*;
  * @author badao
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
+@CrossOrigin
 public class AuthenticationController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class AuthenticationController {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<AuthenticationRes> login(@RequestBody AuthenticationReq req) {
         try {
             AuthenticationRes response = authenticationService.login(req);
@@ -42,7 +43,7 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("/auth/refresh")
     public ResponseEntity<AuthenticationRes> refresh(@RequestBody RefreshReq req) {
         try {
             AuthenticationRes response = authenticationService.refreshToken(req);
@@ -53,7 +54,7 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/auth/logout")
     public ResponseEntity<?> logout(@RequestBody LogoutReq req) {
         try {
             authenticationService.logout(req);
@@ -61,24 +62,6 @@ public class AuthenticationController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error during logout: " + ex.getMessage());
-        }
-    }
-
-    @PostMapping("/send-email")
-    public ResponseEntity<?> sendEmail(@RequestBody EmailReq req) {
-
-        try {
-            
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setTo(req.getTo());
-            simpleMailMessage.setSubject(req.getSubject());
-            simpleMailMessage.setText(req.getText());
-
-            javaMailSender.send(simpleMailMessage);
-            return ResponseEntity.ok("Email sent successfully!");
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error during sendmail: " + ex.getMessage());
         }
     }
     
