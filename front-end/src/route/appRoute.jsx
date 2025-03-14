@@ -5,7 +5,6 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { isAuthenticated } from "../auth/auth";
 import Login from "../page/Login/Login.jsx";
 import Register from "../page/Register/Register.jsx";
 import Home from "../page/Home/Home.jsx";
@@ -17,7 +16,7 @@ import Footer from "../components/Footer.jsx"; // Import Footer
 import Product from "../page/Product/Product.jsx"; // Import Product
 
 function PrivateRoute({ children }) {
-  return isAuthenticated() ? children : <Navigate to="/login" />;
+  return localStorage.getItems("token") ? children : <Navigate to="/login" />;
 }
 
 function AppRoute() {

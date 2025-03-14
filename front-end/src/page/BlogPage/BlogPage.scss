@@ -1,7 +1,12 @@
 .blog-page {
   padding: 20px;
   background-color: #f9f9f9;
-
+  .error-message {
+    color: red;
+    height: 20px;
+    align-self: center;
+    margin-bottom: 20px;
+  }
   &__title {
     font-size: 2rem;
     margin-bottom: 20px;

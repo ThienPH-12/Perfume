@@ -24,9 +24,9 @@ public class BlogController {
     private BlogService blogService;
 
     @PostMapping("/blog/add")
-    public ResponseEntity<?> addBlog(@RequestPart BlogReq blogRequest) {
+    public ResponseEntity<?> addBlog(@RequestPart BlogReq blogReq,@RequestPart MultipartFile imageFile) {
         try {
-            Blog blog = blogService.addBlog(blogRequest);
+            Blog blog = blogService.addBlog(blogReq,imageFile);
             return new ResponseEntity<>(blog, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -43,7 +43,7 @@ public class BlogController {
         }
     }
 
-    @GetMapping("/blog/{blogId}/image")
+    @GetMapping("/blog/image/{blogId}")
     public ResponseEntity<byte[]> getImageByBlogId(@PathVariable int blogId) {
         Blog blog = blogService.getBlog(blogId);
         byte[] imageFile = blog.getImageData();

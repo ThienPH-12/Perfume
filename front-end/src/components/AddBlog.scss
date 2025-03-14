@@ -1,0 +1,60 @@
+#AddBlog{
+    padding: 20px;
+    background-color: #f9f9f9;
+  
+    &__title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+  
+    &__add-button {
+      margin-bottom: 20px;
+    }
+  
+    .blog-item {
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+  
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+  
+      p {
+        font-size: 1rem;
+        color: #555;
+      }
+    }
+  
+    .add-button {
+      height: 50px;
+      width: 150px;
+      border-radius: 5px;
+      text-align: center;
+      margin-top: 20px;
+      justify-self: flex-end;
+      align-self: flex-end;
+  
+      a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        font-size: 16px;
+      }
+    }
+  
+    .add-button:hover {
+      height: 50px;
+      width: 150px;
+      border-radius: 5px;
+      text-align: center;
+      background-color: #333;
+      margin-top: 20px;
+      justify-self: flex-end;
+      align-self: flex-end;
+    }
+  }
+  

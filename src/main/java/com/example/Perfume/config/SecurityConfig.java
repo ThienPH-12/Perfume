@@ -37,10 +37,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String allowList[]={"/api/auth/login",
+                        "/api/user/register",
+                        "/api/blogs",
+                        "/api/blog/image/**"};
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors().and()
                 .authorizeHttpRequests(api -> api
-                .requestMatchers("/api/auth/login", "/api/user/register").permitAll() // Allow access to /api/auth/login and /api/user/register
+                .requestMatchers(allowList).permitAll() // Allow access to /api/auth/login and /api/user/register
                 .requestMatchers("/api/admin").hasAnyAuthority("1")
                  .anyRequest().authenticated()
                 )

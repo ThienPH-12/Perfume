@@ -7,7 +7,7 @@
     border-radius: 3px;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); // White shadow
     max-width: 400px;
-    height:450px;
+    height: 450px;
     margin: 0 auto;
   }
   h2 {
@@ -18,11 +18,11 @@
 
   .error-message {
     color: red;
-height:20px;
-align-self: center;
+    height: 20px;
+    align-self: center;
     margin-bottom: 20px;
   }
- 
+
   .input-container {
     margin-bottom: 15px;
 
@@ -42,10 +42,9 @@ align-self: center;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px; 
+    font-size: 16px;
   }
   .button:hover {
     background-color: #ccc; // Light gray background on hover
   }
-
 }

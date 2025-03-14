@@ -1,5 +1,5 @@
 const apiPaths = {
-  blog: "/blogs",
+  blogs: "/blogs",
   blogAdd: "/blog/add",
 
   login: "/auth/login",

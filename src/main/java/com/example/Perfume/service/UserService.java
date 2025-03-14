@@ -80,7 +80,7 @@ public class UserService {
         user.setGender(req.getGender());
         user.setAuthority("0");  // Default authority
         user.setCreateDateTime(new Date());
-        user.setCreateUserId("system");
+        user.setCreateUserName("system");
 
         userRepository.save(user);
         logger.info("User registered successfully: {}", user.getUsername());

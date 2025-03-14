@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setToken } from "../../auth/auth";
 import "./Login.scss";
 import apiPaths from "../../api/apiPath";
 import apiClient from "../../api/apiClient";
-import axios from "axios"; // Add axios import
+
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -40,7 +39,7 @@ const Login = () => {
       const data = response.data;
       const accessToken = data.accessToken;
       console.log(accessToken);
-      setToken(accessToken);
+      localStorage.setItem("token", accessToken);
       window.location.reload();
     } catch (err) {
       setError("Invalid username/email or password.");

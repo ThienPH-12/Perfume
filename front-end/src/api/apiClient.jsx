@@ -3,9 +3,7 @@ import apiPaths from "./apiPath";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
+
 });
 
 apiClient.interceptors.request.use((config) => {
@@ -25,24 +23,17 @@ apiClient.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 403) {
+      localStorage.removeItem("token");
       console.log("Access denied", error);
     }
     if (error.response.status === 401) {
       console.log("Unauthorized", error);
+      localStorage.removeItem("token");
+      window.location.reload();
     }
     return Promise.reject(error);
   }
 );
-
-export async function getBlogs() {
-  try {
-    const response = await apiClient.get(apiPaths.blogs);
-    return response.data;
-  } catch (error) {
-    console.error("Fetching blogs failed", error);
-    throw error;
-  }
-}
 
 export async function registerUser(username, email, password, gender) {
   try {

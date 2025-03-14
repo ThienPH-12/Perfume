@@ -17,15 +17,16 @@ public class BlogService {
     @Autowired
     private BlogRepository blogRepository;
 
-    public Blog addBlog(BlogReq blogRequest) throws IOException {
+    public Blog addBlog(BlogReq blogReq,MultipartFile imageFile) throws IOException {
         // Logic to save blog and image
         Blog blog = new Blog();
-        blog.setBlogTitle(blogRequest.getBlogTitle());
-        blog.setBlogContent(blogRequest.getBlogContent());
-        blog.setImageData(blogRequest.getImageFile().getBytes());
-        blog.setImageType(blogRequest.getImageFile().getContentType());
+        blog.setBlogTitle(blogReq.getBlogTitle());
+        blog.setBlogContent(blogReq.getBlogContent());
+        blog.setImageName(imageFile.getName());
+        blog.setImageData(imageFile.getBytes());
+        blog.setImageType(imageFile.getContentType());
         blog.setCreateDateTime(new Date());
-        blog.setCreateUserId(blogRequest.getCreateUserName());
+        blog.setCreateUserName(blogReq.getCreateUserName());
         return blogRepository.save(blog);
     }
 
