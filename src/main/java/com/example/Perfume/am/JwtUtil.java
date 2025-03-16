@@ -12,22 +12,26 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Function;
+
+import com.example.Perfume.jpa.entity.Token;
+import com.example.Perfume.jpa.repository.TokenRepository;
 
 @Component
 public class JwtUtil {
 
     private final Key key;
     private final long jwtExpiration;
-    private final Set<String> invalidatedTokens = new HashSet<>();
+
+    @Autowired
+    private TokenRepository tokenRepository;
 
     public JwtUtil(@Value("${jwt.expiration}") long jwtExpiration) {
         this.jwtExpiration = jwtExpiration;
@@ -35,12 +39,24 @@ public class JwtUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration)) // Set expiration
                 .signWith(key)
                 .compact();
+        saveToken(token, userDetails.getUsername(), new Date(System.currentTimeMillis() + jwtExpiration));
+        return token;
+    }
+
+    private void saveToken(String token, String username, Date expirationDate) {
+        Token tokenEntity = new Token();
+        tokenEntity.setToken(token);
+        tokenEntity.setUserName(username);
+        tokenEntity.setExpirationDate(expirationDate);
+        tokenEntity.setCreateDateTime(new Date(System.currentTimeMillis()));
+        tokenEntity.setCreateUserName("system");
+        tokenRepository.save(tokenEntity);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
@@ -62,15 +78,19 @@ public class JwtUtil {
     }
 
     public boolean isTokenValid(String token, String userName) {
-        final String extractedUserName = extractUsername(token);
-        return (extractedUserName.equals(userName) && !isTokenExpired(token) && !invalidatedTokens.contains(token));
+        Token tokenEntity = tokenRepository.findByToken(token);
+        return tokenEntity != null && !isTokenExpired(token) && tokenEntity.getUserName().equals(userName);
     }
 
     public boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+        boolean expired = extractClaim(token, Claims::getExpiration).before(new Date());
+        if (expired) {
+            tokenRepository.deleteByToken(token);
+        }
+        return expired;
     }
 
     public void invalidateToken(String token) {
-        invalidatedTokens.add(token);
+        tokenRepository.deleteByToken(token);
     }
 }

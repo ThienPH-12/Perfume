@@ -17,7 +17,7 @@ public class BlogService {
     @Autowired
     private BlogRepository blogRepository;
 
-    public Blog addBlog(BlogReq blogReq,MultipartFile imageFile) throws IOException {
+    public Blog addBlog(BlogReq blogReq, MultipartFile imageFile) throws IOException {
         // Logic to save blog and image
         Blog blog = new Blog();
         blog.setBlogTitle(blogReq.getBlogTitle());
@@ -25,7 +25,7 @@ public class BlogService {
         blog.setImageName(imageFile.getName());
         blog.setImageData(imageFile.getBytes());
         blog.setImageType(imageFile.getContentType());
-        blog.setCreateDateTime(new Date());
+        blog.setCreateDateTime(new Date(System.currentTimeMillis()));
         blog.setCreateUserName(blogReq.getCreateUserName());
         return blogRepository.save(blog);
     }

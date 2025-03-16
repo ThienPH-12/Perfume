@@ -4,6 +4,8 @@ import "./BlogPage.scss"; // Import the BlogPage styles
 import apiClient from "../../api/apiClient";
 import { Toast } from "react-bootstrap";
 import apiPaths from "../../api/apiPath";
+import { Link } from "react-router-dom";
+
 function BlogPage() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
@@ -13,7 +15,7 @@ function BlogPage() {
   const [showToast, setShowToast] = useState(false);
 
   const handleAddBlog = (newBlog) => {
-    setBlogs([...blogs, newBlog]);
+    window.location.reload();
     setShowToast(true);
   };
 
@@ -23,7 +25,6 @@ function BlogPage() {
       try {
         const response = await apiClient.get(apiPaths.blogs);
         setData(response.data);
-        console.log(response.data);
       } catch (error) {
         setError(error.message);
       }
@@ -91,72 +92,41 @@ function BlogPage() {
         />
         <div className="grid">
           {blogs.length === 0 ? (
-            <h2
-              className="text-center"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <h2 className="text-center no-blogs">
               No Blogs Available
             </h2>
           ) : (
             blogs.map((blog) => {
-              const { blogTitle, blogContent, createDateTime, imageUrl } = blog;
+              const { blogId, blogTitle, blogContent, createDateTime, imageUrl } = blog;
               return (
-                <div
-                  className="blog-item"
-                  style={{
-                    width: "24rem",
-                    height: "18rem",
-                    boxShadow: "rgba(0, 0, 0, 0.24) 0px 2px 3px",
-                    margin: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <img
-                    src={imageUrl}
-                    alt={blogTitle}
-                    style={{
-                      width: "100%",
-                      height: "180px",
-                      objectFit: "cover",
-                      padding: "5px",
-                      margin: "0",
-                    }}
-                  />
-                  <div
-                    className="card-body"
-                    style={{
-                      flexGrow: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      padding: "10px",
-                    }}
-                  >
-                    <div>
-                      <h5
-                        className="card-title"
-                        style={{ margin: "0 0 10px 0" }}
-                      >
-                        {blogTitle}
-                      </h5>
-                      <div >
-                        <p className="card-text"style={{ height: "10%", width: "240px" }}>{blogContent}</p>
+                <Link to={`/blog/${blogId}`} key={blogId} className="blog-link">
+                  <div className="blog-item">
+                    <img
+                      src={imageUrl}
+                      alt={blogTitle}
+                      className="blog-image"
+                    />
+                    <div className="card-body">
+                      <div>
+                        <h5 className="card-title">
+                          {blogTitle}
+                        </h5>
+                        <div>
+                          <p className="card-text">
+                            {blogContent}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="card-text">
+                          <small className="text-muted">
+                            {new Date(createDateTime).toLocaleString()}
+                          </small>
+                        </p>
                       </div>
                     </div>
-                    <div>
-                      <p className="card-text">
-                        <small className="text-muted">
-                          {new Date(createDateTime).toLocaleString()}
-                        </small>
-                      </p>
-                    </div>
                   </div>
-                </div>
+                </Link>
               );
             })
           )}
@@ -167,11 +137,7 @@ function BlogPage() {
         show={showToast}
         delay={3000}
         autohide
-        style={{
-          position: "absolute",
-          top: 20,
-          right: 20,
-        }}
+        className="toast"
       >
         <Toast.Header>
           <strong className="mr-auto">Success</strong>

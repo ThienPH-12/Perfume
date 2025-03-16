@@ -1,5 +1,6 @@
 import React from "react";
 import "./About.scss";
+import Logo from "./logo.png";
 
 export default function About() {
   return (
@@ -7,26 +8,52 @@ export default function About() {
       <div className="article">
         <h2>VỀ CHÚNG TÔI </h2>{" "}
         <p>
-          Mỗi vùng đất mỗi vùng văn hóa đều có những nét đặc trưng riêng điều ấy
-          không chỉ phác thảo bằng những giá trị hữu hình mà còn ẩn chứa trong
-          đó những giá trị vô hình, và ta cảm nhận bằng tâm hồn, trái tim trong
-          đó nổi bật có thể kể đến đó là mùi hương. Tại CODEDECO chúng tôi tạo
-          ra các mùi hương đa dạng theo phong cách của bạn. CODEDECO cố gắng lột
-          tả hình ảnh văn hóa, tính cách mang đến giá trị cho khách hàng sử
-          dụng.
+          Câu Chuyện Thương Hiệu Shine Aura – Hương Thơm, Cá Tính, Dấu Ấn Riêng
+          Shine Aura ra đời từ một niềm tin rằng mỗi con người đều có một "hào
+          quang" độc nhất – một phong cách, một cảm xúc, một bản sắc riêng không
+          trộn lẫn. Và hương thơm chính là cách tinh tế nhất để khắc họa dấu ấn
+          ấy. 
+          ✨ Từ đam mê cá nhân đến thương hiệu nước hoa DIY Chúng tôi bắt
+          đầu từ niềm yêu thích với nước hoa – không chỉ là một mùi hương, mà là
+          một trải nghiệm, một nghệ thuật, một câu chuyện. Nhưng thay vì tìm
+          kiếm một mùi hương mang dấu ấn cá nhân – một thứ độc nhất vô nhị, phản
+          ánh phong cách và cảm xúc riêng của mỗi người.
         </p>
       </div>
       <div></div>
-      <img src="https://codedeco.art/wp-content/uploads/2023/04/A5-1229x1536.jpg" alt="" />
+      <img
+        src={Logo}
+        style={{
+          width: "100%",
+          height: "600px",
+          objectFit: "cover",
+          padding: "5px",
+          margin: "0",
+        }}
+        alt=""
+      />
       <div className="article">
         <p>
-          SỨ MỆNH “CODEDECO” – “Mã số bí mật tô điểm mùi hương cho mỗi người”.
-          Với mong muốn giúp với các bạn tạo dựng nên một phong cách cá nhân
-          riêng. CODEDECO là chìa khóa bí mật giúp bạn thu hút, hấp dẫn và tự
-          tin hơn.
+          Vision: Mong muốn mang đến cho khách hàng sản phẩm nước hoa mang mùi
+          hương độc nhất, unique, thể hiện rõ ràng tính cách, cá tính của người
+          sử dụng. Motivation: Hiện nay, hầu hết người dùng nước hoa chỉ có thể
+          lựa chọn từ những mùi hương có sẵn, chưa có nhiều cơ hội để tự tạo ra
+          hương thơm theo sở thích cá nhân. Shine Aura mong muốn mang đến cho
+          người dùng trải nghiệm độc đáo, nơi họ có thể tự do pha trộn và sáng
+          tạo nên mùi nước hoa riêng, thể hiện cá tính và phong cách của mình.
         </p>
       </div>
-      <img src="https://codedeco.art/wp-content/uploads/2023/04/A5-1229x1536.jpg" alt="" />
+      <img
+        src={Logo}
+        style={{
+          width: "100%",
+          height: "600px",
+          objectFit: "cover",
+          padding: "5px",
+          margin: "0",
+        }}
+        alt=""
+      />
     </div>
   );
 }

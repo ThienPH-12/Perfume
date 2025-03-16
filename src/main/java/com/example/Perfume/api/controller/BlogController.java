@@ -50,4 +50,14 @@ public class BlogController {
 
         return ResponseEntity.ok().contentType(MediaType.valueOf(blog.getImageType())).body(imageFile);
     }
+
+    @GetMapping("/blog/{id}")
+    public ResponseEntity<?> getBlogById(@PathVariable int id) {
+        try {
+            Blog blog = blogService.getBlog(id);
+            return new ResponseEntity<>(blog, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }

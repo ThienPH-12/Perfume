@@ -79,7 +79,7 @@ public class UserService {
         user.setEmail(req.getEmail());
         user.setGender(req.getGender());
         user.setAuthority("0");  // Default authority
-        user.setCreateDateTime(new Date());
+        user.setCreateDateTime(new Date(System.currentTimeMillis()));
         user.setCreateUserName("system");
 
         userRepository.save(user);

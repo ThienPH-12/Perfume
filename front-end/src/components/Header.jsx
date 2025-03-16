@@ -9,9 +9,7 @@ import apiPaths from "../api/apiPath";
 export default function Header() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState({
-    token: "",
-  });
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -23,9 +21,17 @@ export default function Header() {
 
   const handleLogout = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.reload();
+      return;
+    }
     try {
-      setToken({ token: localStorage.getItem("token") });
-      const response = await apiClient.post(apiPaths.logout, token);
+      const response = await apiClient.post(apiPaths.logout, { token }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       delete apiClient.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
 

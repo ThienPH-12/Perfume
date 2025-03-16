@@ -8,6 +8,8 @@ const apiPaths = {
   register: "/user/register",
   verifyOtp: "/auth//user/verify-otp",
   initUserInfo: "/user/initUserInfo",
+
+  getBlogById: (id) => `/blog/${id}`,
 };
 
 export default apiPaths;

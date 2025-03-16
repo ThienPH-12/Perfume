@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthenticationService {
@@ -66,12 +67,16 @@ public class AuthenticationService {
         }
     }
 
+    @Transactional
     public void logout(LogoutReq req) {
         try {
-            // Invalidate the token (implementation depends on your token management strategy)
-            jwtUtil.invalidateToken(req.getToken());
-            SecurityContextHolder.clearContext(); // Add this line
-            logger.info("User with token {} logged out successfully.", req.getToken());
+            if (jwtUtil.isTokenExpired(req.getToken())) {
+                logger.info("Token {} is already expired and deleted. Logging out immediately.", req.getToken());
+            } else {
+                jwtUtil.invalidateToken(req.getToken());
+                logger.info("User with token {} logged out successfully.", req.getToken());
+            }
+            SecurityContextHolder.clearContext();
         } catch (Exception e) {
             logger.error("Logout failed. Reason: {}", e.getMessage());
             throw new RuntimeException("Logout failed", e);

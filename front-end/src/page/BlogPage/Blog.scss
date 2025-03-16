@@ -1,0 +1,27 @@
+.blog-detail {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.blog-detail__title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.blog-detail__image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.blog-detail__content {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.blog-detail__date {
+  margin-top: 20px;
+  font-size: 0.875rem;
+  color: #888;
+}

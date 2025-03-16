@@ -25,6 +25,7 @@ apiClient.interceptors.response.use(
     if (error.response.status === 403) {
       localStorage.removeItem("token");
       console.log("Access denied", error);
+      
     }
     if (error.response.status === 401) {
       console.log("Unauthorized", error);

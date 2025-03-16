@@ -5,14 +5,14 @@ function Footer() {
   return (
     <footer id="Footer" className="footer footer-fixed">
       <div className="footer-section">
-        <h3>CODEDECO FRAGRANCE</h3>
-        <p>Người đại diện: Dương Thị Uyên Nhung</p>
-        <p>Địa chỉ trụ sở: Số 70 ngõ 445 Đ.Lạc Long Quân, Q.Tây Hồ, Hà Nội</p>
+        <h3>SHINE AURA</h3>
+        <p>Người đại diện: Đỗ Quang Trường</p>
+        <p>Địa chỉ trụ sở: Thạch Thất, Hòa Lạc</p>
         <p>Số đăng kí kinh doanh: 01B8021029</p>
-        <p>Đăng kí lần đầu ngày: 15/03/2022</p>
-        <p>Đăng kí thay đổi lần thứ 1: 21/04/2023</p>
+        <p>Đăng kí lần đầu ngày: */*/2025</p>
+        <p>Đăng kí thay đổi lần thứ 1: */*/202*</p>
         <p>MST: 8364994183</p>
-        <p>Hotline: 05678.83.111 - CSKH: 05678.82.111</p>
+        <p>Hotline: 0932.111.111 - CSKH: 11111.11.111</p>
         <div className="social-icons">
           <a href="#"><img src="https://th.bing.com/th/id/OIP.TYjMA7L6TmW-aMKd6KY8iwHaEo?rs=1&pid=ImgDetMain" alt="Facebook" /></a>
           <a href="#"><img src="https://th.bing.com/th/id/R.6287255214805d04b927ee0c53c88f64?rik=Hajf3OR9ipXMdQ&riu=http%3a%2f%2ffreelogopng.com%2fimages%2fall_img%2f1656180674shopee-logo-transparent.png&ehk=9Uim1JMb9bW6YMwQi6SDKsI56jFiz6E4jvDwKPNcx8M%3d&risl=&pid=ImgRaw&r=0" alt="Shopee" /></a>
