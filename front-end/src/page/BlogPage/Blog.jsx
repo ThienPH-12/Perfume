@@ -15,7 +15,7 @@ function Blog() {
         const response = await apiClient.get(apiPaths.getBlogById(id));
         const blogData = response.data;
 
-        const imageResponse = await apiClient.get(`/blog/image/${id}`, {
+        const imageResponse = await apiClient.get(apiPaths.getBlogImageById(id), {
           responseType: "blob",
         });
         const imageUrl = URL.createObjectURL(imageResponse.data);

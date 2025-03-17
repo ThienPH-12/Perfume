@@ -68,21 +68,21 @@ export default function Header() {
         <div className="auth-container">
           {user ? (
             <>
-              <span>Welcome {user.sub}!</span>
+              <span>Chào mừng {user.sub}!</span>
               <button className="buttonCus" onClick={handleLogout}>
-                Logout
+                Đăng xuất
               </button>
             </>
           ) : (
             <>
               <button className="buttonCus" onClick={() => navigate("/login")}>
-                Login
+                Đăng nhập
               </button>
               <button
                 className="buttonCus"
                 onClick={() => navigate("/register")}
               >
-                Register
+                Đăng ký
               </button>
             </>
           )}

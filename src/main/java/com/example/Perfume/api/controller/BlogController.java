@@ -51,7 +51,7 @@ public class BlogController {
         return ResponseEntity.ok().contentType(MediaType.valueOf(blog.getImageType())).body(imageFile);
     }
 
-    @GetMapping("/blog/{id}")
+    @GetMapping("/blog/search/{id}")
     public ResponseEntity<?> getBlogById(@PathVariable int id) {
         try {
             Blog blog = blogService.getBlog(id);

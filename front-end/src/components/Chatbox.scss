@@ -1,10 +1,11 @@
 .chatbox-button {
   position: fixed;
+  bottom: 40px; /* Adjusted to be a bit higher */
   left: 20px; /* Moved to the left */
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-bottom: 5%;
+  padding: 0;
   background-color: #007bff;
   color: white;
   border: none;
@@ -29,12 +30,12 @@
 
 .chatbox {
   position: fixed;
-  left: 20px; /* Adjusted to be at the logo position */
+  bottom: 60px;
+  right: 20px;
   width: 300px;
   max-height: 400px;
   background-color: white;
   border: 1px solid #ccc;
-  margin-bottom: 5%;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;

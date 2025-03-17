@@ -43,7 +43,7 @@ function BlogPage() {
           data.map(async (blog) => {
             try {
               const response = await apiClient.get(
-                `/blog/image/${blog.blogId}`,
+                apiPaths.getBlogImageById(blog.blogId),
                 {
                   responseType: "blob",
                 }
@@ -78,11 +78,11 @@ function BlogPage() {
   return (
     <>
       <div className="blog-page">
-        <h1 className="blog-page__title">Blog Page</h1>
+        <h1 className="blog-page__title">Trang Blog</h1>
         <div className="error-message">{error}</div>
         {token && (
           <button onClick={handleOpenModal} className="add-button">
-            Add Blog
+            Thêm mới Blog
           </button>
         )}
         <AddBlog
@@ -93,7 +93,7 @@ function BlogPage() {
         <div className="grid">
           {blogs.length === 0 ? (
             <h2 className="text-center no-blogs">
-              No Blogs Available
+              Hiện không có Blog nào
             </h2>
           ) : (
             blogs.map((blog) => {
@@ -111,7 +111,7 @@ function BlogPage() {
                         <h5 className="card-title">
                           {blogTitle}
                         </h5>
-                        <div>
+                        <div style={{width: "100%"}}>
                           <p className="card-text">
                             {blogContent}
                           </p>
@@ -140,9 +140,9 @@ function BlogPage() {
         className="toast"
       >
         <Toast.Header>
-          <strong className="mr-auto">Success</strong>
+          <strong className="mr-auto">Thành công</strong>
         </Toast.Header>
-        <Toast.Body>Blog added successfully!</Toast.Body>
+        <Toast.Body>Thêm Blog thành công!</Toast.Body>
       </Toast>
     </>
   );

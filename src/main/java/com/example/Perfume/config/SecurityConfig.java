@@ -40,6 +40,7 @@ public class SecurityConfig {
         String allowList[]={"/api/auth/login",
                         "/api/user/register",
                         "/api/blogs",
+                        "/api/blog/search/**",
                         "/api/blog/image/**"};
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors().and()

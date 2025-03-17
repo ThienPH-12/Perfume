@@ -1,6 +1,8 @@
 const apiPaths = {
   blogs: "/blogs",
   blogAdd: "/blog/add",
+  getBlogById: (id) => `/blog/search/${id}`,
+  getBlogImageById: (id) => `/blog/image/${id}`,
 
   login: "/auth/login",
   logout: "/auth/logout",
@@ -9,7 +11,6 @@ const apiPaths = {
   verifyOtp: "/auth//user/verify-otp",
   initUserInfo: "/user/initUserInfo",
 
-  getBlogById: (id) => `/blog/${id}`,
 };
 
 export default apiPaths;

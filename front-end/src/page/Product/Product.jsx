@@ -22,7 +22,7 @@ const products = [
 const Product = () => {
   return (
     <div className="product-page">
-      <h1>Product Page</h1>
+      <h1>Sản Phẩm</h1>
       <div className="product-grid">
         {products.map((product) => (
           <div key={product.id} className="product-card">

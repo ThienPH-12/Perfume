@@ -1,4 +1,3 @@
-import React, { useContext, useEffect, useState } from "react";
 import "./Home.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -16,7 +15,8 @@ const products = [
     type: "Mùi hương cho nữ",
     price: "195.000 đ",
     rating: "5 / 5 (1237 đánh giá)",
-    image: "path/to/midnight-rose.jpg",
+    image:
+      "https://codedeco.art/sp/tinh-https://codedeco.art/wp-content/uploads/2024/03/lady-xit.jpg-nuoc-hoa-codedeco-1101-10ml-dang-xit/",
   },
   {
     id: 2,
@@ -24,7 +24,8 @@ const products = [
     type: "Mùi hương cho nữ",
     price: "195.000 đ",
     rating: "5 / 5 (1267 đánh giá)",
-    image: "path/to/miss-di.jpg",
+    image:
+      "https://codedeco.art/sp/tinh-https://codedeco.art/wp-content/uploads/2024/03/lady-xit.jpg-nuoc-hoa-codedeco-1101-10ml-dang-xit/",
   },
   {
     id: 3,
@@ -32,7 +33,8 @@ const products = [
     type: "Mùi hương cho nữ",
     price: "195.000 đ",
     rating: "5 / 5 (1207 đánh giá)",
-    image: "path/to/good-girl.jpg",
+    image:
+      "https://codedeco.art/sp/tinh-https://codedeco.art/wp-content/uploads/2024/03/lady-xit.jpg-nuoc-hoa-codedeco-1101-10ml-dang-xit/",
   },
   {
     id: 4,
@@ -40,7 +42,8 @@ const products = [
     type: "Mùi hương cho nam",
     price: "350.000 đ",
     rating: "5 / 5 (1520 đánh giá)",
-    image: "path/to/sweet-and-spicy.jpg",
+    image:
+      "https://codedeco.art/sp/tinh-https://codedeco.art/wp-content/uploads/2024/03/lady-xit.jpg-nuoc-hoa-codedeco-1101-10ml-dang-xit/",
   },
 ];
 const slides = [
@@ -75,13 +78,11 @@ export default function Home() {
       <div className="section">
         <h1>Bộ Sưu Tập Cá Nhân</h1>
         <p>
-          Mỗi vùng đất mỗi vùng văn hóa đều có những nét đặc trưng riêng điều ấy
-          không chỉ phác thảo bằng những giá trị hữu hình mà còn ẩn chứa trong
-          đó những giá trị vô hình, và ta cảm nhận bằng tâm hồn, trái tim trong
-          đó nổi bật có thể kể đến đó là mùi hương. Tại CODEDECO chúng tôi tạo
-          ra các mùi hương đa dạng theo phong cách của bạn. CODEDECO cố gắng lột
-          tả hình ảnh văn hóa, tính cách mang đến giá trị cho khách hàng sử
-          dụng.
+          Câu Chuyện Thương Hiệu Shine Aura – Hương Thơm, Cá Tính, Dấu Ấn Riêng
+          Shine Aura ra đời từ một niềm tin rằng mỗi con người đều có một "hào
+          quang" độc nhất – một phong cách, một cảm xúc, một bản sắc riêng không
+          trộn lẫn. Và hương thơm chính là cách tinh tế nhất để khắc họa dấu ấn
+          ấy.
         </p>
       </div>
 
@@ -93,16 +94,17 @@ export default function Home() {
             src={logo}
             alt="Logo"
           />
-          <div className="d-flex flex-column align-items-center" style={{ backgroundColor: "burlywood" }}>
-            <h1>CODEDECO</h1>
+          <div
+            className="d-flex flex-column align-items-center"
+            style={{ backgroundColor: "burlywood" }}
+          >
+            <h1>SHINE AURA</h1>
             <p>
-              Mỗi vùng đất mỗi vùng văn hóa đều có những nét đặc trưng riêng
-              điều ấy không chỉ phác thảo bằng những giá trị hữu hình mà còn ẩn
-              chứa trong đó những giá trị vô hình, và ta cảm nhận bằng tâm hồn,
-              trái tim trong đó nổi bật có thể kể đến đó là mùi hương. Tại
-              CODEDECO chúng tôi tạo ra các mùi hương đa dạng theo phong cách
-              của bạn. CODEDECO cố gắng lột tả hình ảnh văn hóa, tính cách mang
-              đến giá trị cho khách hàng sử dụng.
+              Câu Chuyện Thương Hiệu Shine Aura – Hương Thơm, Cá Tính, Dấu Ấn
+              Riêng Shine Aura ra đời từ một niềm tin rằng mỗi con người đều có
+              một "hào quang" độc nhất – một phong cách, một cảm xúc, một bản
+              sắc riêng không trộn lẫn. Và hương thơm chính là cách tinh tế nhất
+              để khắc họa dấu ấn ấy.
             </p>
             <button className="watch-more">
               <a href="/about">
