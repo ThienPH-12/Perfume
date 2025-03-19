@@ -10,7 +10,7 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
   const [blogReq, setBlogReq] = useState({
     blogTitle: "",
     blogContent: "",
-    createUserName: "",
+    createUserId: "",
   });
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
@@ -54,7 +54,7 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
     }
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
-    setBlogReq({ ...blogReq, createUserName: decodedToken.sub });
+    setBlogReq({ ...blogReq, createUserId: decodedToken.userId });
 
     const formDataToSend = new FormData();
     formDataToSend.append("imageFile", image);
@@ -75,7 +75,7 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
 
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal size="xl" show={show} onHide={handleClose}>
         <div id="AddBlog">
           <Modal.Header closeButton>
             <Modal.Title>Thêm BLog Mới</Modal.Title>
@@ -100,7 +100,7 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
                 <Form.Label>Nội dung</Form.Label>
                 <Form.Control
                   as="textarea"
-                  rows={3}
+                  rows={10}
                   placeholder="Enter blog content"
                   name="blogContent"
                   value={blogReq.blogContent}

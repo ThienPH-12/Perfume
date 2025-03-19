@@ -23,6 +23,10 @@ import java.util.function.Function;
 
 import com.example.Perfume.jpa.entity.Token;
 import com.example.Perfume.jpa.repository.TokenRepository;
+import com.example.Perfume.jpa.entity.User;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Base64;
 
 @Component
 public class JwtUtil {
@@ -33,16 +37,26 @@ public class JwtUtil {
     @Autowired
     private TokenRepository tokenRepository;
 
-    public JwtUtil(@Value("${jwt.expiration}") long jwtExpiration) {
+    public JwtUtil(@Value("${jwt.expiration}") long jwtExpiration, @Value("${jwt.secret}") String secret) {
         this.jwtExpiration = jwtExpiration;
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        try {
+            byte[] decodedKey = Base64.getDecoder().decode(secret);
+            this.key = Keys.hmacShaKeyFor(decodedKey);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid Base64 secret key", e);
+        }
     }
 
     public String generateToken(UserDetails userDetails) {
+        User user = (User) userDetails;
+        Map<String, Object> claims = new HashMap<>(user.getAdditionalAttributes());
+        claims.put("sub", userDetails.getUsername());
+        claims.put("iat", new Date(System.currentTimeMillis()));
+        claims.put("exp", new Date(System.currentTimeMillis() + jwtExpiration));
+        claims.put("authority", user.getAuthorities().toString());
+        
         String token = Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration)) // Set expiration
+                .setClaims(claims)
                 .signWith(key)
                 .compact();
         saveToken(token, userDetails.getUsername(), new Date(System.currentTimeMillis() + jwtExpiration));
@@ -55,7 +69,7 @@ public class JwtUtil {
         tokenEntity.setUserName(username);
         tokenEntity.setExpirationDate(expirationDate);
         tokenEntity.setCreateDateTime(new Date(System.currentTimeMillis()));
-        tokenEntity.setCreateUserName("system");
+        tokenEntity.setCreateUserId("system");
         tokenRepository.save(tokenEntity);
     }
 

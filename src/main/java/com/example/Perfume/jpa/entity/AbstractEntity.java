@@ -10,21 +10,21 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class AbstractEntity {
 
-    @Column(name = "CreateUserName")
-    private String createUserName;
+    @Column(name = "CreateUserId")
+    private String createUserId;
     @Column(name = "CreateDateTime")
     private Date createDateTime;
-    @Column(name = "UpdateUserName")
-    private String updateUserName;
+    @Column(name = "UpdateUserId")
+    private String updateUserId;
     @Column(name = "UpdateDateTime")
     private Date updateDateTime;
 
-    public String getCreateUserName() {
-        return createUserName;
+    public String getCreateUserId() {
+        return createUserId;
     }
 
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
     }
 
     public Date getCreateDateTime() {
@@ -35,12 +35,12 @@ public abstract class AbstractEntity {
         this.createDateTime = createDateTime;
     }
 
-    public String getUpdateUserName() {
-        return updateUserName;
+    public String getUpdateUserId() {
+        return updateUserId;
     }
 
-    public void setUpdateUserName(String updateUserName) {
-        this.updateUserName = updateUserName;
+    public void setUpdateUserId(String updateUserId) {
+        this.updateUserId = updateUserId;
     }
 
     public Date getUpdateDateTime() {

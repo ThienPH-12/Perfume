@@ -17,6 +17,8 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -146,6 +148,18 @@ public class User extends AbstractEntity implements UserDetails {
 
     public void setCredit(BigDecimal credit) {
         this.credit = credit;
+    }
+
+    public Map<String, Object> getAdditionalAttributes() {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("userId", userId);
+        attributes.put("gender", gender);
+        attributes.put("age", age);
+        attributes.put("email", email);
+        attributes.put("address", address);
+        attributes.put("credit", credit);
+        attributes.put("authority", authority); // Include authority
+        return attributes;
     }
 
 }

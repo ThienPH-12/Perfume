@@ -26,7 +26,7 @@ public class BlogService {
         blog.setImageData(imageFile.getBytes());
         blog.setImageType(imageFile.getContentType());
         blog.setCreateDateTime(new Date(System.currentTimeMillis()));
-        blog.setCreateUserName(blogReq.getCreateUserName());
+        blog.setCreateUserId(blogReq.getCreateUserId());
         return blogRepository.save(blog);
     }
 

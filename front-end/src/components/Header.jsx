@@ -9,12 +9,13 @@ import apiPaths from "../api/apiPath";
 export default function Header() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
       console.log(decodedToken);
+      console.log(token);
       setUser(decodedToken);
     }
   }, []);
@@ -27,11 +28,15 @@ export default function Header() {
       return;
     }
     try {
-      const response = await apiClient.post(apiPaths.logout, { token }, {
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await apiClient.post(
+        apiPaths.logout,
+        { token },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
       delete apiClient.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
 
