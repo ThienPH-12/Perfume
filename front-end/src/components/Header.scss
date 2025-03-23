@@ -1,6 +1,7 @@
 #Header {
   position: sticky;
   top: 0;
+  z-index: 1000; // Ensure header is on top of any card
   color: azure;
   .header-container {
     height: 55px;
