@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Date;
 
 /**
  *
@@ -17,23 +18,96 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "[Product]")
-public class Product extends AbstractEntity{
+public class Product extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ProductId")
+    @Column(name = "ProductId")
     private int productId;
 
-    @Column(name="ProductName")
+    @Column(name = "ProductName")
     private String productName;
 
-    // Add other fields, getters and setters
+    @Column(name = "CapacityId")
+    private int capacityId;
 
-    public Product(int productId, String productName) {
+    @Column(name = "Origin")
+    private String origin;
+
+    @Column(name = "Component")
+    private String component;
+
+    @Column(name = "Method")
+    private String method;
+
+    @Column(name = "ExpirationDate")
+    private Date expirationDate;
+
+    // Add other fields, getters and setters
+    public Product(int productId, String productName, int capacityId, String origin, String component, String method, Date expirationDate) {
         this.productId = productId;
+        this.productName = productName;
+        this.capacityId = capacityId;
+        this.origin = origin;
+        this.component = component;
+        this.method = method;
+        this.expirationDate = expirationDate;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
         this.productName = productName;
     }
 
-   
-    
+    public int getCapacityId() {
+        return capacityId;
+    }
+
+    public void setCapacityId(int capacityId) {
+        this.capacityId = capacityId;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
 }

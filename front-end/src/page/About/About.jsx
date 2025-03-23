@@ -1,6 +1,7 @@
 import React from "react";
 import "./About.scss";
 import Logo from "./logo.png";
+import Img2 from "./about2.jpg";
 
 export default function About() {
   return (
@@ -33,8 +34,9 @@ export default function About() {
         alt=""
       />
       <div className="article">
+      <h2> VISION</h2>{" "}
         <p>
-          Vision: Mong muốn mang đến cho khách hàng sản phẩm nước hoa mang mùi
+         Mong muốn mang đến cho khách hàng sản phẩm nước hoa mang mùi
           hương độc nhất, unique, thể hiện rõ ràng tính cách, cá tính của người
           sử dụng. Motivation: Hiện nay, hầu hết người dùng nước hoa chỉ có thể
           lựa chọn từ những mùi hương có sẵn, chưa có nhiều cơ hội để tự tạo ra
@@ -44,7 +46,7 @@ export default function About() {
         </p>
       </div>
       <img
-        src={Logo}
+        src={Img2 }
         style={{
           width: "100%",
           height: "600px",
