@@ -9,7 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -28,31 +30,41 @@ public class Product extends AbstractEntity {
     @Column(name = "ProductName")
     private String productName;
 
-    @Column(name = "CapacityId")
-    private int capacityId;
+    @Column(name = "Price")
+    private BigDecimal price;;
 
-    @Column(name = "Origin")
-    private String origin;
+    @Column(name = "Description")
+    private String description;
 
-    @Column(name = "Component")
-    private String component;
+    @Column(name = "ImageName")
+    private String imageName;
 
-    @Column(name = "Method")
-    private String method;
+    @Column(name = "ImageType")
+    private String imageType;
+    @Lob
+    @Column(name = "ImageData")
+    private byte[] imageData;
 
     @Column(name = "ExpirationDate")
     private Date expirationDate;
 
+    public Product() {
+    }
+
     // Add other fields, getters and setters
-    public Product(int productId, String productName, int capacityId, String origin, String component, String method, Date expirationDate) {
+
+    public Product(int productId, String productName, BigDecimal price, String description, String imageName, String imageType, byte[] imageData, Date expirationDate) {
         this.productId = productId;
         this.productName = productName;
-        this.capacityId = capacityId;
-        this.origin = origin;
-        this.component = component;
-        this.method = method;
+        this.price = price;
+        this.description = description;
+        this.imageName = imageName;
+        this.imageType = imageType;
+        this.imageData = imageData;
         this.expirationDate = expirationDate;
     }
+
+
 
     public int getProductId() {
         return productId;
@@ -70,37 +82,22 @@ public class Product extends AbstractEntity {
         this.productName = productName;
     }
 
-    public int getCapacityId() {
-        return capacityId;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setCapacityId(int capacityId) {
-        this.capacityId = capacityId;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public String getOrigin() {
-        return origin;
+    public String getDescription() {
+        return description;
     }
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getComponent() {
-        return component;
-    }
-
-    public void setComponent(String component) {
-        this.component = component;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
 
     public Date getExpirationDate() {
         return expirationDate;
@@ -108,6 +105,30 @@ public class Product extends AbstractEntity {
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 
 }

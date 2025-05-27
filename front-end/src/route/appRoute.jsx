@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import {jwtDecode} from "jwt-decode"; // Import jwt-decode
 import Login from "../page/Login/Login.jsx";
 import Register from "../page/Register/Register.jsx";
 import Home from "../page/Home/Home.jsx";
@@ -15,9 +16,21 @@ import Blog from "../page/BlogPage/Blog.jsx"; // Import Blog
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx"; // Import Footer
 import Product from "../page/Product/Product.jsx"; // Import Product
+import AdminPage from "../page/AdminPage/AdminPage.jsx"; // Import AdminPage
 
-function PrivateRoute({ children }) {
-  return localStorage.getItem("token") ? children : <Navigate to="/login" />;
+function PrivateAdminRoute({ children }) {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decoded = jwtDecode(token);
+      if (decoded.authority[1] === "1") {
+        return children;
+      }
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
+  return <Navigate to="/login" />;
 }
 
 function AppRoute() {
@@ -33,7 +46,14 @@ function AppRoute() {
         <Route path="/blog" element={<BlogPage />} /> {/* Add BlogPage route */}
         <Route path="/blog/:id" element={<Blog />} /> {/* Add Blog route */}
         <Route path="/product" element={<Product />} /> {/* Add Product route */}
-        {/* <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />  */}
+        <Route
+          path="/admin"
+          element={
+            <PrivateAdminRoute>
+              <AdminPage />
+            </PrivateAdminRoute>
+          }
+        /> {/* Restrict AdminPage route */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer /> {/* Add Footer */}

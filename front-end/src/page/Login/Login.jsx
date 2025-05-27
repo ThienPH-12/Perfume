@@ -21,7 +21,7 @@ const Login = () => {
     if (token) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,8 +53,7 @@ const Login = () => {
         <div className="error-message">{error}</div>
         <form onSubmit={handleSubmit}>
           <div className="input-container">
-            <input
-              className="input"
+            <input className="input"
               type="text"
               name="username"
               placeholder="Tên tài khoản hoặc địa chỉ email *"

@@ -60,8 +60,12 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                     // Validate the token against the database
                     Token tokenEntity = tokenRepository.findByToken(jwt);
                     if (tokenEntity != null && jwtUtil.isTokenValid(jwt, userDetails.getUsername())) {
-                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities());
+                        authToken.setDetails(
+                                new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
                 }

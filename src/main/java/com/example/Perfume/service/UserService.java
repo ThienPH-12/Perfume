@@ -39,10 +39,7 @@ public class UserService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    private Map<String, String> otpStorage = new HashMap<>();
-    private Map<String, Long> otpExpiry = new HashMap<>();
-
-    public void register(RegisterReq req) {
+    public String sendOtp(RegisterReq req) {
         logger.info("Registering user: {}", req.getUsername());
 
         if (userRepository.existsByUserName(req.getUsername())) {
@@ -50,8 +47,6 @@ public class UserService {
         }
 
         String otp = otpService.generateOtp();
-        otpStorage.put(req.getEmail(), otp);
-        otpExpiry.put(req.getEmail(), System.currentTimeMillis() + 60000); // 1 minute expiry
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(req.getEmail());
@@ -59,17 +54,7 @@ public class UserService {
         simpleMailMessage.setText("Your OTP code is: " + otp);
 
         javaMailSender.send(simpleMailMessage);
-    }
-
-    public boolean verifyOtp(String email, String otp) {
-        if (otpStorage.containsKey(email) && otpStorage.get(email).equals(otp)) {
-            if (System.currentTimeMillis() <= otpExpiry.get(email)) {
-                otpStorage.remove(email);
-                otpExpiry.remove(email);
-                return true;
-            }
-        }
-        return false;
+        return otp;
     }
 
     public void saveUser(RegisterReq req) {

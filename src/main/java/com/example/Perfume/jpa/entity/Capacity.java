@@ -25,8 +25,8 @@ public class Capacity extends AbstractEntity {
     @Column(name = "CapacityId")
     private Integer capacityId;
 
-    @Column(name = "Price")
-    private BigDecimal price;
+    @Column(name = "Capacity")
+    private int capacity;
 
     public Integer getCapacityId() {
         return capacityId;
@@ -36,13 +36,15 @@ public class Capacity extends AbstractEntity {
         this.capacityId = capacityId;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
+
+ 
 
     
 }

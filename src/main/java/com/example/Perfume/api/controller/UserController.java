@@ -30,27 +30,18 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    @PostMapping("/user/register")
+    @PostMapping("/user/sendOtp")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
         try {
-            userService.register(req);
-            return ResponseEntity.ok("OTP sent to email");
+            String otp=userService.sendOtp(req);
+            return ResponseEntity.ok(otp);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error during registration: " + ex.getMessage());
         }
     }
 
-    @PostMapping("/user/verify-otp")
-    public ResponseEntity<?> verifyOtp(@RequestBody OtpReq req) {
-        if (userService.verifyOtp(req.getEmail(), req.getOtp())) {
-            return ResponseEntity.ok("OTP verified");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired OTP");
-        }
-    }
-
-    @PostMapping("/user/save-user")
+    @PostMapping("/user/saveUser")
     public ResponseEntity<?> saveUser(@RequestBody RegisterReq req) {
         try {
             userService.saveUser(req);

@@ -27,7 +27,7 @@
 
   .error-message {
     color: red;
-height:20px;
+    height:20px;
     margin-bottom: 20px;
   }
   
@@ -66,6 +66,72 @@ height:20px;
   .register-button:hover {
     background-color: #ccc; // Light gray background on hover
   }
-  
+
+  .otp-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #222; // Dark background
+    color: #fff; // White text
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    text-align: center;
+  }
+
+  .otp-popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .otp-input {
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #333; // Dark background
+    color: #fff; // White text
+    width: 100%;
+  }
+
+  .otp-submit-button {
+    padding: 10px;
+    background-color: #fff; // White background
+    color: #000; // Black text
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .otp-submit-button:hover {
+    background-color: #ccc; // Light gray background on hover
+  }
+
+  .resend-button {
+    background: none;
+    border: none;
+    color: #00f; // Blue text
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+  }
+
+  .resend-button:hover {
+    color: #0af; // Lighter blue on hover
+  }
+
+  .otp-message {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .otp-message.error {
+    color: red; // Red color for error messages
+  }
 }
 

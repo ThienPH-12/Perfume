@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { useNavigate, Link } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 import "./Header.scss";
 import Logo from "../img/logo2.png";
 import apiClient from "../api/apiClient";
@@ -9,14 +9,20 @@ import apiPaths from "../api/apiPath";
 export default function Header() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decodedToken = jwtDecode(token);
-      console.log(decodedToken);
-      console.log(token);
-      setUser(decodedToken);
+      try {
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
+        console.log(token);
+        setUser(decodedToken);
+        setIsAdmin(decodedToken.authority[1] === "1");
+      } catch (error) {
+        console.error("Invalid token:", error);
+      }
     }
   }, []);
 
@@ -42,6 +48,7 @@ export default function Header() {
 
       console.log(response.data);
       setUser(null);
+      setIsAdmin(false);
       navigate("/");
     } catch (error) {
       console.error("Logout failed", error);
@@ -65,10 +72,11 @@ export default function Header() {
         </div>
         {/* the item in the header,had an optional format when mobile user use it */}
         <div className="link-container">
-          <a href="/about">CÂU TRUYỆN THƯƠNG HIỆU</a>
-          <a href="/product">SẢN PHẨM</a>
-          <a href="/blog">BLOG</a>
-          <a href="/contact">LIÊN HỆ</a>
+          <Link to="/about">CÂU TRUYỆN THƯƠNG HIỆU</Link>
+          <Link to="/product">SẢN PHẨM</Link>
+          <Link to="/blog">BLOG</Link>
+          <Link to="/contact">LIÊN HỆ</Link>
+          {isAdmin && <Link to="/admin">Admin</Link>} {/* Show Admin link if authority=1 */}
         </div>
         <div className="auth-container">
           {user ? (

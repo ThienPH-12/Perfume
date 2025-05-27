@@ -10,9 +10,14 @@ package com.example.Perfume.jpa.repository;
  */
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.Perfume.jpa.entity.Product;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ProductRepository extends JpaRepository<Product, Long>{
+public interface ProductRepository extends JpaRepository<Product, Integer> {
+
     Product findByProductName(@Param("productName") String userName);
+
+    @Override
+    Optional<Product> findById(Integer id);
 }

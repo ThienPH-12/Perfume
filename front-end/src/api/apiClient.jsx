@@ -23,13 +23,11 @@ apiClient.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 403) {
-      localStorage.removeItem("token");
       console.log("Access denied", error);
       
     }
     if (error.response.status === 401) {
       console.log("Unauthorized", error);
-      localStorage.removeItem("token");
       window.location.reload();
     }
     return Promise.reject(error);

@@ -96,7 +96,7 @@ export default function Home() {
           />
           <div
             className="d-flex flex-column align-items-center"
-            style={{ backgroundColor: "burlywood" }}
+            style={{ backgroundColor: "rgb(250, 249, 245)" }}
           >
             <h1>SHINE AURA</h1>
             <p>
