@@ -1,33 +1,38 @@
 import React, { useState, useEffect } from "react";
 import "./AdminPage.scss";
 import ProductModal from "../../components/ProductModal";
+import ConfirmModal from "../../components/ConfirmModal";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
+import { ErrrorToastify as ErrorToastify, SuccessToastify } from "../../components/Toastify";
 
 function AdminPage() {
   const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+
+  const fetchProducts = async () => {
+    try {
+      const listProduct = await apiClient.get(apiPaths.getAllProducts);
+      const updatedProducts = await Promise.all(
+        listProduct.data.map(async (product) => {
+          const imageResponse = await apiClient.get(
+            apiPaths.getProductImageById(product.productId),
+            { responseType: "blob" }
+          );
+          const imageUrl = URL.createObjectURL(imageResponse.data);
+          return { ...product, imageUrl };
+        })
+      );
+      setProducts(updatedProducts);
+    } catch (error) {
+      ErrorToastify("Error fetching products:"+ error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const listProduct = await apiClient.get(apiPaths.getAllProducts);
-        const updatedProducts = await Promise.all(
-          listProduct.data.map(async (product) => {
-            const imageResponse = await apiClient.get(
-              apiPaths.getProductImageById(product.productId),
-              { responseType: "blob" }
-            );
-            const imageUrl = URL.createObjectURL(imageResponse.data);
-            return { ...product, imageUrl };
-          })
-        );
-        setProducts(updatedProducts);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
     fetchProducts();
   }, []);
 
@@ -41,17 +46,33 @@ function AdminPage() {
     setSelectedProduct(null);
   };
 
-  const handleProductAddedOrUpdated = () => {
-    window.location.reload();
+  const handleProductAddedOrUpdated = (message) => {
+    fetchProducts();
+    handleCloseModal();
+    SuccessToastify(message);
   };
 
-  const handleDeleteProduct = async (productId) => {
+  const handleDeleteClick = (productId) => {
+    setProductToDelete(productId);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
-      await apiClient.delete(apiPaths.deleteProduct(productId));
-      setProducts(products.filter((product) => product.productId !== productId));
+      await apiClient.delete(apiPaths.deleteProduct(productToDelete));
+      setProducts(products.filter((product) => product.productId !== productToDelete));
+      SuccessToastify("Product deleted successfully");
     } catch (error) {
-      console.error("Error deleting product:", error);
+      ErrorToastify("Error deleting product: " + error);
+    } finally {
+      setIsConfirmModalOpen(false);
+      setProductToDelete(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setIsConfirmModalOpen(false);
+    setProductToDelete(null);
   };
 
   return (
@@ -80,10 +101,10 @@ function AdminPage() {
               <td>{product.productName}</td>
               <td>{product.description}</td>
               <td>{new Date(product.expirationDate).toLocaleDateString()}</td>
-              <td>{product.createDateTime}</td>
+              <td>{new Date(product.createDateTime).toLocaleString()}</td>
               <td>
                 <button onClick={() => handleOpenModal(product)}>Edit</button>
-                <button onClick={() => handleDeleteProduct(product.productId)}>Delete</button>
+                <button onClick={() => handleDeleteClick(product.productId)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -94,6 +115,12 @@ function AdminPage() {
         onClose={handleCloseModal}
         onProductAddedOrUpdated={handleProductAddedOrUpdated}
         product={selectedProduct}
+      />
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        message="Are you sure you want to delete this product?"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
       />
     </div>
   );

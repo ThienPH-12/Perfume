@@ -1,21 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
-import "./Register.scss"; // Add this line to import the CSS file
+import { ErrrorToastify } from "../../components/Toastify";
+import OtpPopup from "../../components/OtpPopup"; // Import the new OTP popup component
+import "./Register.scss";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     gender: "",
   });
   const [otp, setOtp] = useState(""); // State to store the generated OTP
-  const userInputOtpRef = useRef(null); // Ref to store the user input OTP
   const [showOtpPopup, setShowOtpPopup] = useState(false); // State to toggle OTP popup
-  const [error, setError] = useState(""); // Error message for form submission
-  const [otpMessage, setOtpMessage] = useState({ text: "", isError: false }); // State for OTP-related messages
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -27,12 +26,18 @@ const Register = () => {
   };
 
   const validateInputs = () => {
-    if (!credentials.name.trim()) return "Tên không được để trống.";
-    if (!credentials.email.trim() || !/\S+@\S+\.\S+/.test(credentials.email))
-      return "Email không hợp lệ.";
-    if (!credentials.password.trim() || credentials.password.length < 6)
-      return "Mật khẩu phải có ít nhất 6 ký tự.";
-    if (!credentials.gender) return "Vui lòng chọn giới tính.";
+    if (!credentials.username.trim()) {
+      ErrrorToastify("Tên không được để trống.");
+    }
+    if (!credentials.email.trim() || !/\S+@\S+\.\S+/.test(credentials.email)) {
+      ErrrorToastify("Email không hợp lệ.");
+    }
+    if (!credentials.password.trim() || credentials.password.length < 6) {
+      ErrrorToastify("Mật khẩu phải có ít nhất 6 ký tự.");
+    }
+    if (!credentials.gender) {
+      ErrrorToastify("Vui lòng chọn giới tính.");
+    }
     return null;
   };
 
@@ -40,60 +45,55 @@ const Register = () => {
     e.preventDefault();
     const validationError = validateInputs();
     if (validationError) {
-      setError(validationError); // Display validation error
-      return;
+      return; // Removed setError(validationError)
     }
-
     try {
-      const response = await axios.post(apiPaths.sendOtp, credentials);
-      setOtp(response.data.otp); // Store the generated OTP in the state
+      const response = await apiClient.post(apiPaths.sendOtp, credentials);
+      console.log(response.data);
+      setOtp(response.data); // Store the generated OTP in the state
       setShowOtpPopup(true); // Show OTP popup after sending OTP
-      setOtpMessage({ text: "OTP đã được gửi đến email của bạn.", isError: false }); // Success message
-      setError(""); // Clear any previous error
     } catch (error) {
-      setError("Không thể gửi OTP. Vui lòng thử lại."); // Display error if email cannot be sent
-      console.error("Registration failed:", error);
+      ErrrorToastify("Không thể gửi OTP. Vui lòng thử lại." + error);
     }
   };
 
-  const handleOtpSubmit = async (e) => {
-    e.preventDefault();
-    if (userInputOtpRef.current.value === otp) {
+  const handleOtpSubmit = async (userInputOtp) => {
+    if (userInputOtp == otp) {
       try {
-        await axios.post(apiPaths.saveUser, credentials); // Call saveUser API
+        await apiClient.post(apiPaths.saveUser, credentials); // Call saveUser API
         navigate("/"); // Navigate after successful user registration
       } catch (error) {
-        setOtpMessage({ text: "Không thể lưu thông tin người dùng. Vui lòng thử lại.", isError: true }); // Error message
-        console.error("Failed to save user:", error);
+        ErrrorToastify("Không thể lưu thông tin người dùng. Vui lòng thử lại." + error);
       }
     } else {
-      setOtpMessage({ text: "OTP không chính xác. Vui lòng thử lại.", isError: true }); // Error message
+      ErrrorToastify("OTP không chính xác. Vui lòng thử lại.");
     }
   };
 
   const handleResendOtp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(apiPaths.sendOtp, credentials); // Use the same payload as the first submit
+      const response = await apiClient.post(apiPaths.sendOtp, credentials); // Use the same payload as the first submit
       setOtp(response.data.otp); // Update the generated OTP in the state
-      setOtpMessage({ text: "OTP đã được gửi lại đến email của bạn.", isError: false }); // Success message
     } catch (error) {
-      setOtpMessage({ text: "Không thể gửi lại OTP. Vui lòng thử lại.", isError: true }); // Error message
-      console.error("Failed to resend OTP:", error);
+      ErrrorToastify("Không thể gửi lại OTP. Vui lòng thử lại." + error);
     }
+  };
+
+  const handleCloseOtpPopup = () => {
+    setShowOtpPopup(false); // Close the OTP popup
   };
 
   return (
     <div id="Register" style={{ marginTop: "50px" }}>
       <div className="register-container">
         <h2>Đăng ký</h2>
-        <div className="error-message">{error}</div> {/* Display error */}
         <form onSubmit={handleSubmit} className="register-form">
           <input
             type="text"
-            name="name"
+            name="username"
             placeholder="Nhập tên của bạn*"
-            value={credentials.name}
+            value={credentials.username}
             onChange={handleChange}
             className="register-input"
           />
@@ -142,31 +142,12 @@ const Register = () => {
       </div>
 
       {showOtpPopup && (
-        <div className="otp-popup">
-          <div className="otp-popup-content">
-            <p>
-              OTP đã được gửi đến email {credentials.email} của bạn. Vui lòng
-              nhập OTP để tiếp tục.
-            </p>
-            <form onSubmit={handleOtpSubmit}>
-              <input
-                type="text"
-                placeholder="Nhập OTP"
-                ref={userInputOtpRef} // Use ref for user input
-                className="otp-input"
-              />
-              <button type="submit" className="otp-submit-button">
-                Xác nhận
-              </button>
-            </form>
-            <button onClick={handleResendOtp} className="resend-button">
-              Gửi lại OTP
-            </button>
-            <p className={`otp-message ${otpMessage.isError ? "error" : ""}`}>
-              {otpMessage.text}
-            </p>
-          </div>
-        </div>
+        <OtpPopup
+          email={credentials.email}
+          onSubmit={handleOtpSubmit}
+          onResend={handleResendOtp}
+          onClose={handleCloseOtpPopup} // Pass the close handler
+        />
       )}
     </div>
   );

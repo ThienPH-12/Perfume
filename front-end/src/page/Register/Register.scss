@@ -2,136 +2,69 @@
   .register-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
     padding: 20px;
-    background-color: #000; // Black background
+    background-color: #fff; // White background
     border-radius: 3px;
-    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); // White shadow
-    max-width: 400px;
-    height:450px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Black shadow
+    max-width: 800px;
+    height: 650px;
     margin: 0 auto;
+    border: 5px solid #000; // Black border
+    position: relative; // Enable positioning for child elements
   }
-  
+
   .register-form {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 80%;
   }
 
   h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #fff; // White text
+    color: #000; // Black text
   }
 
-  .error-message {
-    color: red;
-    height:20px;
-    margin-bottom: 20px;
-  }
-  
   .register-input {
     margin-bottom: 15px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #333; // Dark background
-    color: #fff; // White text
+    background-color: #fff; // White background
+    color: #000; // Black text
   }
-  
+
   .gender-container {
-    width:100px;
+    width: 100px;
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
   }
-  
+
   .gender-container label {
     display: flex;
     align-items: center;
-    color: #fff; // White text
+    color: #000; // Black text
   }
-  
+
   .register-button {
+    width: 90px;
+    height: 65px;
     padding: 10px;
-    background-color: #fff; // White background
-    color: #000; // Black text
+    background-color: #000; // Black background
+    color: #fff; // White text
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    position: absolute;
+    bottom: 20px; // Adjust as needed
+    right: 20px; // Adjust as needed
   }
-  
+
   .register-button:hover {
-    background-color: #ccc; // Light gray background on hover
-  }
-
-  .otp-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #222; // Dark background
-    color: #fff; // White text
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    width: 300px;
-    text-align: center;
-  }
-
-  .otp-popup-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .otp-input {
-    margin: 15px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #333; // Dark background
-    color: #fff; // White text
-    width: 100%;
-  }
-
-  .otp-submit-button {
-    padding: 10px;
-    background-color: #fff; // White background
-    color: #000; // Black text
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-
-  .otp-submit-button:hover {
-    background-color: #ccc; // Light gray background on hover
-  }
-
-  .resend-button {
-    background: none;
-    border: none;
-    color: #00f; // Blue text
-    cursor: pointer;
-    text-decoration: underline;
-    font-size: 14px;
-  }
-
-  .resend-button:hover {
-    color: #0af; // Lighter blue on hover
-  }
-
-  .otp-message {
-    margin-top: 10px;
-    font-size: 14px;
-  }
-
-  .otp-message.error {
-    color: red; // Red color for error messages
+    background-color: #333; // Dark gray background on hover
   }
 }
 

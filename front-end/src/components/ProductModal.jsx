@@ -4,11 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./ProductModal.scss";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+import { ErrrorToastify } from "./Toastify";
 
 function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
   const [productReq, setProductReq] = useState({
-    productId:"",
+    productId: "",
     productName: "",
     description: "",
     expirationDate: "",
@@ -41,13 +42,14 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
     e.preventDefault();
     const token = localStorage.getItem("token");
     const decodedToken = token ? jwtDecode(token) : null;
-    console.log("Decoded Token:", decodedToken.userId);
+    var message = "";
+
     if (product) {
-        setProductReq({ ...productReq, updateUserId: decodedToken.userId });
+      setProductReq({ ...productReq, updateUserId: decodedToken.userId });
     } else {
-        setProductReq({ ...productReq, createUserId: decodedToken.userId });
+      setProductReq({ ...productReq, createUserId: decodedToken.userId });
     }
-  
+
     const formData = new FormData();
     formData.append("imageFile", image);
     formData.append(
@@ -56,16 +58,18 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
     );
 
     try {
-      if (product) {    
+      if (product) {
         await apiClient.put(apiPaths.productSave, formData);
+        message = "Product updated successfully!";
       } else {
         console.log("Product Request:", productReq);
         await apiClient.post(apiPaths.productSave, formData);
+        message = "Product added successfully!";
       }
-      onProductAddedOrUpdated();
+      onProductAddedOrUpdated(message);
       onClose();
     } catch (error) {
-      console.error("Error saving product:", error);
+     ErrrorToastify("Error saving product:"+ error);
     }
   };
 

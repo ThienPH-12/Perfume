@@ -38,7 +38,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         String allowList[]={"/api/auth/login",
-                        "/api/user/register",
+                        "/api/user/sendOtp",
                         "/api/blogs",
                         "/api/blog/search/**",
                         "/api/blog/image/**"};

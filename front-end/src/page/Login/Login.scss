@@ -9,7 +9,10 @@
     max-width: 800px;
     height: 650px;
     margin: 0 auto;
+    border: 5px solid #000; // Black border
+    position: relative; // Enable positioning for child elements
   }
+
   h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -35,6 +38,7 @@
       color: #000; // Black text
     }
   }
+
   .button {
     padding: 10px;
     background-color: #000; // Black background
@@ -43,7 +47,13 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    width: 90px;
+    height: 65px;
+    position: absolute;
+    bottom: 20px; // Adjust as needed
+    right: 20px; // Adjust as needed
   }
+
   .button:hover {
     background-color: #333; // Dark gray background on hover
   }

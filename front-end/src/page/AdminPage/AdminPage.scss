@@ -80,6 +80,7 @@
     }
 
     button {
+      width:80px;
       margin: 0 5px;
       padding: 5px 10px;
       background-color: #007bff;
@@ -102,9 +103,9 @@
     }
   }
 
-  button {
+  .add-button {
     display: block;
-    width: 100%;
+    width: 200px;
     padding: 10px;
     background-color: #007bff;
     color: white;

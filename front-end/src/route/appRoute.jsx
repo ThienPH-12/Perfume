@@ -17,6 +17,7 @@ import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx"; // Import Footer
 import Product from "../page/Product/Product.jsx"; // Import Product
 import AdminPage from "../page/AdminPage/AdminPage.jsx"; // Import AdminPage
+import { ToastContainer} from 'react-toastify';
 
 function PrivateAdminRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -54,8 +55,10 @@ function AppRoute() {
             </PrivateAdminRoute>
           }
         /> {/* Restrict AdminPage route */}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/" />} />  
       </Routes>
+      <ToastContainer
+      limit={3} />
       <Footer /> {/* Add Footer */}
     </Router>
   );
