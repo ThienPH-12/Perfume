@@ -12,9 +12,9 @@ function AdminPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await apiClient.get(apiPaths.getAllProducts);
+        const listProduct = await apiClient.get(apiPaths.getAllProducts);
         const updatedProducts = await Promise.all(
-          response.data.map(async (product) => {
+          listProduct.data.map(async (product) => {
             const imageResponse = await apiClient.get(
               apiPaths.getProductImageById(product.productId),
               { responseType: "blob" }
@@ -65,9 +65,9 @@ function AdminPage() {
           <tr>
             <th>Image</th>
             <th>Name</th>
-            <th>Price</th>
             <th>Description</th>
             <th>Expiration Date</th>
+            <th>CreateDateTime</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -78,9 +78,9 @@ function AdminPage() {
                 <img src={product.imageUrl} alt={product.productName} className="product-image" />
               </td>
               <td>{product.productName}</td>
-              <td>{product.price}</td>
               <td>{product.description}</td>
               <td>{new Date(product.expirationDate).toLocaleDateString()}</td>
+              <td>{product.createDateTime}</td>
               <td>
                 <button onClick={() => handleOpenModal(product)}>Edit</button>
                 <button onClick={() => handleDeleteProduct(product.productId)}>Delete</button>

@@ -4,7 +4,7 @@
   z-index: 1000; // Ensure header is on top of any card
   color: azure;
   .header-container {
-    height: 55px;
+    height: 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,17 +28,45 @@
       width: 30%;
       display: flex;
       justify-content: space-between;
-      
+    }
+    .search-container {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-radius: 5px;
+      padding: 5px 10px;
+      width: 15%;
+      .search-icon {
+        font-size: 1.2rem;
+        color: #333;
+        margin-right: 5px;
+      }
+      .search-input {
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 1rem;
+      }
     }
     .auth-container {
-      width: 10%;
+      width: 10%; /* Adjusted width to accommodate the cart icon */
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      .cart-icon {
+        font-size: 1.5rem;
+        color: azure;
+        cursor: pointer;
+        margin-left: 20px;
+        &:hover {
+          color: aliceblue;
+        }
+      }
     }
   }
   .buttonCus{
     height:50px;
-    width:120px;
+    width:75px;
     border-radius: 5px;
     text-align: center;
     justify-self:flex-end;
@@ -51,8 +79,8 @@
     }
   }
   .buttonCus:hover{
-    height:45x;
-    width:120px;
+    height:51x;
+    width:76px;
     border-radius: 5px;
     text-align: center;
     background-color: #333;

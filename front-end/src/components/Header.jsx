@@ -5,6 +5,7 @@ import "./Header.scss";
 import Logo from "../img/logo2.png";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
+import {Bag,Search} from "react-bootstrap-icons";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -78,6 +79,10 @@ export default function Header() {
           <Link to="/contact">LIÊN HỆ</Link>
           {isAdmin && <Link to="/admin">Admin</Link>} {/* Show Admin link if authority=1 */}
         </div>
+        <div className="search-container">
+          <Search className="search-icon" />
+          <input type="text" placeholder="Tìm kiếm..." className="search-input" />
+        </div>
         <div className="auth-container">
           {user ? (
             <>
@@ -99,6 +104,7 @@ export default function Header() {
               </button>
             </>
           )}
+          <Bag className="cart-icon" />
         </div>
       </div>
     </div>

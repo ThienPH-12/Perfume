@@ -30,9 +30,6 @@ public class Product extends AbstractEntity {
     @Column(name = "ProductName")
     private String productName;
 
-    @Column(name = "Price")
-    private BigDecimal price;;
-
     @Column(name = "Description")
     private String description;
 
@@ -53,10 +50,9 @@ public class Product extends AbstractEntity {
 
     // Add other fields, getters and setters
 
-    public Product(int productId, String productName, BigDecimal price, String description, String imageName, String imageType, byte[] imageData, Date expirationDate) {
+    public Product(int productId, String productName, String description, String imageName, String imageType, byte[] imageData, Date expirationDate) {
         this.productId = productId;
         this.productName = productName;
-        this.price = price;
         this.description = description;
         this.imageName = imageName;
         this.imageType = imageType;
@@ -80,14 +76,6 @@ public class Product extends AbstractEntity {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public String getDescription() {

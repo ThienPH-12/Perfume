@@ -3,17 +3,17 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #000; // Black background
+    background-color: #fff; // White background
     border-radius: 3px;
-    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); // White shadow
-    max-width: 400px;
-    height: 450px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Black shadow
+    max-width: 800px;
+    height: 650px;
     margin: 0 auto;
   }
   h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #fff; // White text
+    color: #000; // Black text
   }
 
   .error-message {
@@ -31,20 +31,20 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      background-color: #333; // Dark background
-      color: #fff; // White text
+      background-color: #fff; // White background
+      color: #000; // Black text
     }
   }
   .button {
     padding: 10px;
-    background-color: #fff; // White background
-    color: #000; // Black text
+    background-color: #000; // Black background
+    color: #fff; // White text
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
   }
   .button:hover {
-    background-color: #ccc; // Light gray background on hover
+    background-color: #333; // Dark gray background on hover
   }
 }

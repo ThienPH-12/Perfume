@@ -12,14 +12,21 @@ import java.util.Date;
  * @author badao
  */
 public class ProductReq {
-
+    private int productId;
     private String productName;
-    private BigDecimal price;
     private String description;
     private Date expirationDate;
     private String createUserId;
     private Date createDateTime;
     private String updateUserId;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
 
     public String getProductName() {
         return productName;
@@ -28,15 +35,6 @@ public class ProductReq {
     public void setProductName(String productName) {
         this.productName = productName;
     }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
 
     public String getDescription() {
         return description;

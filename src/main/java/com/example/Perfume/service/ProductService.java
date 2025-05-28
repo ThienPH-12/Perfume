@@ -24,7 +24,6 @@ public class ProductService {
     public Product addProduct(ProductReq productReq, MultipartFile imageFile) throws IOException {
         Product product = new Product();
         product.setProductName(productReq.getProductName());
-        product.setPrice(productReq.getPrice());
         product.setDescription(productReq.getDescription());
         product.setImageName(imageFile.getName());
         product.setImageData(imageFile.getBytes());
@@ -44,9 +43,9 @@ public class ProductService {
     }
 
     public Product updateProduct(ProductReq productReq, MultipartFile imageFile) throws IOException {
-           Product product = new Product();
+        Product product = new Product();
+        product.setProductId(productReq.getProductId());
         product.setProductName(productReq.getProductName());
-        product.setPrice(productReq.getPrice());
         product.setDescription(productReq.getDescription());
         product.setImageName(imageFile.getName());
         product.setImageData(imageFile.getBytes());

@@ -8,8 +8,8 @@ import {jwtDecode} from "jwt-decode";
 
 function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
   const [productReq, setProductReq] = useState({
+    productId:"",
     productName: "",
-    price: "",
     description: "",
     expirationDate: "",
     createUserId: "",
@@ -21,23 +21,13 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
   useEffect(() => {
     if (product) {
       setProductReq({
+        productId: product.productId,
         productName: product.productName,
-        price: product.price,
         description: product.description,
         expirationDate: product.expirationDate.split("T")[0],
         createUserId: product.createUserId,
         createDateTime: product.createDateTime,
         updateUserId: product.updateUserId,
-      });
-    } else {
-      setProductReq({
-        productName: "",
-        price: "",
-        description: "",
-        expirationDate: "",
-        createUserId: "",
-        createDateTime: "",
-        updateUserId: "",
       });
     }
   }, [product]);
@@ -93,16 +83,6 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
                 type="text"
                 name="productName"
                 value={productReq.productName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formPrice">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                name="price"
-                value={productReq.price}
                 onChange={handleChange}
                 required
               />
