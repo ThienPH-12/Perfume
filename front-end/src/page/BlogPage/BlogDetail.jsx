@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
-import "./Blog.scss"; // Import the Blog styles
+import { ErrorToastify } from "../../components/Toastify"; // Import Toastify
+import "./BlogDetail.scss"; // Update the Blog styles import
 
-function Blog() {
+function BlogDetail() { // Rename component to BlogDetail
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -22,16 +22,12 @@ function Blog() {
 
         setBlog({ ...blogData, imageUrl });
       } catch (error) {
-        setError(error.message);
+        ErrorToastify(error.message); // Display error using Toastify
       }
     };
 
     fetchBlog();
   }, [id]);
-
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
 
   if (!blog) {
     return <div>Loading...</div>;
@@ -59,4 +55,4 @@ function Blog() {
   );
 }
 
-export default Blog;
+export default BlogDetail; // Update export name

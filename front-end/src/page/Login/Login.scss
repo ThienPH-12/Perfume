@@ -4,18 +4,18 @@
     flex-direction: column;
     padding: 20px;
     background-color: #fff; // White background
-    border-radius: 3px;
+    border-radius: 1px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Black shadow
-    max-width: 800px;
-    height: 650px;
+    max-width: 600px;
+    height: 500px;
     margin: 0 auto;
-    border: 5px solid #000; // Black border
+    border: 2px solid #000; // Black border
     position: relative; // Enable positioning for child elements
   }
 
-  h2 {
+  h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin: 30px;
     color: #000; // Black text
   }
 
@@ -25,12 +25,17 @@
     align-self: center;
     margin-bottom: 20px;
   }
-
+.inputForm{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto; // Center the form
+  }
   .input-container {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
 
     .input {
-      width: 360px;
+      width: 85%;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
@@ -47,7 +52,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    width: 90px;
+    width: 100px;
     height: 65px;
     position: absolute;
     bottom: 20px; // Adjust as needed

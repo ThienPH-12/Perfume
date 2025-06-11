@@ -17,8 +17,9 @@ public class ProductReq {
     private String description;
     private Date expirationDate;
     private String createUserId;
-    private Date createDateTime;
     private String updateUserId;
+    private int categoryId;
+    private String potentialCus;
 
     public int getProductId() {
         return productId;
@@ -60,20 +61,28 @@ public class ProductReq {
         this.createUserId = createUserId;
     }
 
-    public Date getCreateDateTime() {
-        return createDateTime;
-    }
-
-    public void setCreateDateTime(Date createDateTime) {
-        this.createDateTime = createDateTime;
-    }
-
     public String getUpdateUserId() {
         return updateUserId;
     }
 
     public void setUpdateUserId(String updateUserId) {
         this.updateUserId = updateUserId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getPotentialCus() {
+        return potentialCus;
+    }
+
+    public void setPotentialCus(String potentialCus) {
+        this.potentialCus = potentialCus;
     }
 
 }

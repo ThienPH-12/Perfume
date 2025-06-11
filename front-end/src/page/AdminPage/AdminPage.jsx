@@ -1,127 +1,72 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef } from "react";
+import { Link, Outlet } from "react-router-dom";
 import "./AdminPage.scss";
-import ProductModal from "../../components/ProductModal";
-import ConfirmModal from "../../components/ConfirmModal";
-import apiClient from "../../api/apiClient";
-import apiPaths from "../../api/apiPath";
-import { ErrrorToastify as ErrorToastify, SuccessToastify } from "../../components/Toastify";
+import { PcDisplayHorizontal, CaretDown, CaretLeft } from "react-bootstrap-icons";
 
 function AdminPage() {
-  const [products, setProducts] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [productToDelete, setProductToDelete] = useState(null);
+  const sidebarRef = useRef(null);
+  const toggleButtonRef = useRef(null);
 
-  const fetchProducts = async () => {
-    try {
-      const listProduct = await apiClient.get(apiPaths.getAllProducts);
-      const updatedProducts = await Promise.all(
-        listProduct.data.map(async (product) => {
-          const imageResponse = await apiClient.get(
-            apiPaths.getProductImageById(product.productId),
-            { responseType: "blob" }
-          );
-          const imageUrl = URL.createObjectURL(imageResponse.data);
-          return { ...product, imageUrl };
-        })
-      );
-      setProducts(updatedProducts);
-    } catch (error) {
-      ErrorToastify("Error fetching products:"+ error);
+  function toggleSidebar() {
+    const sidebar = sidebarRef.current;
+    const toggleButton = toggleButtonRef.current;
+    sidebar.classList.toggle("close");
+    toggleButton.classList.toggle("rotate");
+    closeAllSubMenus();
+  }
+
+  function toggleSubMenu(button) {
+    const sidebar = sidebarRef.current;
+    if (!button.nextElementSibling.classList.contains('show')) {
+      closeAllSubMenus();
     }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const handleOpenModal = (product = null) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedProduct(null);
-  };
-
-  const handleProductAddedOrUpdated = (message) => {
-    fetchProducts();
-    handleCloseModal();
-    SuccessToastify(message);
-  };
-
-  const handleDeleteClick = (productId) => {
-    setProductToDelete(productId);
-    setIsConfirmModalOpen(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    try {
-      await apiClient.delete(apiPaths.deleteProduct(productToDelete));
-      setProducts(products.filter((product) => product.productId !== productToDelete));
-      SuccessToastify("Product deleted successfully");
-    } catch (error) {
-      ErrorToastify("Error deleting product: " + error);
-    } finally {
-      setIsConfirmModalOpen(false);
-      setProductToDelete(null);
+    button.nextElementSibling.classList.toggle('show');
+    button.classList.toggle('rotate');
+    if (sidebar.classList.contains('close')) {
+      sidebar.classList.toggle('close');
+      toggleButtonRef.current.classList.toggle('rotate');
     }
-  };
+  }
 
-  const handleCancelDelete = () => {
-    setIsConfirmModalOpen(false);
-    setProductToDelete(null);
-  };
+  function closeAllSubMenus() {
+    const sidebar = sidebarRef.current;
+    Array.from(sidebar.getElementsByClassName('show')).forEach(ul => {
+      ul.classList.remove('show');
+      ul.previousElementSibling.classList.remove('rotate');
+    });
+  }
 
   return (
-    <div className="admin-page">
-      <h1>Admin Page</h1>
-      <button onClick={() => handleOpenModal()} className="add-button">
-        Add Product
-      </button>
-      <table className="product-table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Expiration Date</th>
-            <th>CreateDateTime</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.productId}>
-              <td>
-                <img src={product.imageUrl} alt={product.productName} className="product-image" />
-              </td>
-              <td>{product.productName}</td>
-              <td>{product.description}</td>
-              <td>{new Date(product.expirationDate).toLocaleDateString()}</td>
-              <td>{new Date(product.createDateTime).toLocaleString()}</td>
-              <td>
-                <button onClick={() => handleOpenModal(product)}>Edit</button>
-                <button onClick={() => handleDeleteClick(product.productId)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <ProductModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onProductAddedOrUpdated={handleProductAddedOrUpdated}
-        product={selectedProduct}
-      />
-      <ConfirmModal
-        isOpen={isConfirmModalOpen}
-        message="Are you sure you want to delete this product?"
-        onConfirm={handleConfirmDelete}
-        onCancel={handleCancelDelete}
-      />
+    <div id="admin-page">
+      <nav className="sidebar" ref={sidebarRef}>
+        <ul>
+          <li>
+            <span className="logo"> AdminPanel</span>
+            <button onClick={toggleSidebar} className="toggle-btn" ref={toggleButtonRef}>
+              <CaretLeft style={{ height: 24 }} />
+            </button>
+          </li>
+          <li>
+            <button onClick={(e) => toggleSubMenu(e.currentTarget)} className="dropdown-btn">
+              <PcDisplayHorizontal style={{ height: 24 }} />
+              <span>Item</span>
+              <CaretDown style={{ height: 24 }} />
+            </button>
+            <ul className="sub-menu">
+              <div>
+                <li> <Link to="/admin/categories">Categories</Link> {/* Full path: /admin/categories */}</li>
+                <li> <Link to="/admin/capacities">Capacities</Link> {/* Full path: /admin/capacities */}</li>
+                <li> <Link to="/admin/products">Products</Link> {/* Full path: /admin/products */}</li>
+                <li> <Link to="/admin/mix-products">Mix Products</Link> {/* Updated from sell-products */}</li>
+                <li> <Link to="/admin/prices">Prices</Link> {/* Full path: /admin/prices */}</li>
+              </div>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div className="content">
+        <Outlet />
+      </div>
     </div>
   );
 }

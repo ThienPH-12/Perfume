@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import com.example.Perfume.jpa.entity.Token;
 import com.example.Perfume.jpa.repository.TokenRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
@@ -60,23 +61,25 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                     // Validate the token against the database
                     Token tokenEntity = tokenRepository.findByToken(jwt);
                     if (tokenEntity != null && jwtUtil.isTokenValid(jwt, userDetails.getUsername())) {
-                        if (jwtUtil.isTokenExpired(jwt)) {
-                        } else {
-                            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    userDetails.getAuthorities());
-                            authToken.setDetails(
-                                    new WebAuthenticationDetailsSource().buildDetails(request));
-                            SecurityContextHolder.getContext().setAuthentication(authToken);
-                        }
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities());
+                        authToken.setDetails(
+                                new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
                 }
 
+            } catch (ExpiredJwtException ex) {
+                logger.error("JWT token has expired", ex);
+                if (jwt != null) {
+                    jwtUtil.invalidateToken(jwt);
+                }
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is expired");
             } catch (Exception ex) {
                 logger.error("Error occurred during JWT token validation", ex);
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                return;
             }
         }
         // Proceed with the next filter in the chain

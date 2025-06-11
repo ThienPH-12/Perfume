@@ -1,88 +1,348 @@
-.admin-page {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+// General Variables
+:root {
+  --base-clr: #2a2b38; // Updated to a lighter shade
+  --line-clr: #42434a;
+  --hover-clr: #222533;
+  --text-clr: #e6e6ef;
+  --accent-clr: #5e63ff;
+  --secondary-text-clr: #b0b3c1;
+}
 
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #333;
-  }
+// Admin Page Layout
+#admin-page {
+  display: flex;
 
-  .form-group {
-    margin-bottom: 15px;
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    textarea {
-      resize: vertical;
-    }
-  }
-
-  .add-button {
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+  .dropdown-btn {
+    width: 100%;
+    text-align: left;
+    background: none;
     border: none;
-    border-radius: 4px;
+    font: inherit;
     cursor: pointer;
-    font-size: 1rem;
+  }
+  .dropdown-btn svg {
+    transition: 200ms ease;
+  }
+  .rotate svg:last-child {
+    rotate: 180deg;
+  }
+  .toggle-btn {
+    margin-left: auto;
+    padding: 1em;
+    border: none;
+    border-radius: 0.5em;
+    background: none;
+    cursor: pointer;
+
+    svg {
+      transition: rotate 150ms ease;
+    }
 
     &:hover {
-      background-color: #0056b3;
+      background-color: var(--hover-clr);
     }
   }
+  // Sidebar Styling
+  .sidebar {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 250px;
+    padding: 5px 1em;
+    background-color: var(--base-clr);
+    border-right: 1px solid var(--line-clr);
+    position: sticky;
+    top: 0;
+    align-self: start;
+    transition: 300ms ease-in-out;
+    overflow: hidden;
+    text-wrap: nowrap;
 
-  .product-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    &.close {
+      padding: 5px;
+      width: 60px;
+    }
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li:first-child {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 16px;
+
+        .logo {
+          font-weight: 600;
+        }
+      }
+
+      li.active a {
+        color: var(--accent-clr);
+
+        svg {
+          fill: var(--accent-clr);
+        }
+      }
+
+      li {
+        margin-bottom: 10px;
+        a {
+          text-decoration: none;
+
+          &:hover {
+            background-color: var(--hover-clr);
+          }
+        }
+      }
+    }
+    a,
+    .dropdown-btn,
+    .logo {
+      border-radius: 0.5em;
+      padding: 0.85em;
+      text-decoration: none;
+      color: var(--text-clr);
+      display: flex;
+      align-items: center;
+      gap: 1em;
+    }
+ 
+    svg {
+      flex-shrink: 0;
+      fill: var(--text-clr);
+    }
+    a span,
+    .dropdown-btn span {
+      flex-grow: 1;
+    }
+    a:hover,
+    .dropdown-btn:hover {
+      background-color: var(--hover-clr);
+    }
+    .sub-menu {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: 300ms ease-in-out;
+
+      > div {
+        overflow: hidden;
+      }
+      &.show {
+        grid-template-rows: 1fr;
+      }
+    }
+   
+    .sub-menu a {
+      padding-left: 2em;
+    }
+
+  }
+
+  // Content Area Styling
+  .content {
+    flex: 1;
+    padding: 20px;
+
+    // Page Title
+    h1 {
       text-align: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      color: #333;
     }
 
-    th {
-      background-color: #f4f4f4;
-      font-weight: bold;
+    // Form Group Styling
+    .form-group {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      textarea {
+        resize: vertical;
+      }
     }
 
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
+    // Product Management Styling
+    .productCrud {
+      // Styling for ProductManage page
+      margin-bottom: 40px;
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #333;
+      }
+
+      .add-button {
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+          border: 1px solid #ddd;
+          padding: 10px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f4f4f4;
+          font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+      }
     }
 
-    tr:hover {
-      background-color: #f1f1f1;
+    // Category Management Styling
+    .categoryCrud {
+      // Styling for CategoryManage page
+      margin-bottom: 40px;
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #333;
+      }
+
+      .add-button {
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+          border: 1px solid #ddd;
+          padding: 10px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f4f4f4;
+          font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+      }
     }
 
-    .product-image {
-      max-width: 100px;
-      max-height: 100px;
-      object-fit: cover;
-      border-radius: 4px;
+    // Capacity Management Styling
+    .capacityCrud {
+      // Styling for CapacityManage page
+      margin-bottom: 40px;
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #333;
+      }
+
+      .add-button {
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+          border: 1px solid #ddd;
+          padding: 10px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f4f4f4;
+          font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+      }
     }
 
-    button {
-      width:80px;
-      margin: 0 5px;
-      padding: 5px 10px;
+    // Sell Product Management Styling
+    .sellProductCrud {
+      // Styling for SellProductManage page
+      margin-bottom: 40px;
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #333;
+      }
+
+      .add-button {
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+          border: 1px solid #ddd;
+          padding: 10px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f4f4f4;
+          font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+      }
+    }
+
+    // Add Button Styling
+    .add-button {
+      display: block;
+      width: 200px;
+      padding: 10px;
       background-color: #007bff;
       color: white;
       border: none;
@@ -92,29 +352,6 @@
       &:hover {
         background-color: #0056b3;
       }
-
-      &:last-child {
-        background-color: #dc3545;
-
-        &:hover {
-          background-color: #a71d2a;
-        }
-      }
-    }
-  }
-
-  .add-button {
-    display: block;
-    width: 200px;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #0056b3;
     }
   }
 }

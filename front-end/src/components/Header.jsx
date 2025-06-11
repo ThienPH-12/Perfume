@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import "./Header.scss";
 import Logo from "../img/logo2.png";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
-import {Bag,Search} from "react-bootstrap-icons";
+import { Bag, Search } from "react-bootstrap-icons";
+import { CartContext } from "../utils/CartContext";
 
 export default function Header() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const { cartCount } = useContext(CartContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
-        console.log(token);
         setUser(decodedToken);
         setIsAdmin(decodedToken.authority[1] === "1");
       } catch (error) {
@@ -35,7 +35,7 @@ export default function Header() {
       return;
     }
     try {
-      const response = await apiClient.post(
+      await apiClient.post(
         apiPaths.logout,
         { token },
         {
@@ -47,7 +47,6 @@ export default function Header() {
       delete apiClient.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
 
-      console.log(response.data);
       setUser(null);
       setIsAdmin(false);
       navigate("/");
@@ -58,7 +57,6 @@ export default function Header() {
   };
 
   return (
-    //the header,can style all item in Header.scss
     <div id="Header">
       <div className="header-container">
         <div id="logo" className="flex-col logo">
@@ -71,13 +69,13 @@ export default function Header() {
             />
           </a>
         </div>
-        {/* the item in the header,had an optional format when mobile user use it */}
         <div className="link-container">
-          <Link to="/about">CÂU TRUYỆN THƯƠNG HIỆU</Link>
+          <Link to="/about">CÂU CHUYỆN THƯƠNG HIỆU</Link>
           <Link to="/product">SẢN PHẨM</Link>
           <Link to="/blog">BLOG</Link>
           <Link to="/contact">LIÊN HỆ</Link>
-          {isAdmin && <Link to="/admin">Admin</Link>} {/* Show Admin link if authority=1 */}
+          <Link to="/mix-product">MIX SẢN PHẨM</Link>
+          {isAdmin && <Link to="/admin">Admin</Link>}
         </div>
         <div className="search-container">
           <Search className="search-icon" />
@@ -104,7 +102,12 @@ export default function Header() {
               </button>
             </>
           )}
-          <Bag className="cart-icon" />
+          <Link to="/cart">
+            <div className="cart-icon-container">
+              <Bag className="cart-icon" />
+              <span className="cart-count">{cartCount}</span>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

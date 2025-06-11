@@ -1,0 +1,120 @@
+#Product {
+  .product-page {
+    padding: 20px;
+    h1 {
+      font-weight: bold;
+      text-align: center;
+      padding: 50px;
+    }
+    .title {
+      font-weight: bold;
+      width: fit-content;
+      margin: 0 auto;
+      font-size: 1.5rem;
+      padding: 5px;
+      background-color: black;
+      color: white;
+      border-radius: 5px;
+    }
+  }
+
+  .product-container {
+    max-width: 1210px;
+    padding-top: 30px;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .category-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding: 15px;
+  }
+  .catHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .category-box {
+    position: relative;
+    margin-bottom: 15px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+
+  .category-name {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 5px;
+    text-align: start;
+  }
+
+  .category-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 30px;
+  }
+
+  @media screen and (min-width: 550px) {
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+      width: 100%;
+      max-width: 100%;
+      -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+      position: relative;
+      margin: 0;
+      padding: 0 15px 30px;
+    }
+  }
+  @media screen and (min-width: 550px) {
+    .product-card {
+      width: calc(32% - 10px);
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      text-align: center;
+      background-color: #f8fbfc;
+      box-shadow: 0 15px 4px rgba(0, 0, 0, 0.1);
+      height: 30rem;
+      max-width: 32%;
+      -ms-flex-preferred-size: 32%;
+      flex-basis: 32%;
+      .product-image {
+        width: 90%; /* Fixed width */
+        height: 26rem; /* Fixed height */
+        object-fit: cover;
+        border-radius: 16px;
+        padding: 10px;
+      }
+    }
+  }
+
+  .product-name {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+
+  .product-price {
+    color: #f00;
+    font-weight: bold;
+  }
+
+  .product-rating {
+    color: #888;
+  }
+}

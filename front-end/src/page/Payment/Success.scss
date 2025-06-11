@@ -1,0 +1,27 @@
+#Success {
+  .main-box {
+    background-color: #e8f5e9;
+    border: 1px solid #4caf50;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .payment-title {
+    color: #4caf50;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  a#return-page-btn {
+    color: #ffffff;
+    background-color: #4caf50;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  a#return-page-btn:hover {
+    background-color: #388e3c;
+  }
+}

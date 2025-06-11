@@ -2,36 +2,38 @@ import React, { useEffect, useState } from "react";
 import AddBlog from "../../components/AddBlog";
 import "./BlogPage.scss"; // Import the BlogPage styles
 import apiClient from "../../api/apiClient";
-import { Toast } from "react-bootstrap";
 import apiPaths from "../../api/apiPath";
 import { Link } from "react-router-dom";
+import { ErrorToastify, SuccessToastify } from "../../components/Toastify"; // Import Toastify
 
 function BlogPage() {
   const [data, setData] = useState([]);
-  const [error, setError] = useState("");
   const [blogs, setBlogs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem("token");
-  const [showToast, setShowToast] = useState(false);
 
-  const handleAddBlog = (newBlog) => {
-    window.location.reload();
-    setShowToast(true);
+  const fetchBlogs = async () => {
+    try {
+      const response = await apiClient.get(apiPaths.blogs);
+      setData(response.data);
+    } catch (error) {
+      ErrorToastify(error.message); // Display error using Toastify
+    }
+  };
+
+  const handleAddBlog = async (newBlog) => {
+    try {
+      SuccessToastify("Thêm Blog thành công!"); // Display success toast
+      await fetchBlogs(); // Refresh blog list
+    } catch (error) {
+      ErrorToastify(error.message); // Display error using Toastify
+    }
   };
 
   const [isDataFetched, setIsDataFetched] = useState(false);
   useEffect(() => {
-    const refreshData = async () => {
-      try {
-        const response = await apiClient.get(apiPaths.blogs);
-        setData(response.data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
     if (!isDataFetched) {
-      refreshData();
+      fetchBlogs();
       setIsDataFetched(true);
     }
   }, [isDataFetched]);
@@ -78,8 +80,7 @@ function BlogPage() {
   return (
     <div id="BlogPage">
       <div className="blog-page">
-        <h1 className="blog-page__title">Trang Blog</h1>
-        <div className="error-message">{error}</div>
+        <h1 className="blog-page__title">Blog</h1>
         {token && (
           <button onClick={handleOpenModal} className="add-button">
             Thêm mới Blog
@@ -140,18 +141,6 @@ function BlogPage() {
           </div>
         </div>
       </div>
-      <Toast
-        onClose={() => setShowToast(false)}
-        show={showToast}
-        delay={3000}
-        autohide
-        className="toast"
-      >
-        <Toast.Header>
-          <strong className="mr-auto">Thành công</strong>
-        </Toast.Header>
-        <Toast.Body>Thêm Blog thành công!</Toast.Body>
-      </Toast>
     </div>
   );
 }

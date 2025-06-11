@@ -1,6 +1,7 @@
 package com.example.Perfume.api.controller;
 
 import com.example.Perfume.api.bean.req.ProductReq;
+import com.example.Perfume.api.bean.req.CapacityReq;
 import com.example.Perfume.jpa.entity.Product;
 import com.example.Perfume.jpa.entity.Capacity;
 import com.example.Perfume.service.ProductService;
@@ -33,6 +34,16 @@ public class ProductController {
     public ResponseEntity<?> getAllProducts() {
         try {
             List<Product> products = productService.getAllProducts();
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/products/category/{categoryId}")
+    public ResponseEntity<?> getProductsByCategory(@PathVariable int categoryId) {
+        try {
+            List<Product> products = productService.getProductsByCategory(categoryId);
             return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -78,9 +89,9 @@ public class ProductController {
     }
 
     @PostMapping("/capacity")
-    public ResponseEntity<?> addCapacity(@RequestBody Capacity capacity) {
+    public ResponseEntity<?> addCapacity(@RequestBody CapacityReq capacityReq) {
         try {
-            Capacity savedCapacity = productService.addCapacity(capacity);
+            Capacity savedCapacity = productService.addCapacity(capacityReq);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedCapacity);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -88,9 +99,9 @@ public class ProductController {
     }
 
     @PutMapping("/capacity")
-    public ResponseEntity<?> updateCapacity(@RequestBody Capacity capacity) {
+    public ResponseEntity<?> updateCapacity(@RequestBody CapacityReq capacityReq) {
         try {
-            Capacity updatedCapacity = productService.updateCapacity(capacity);
+            Capacity updatedCapacity = productService.updateCapacity(capacityReq);
             return ResponseEntity.ok(updatedCapacity);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

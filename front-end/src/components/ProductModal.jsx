@@ -5,7 +5,7 @@ import "./ProductModal.scss";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
 import { jwtDecode } from "jwt-decode";
-import { ErrrorToastify } from "./Toastify";
+import { ErrorToastify } from "./Toastify";
 
 function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
   const [productReq, setProductReq] = useState({
@@ -14,10 +14,32 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
     description: "",
     expirationDate: "",
     createUserId: "",
-    createDateTime: "",
     updateUserId: "",
+    categoryId: "",
+    potentialCus: "", // New field
   });
   const [image, setImage] = useState(null);
+  const [categories, setCategories] = useState([]); // State for categories
+
+  const clearForm = () => {
+    setProductReq({
+      productId: "",
+      productName: "",
+      description: "",
+      expirationDate: "",
+      createUserId: "",
+      updateUserId: "",
+      categoryId: "",
+      potentialCus: "",
+    });
+    setImage(null);
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      clearForm();
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (product) {
@@ -27,11 +49,24 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
         description: product.description,
         expirationDate: product.expirationDate.split("T")[0],
         createUserId: product.createUserId,
-        createDateTime: product.createDateTime,
         updateUserId: product.updateUserId,
+        categoryId: product.categoryId || "",
+        potentialCus: product.potentialCus || "", // Populate potentialCus if available
       });
-    }
+    } 
   }, [product]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await apiClient.get(apiPaths.getAllCategories);
+        setCategories(response.data);
+      } catch (error) {
+        ErrorToastify("Error fetching categories: " + error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,8 +103,9 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
       }
       onProductAddedOrUpdated(message);
       onClose();
+      clearForm();
     } catch (error) {
-     ErrrorToastify("Error saving product:"+ error);
+     ErrorToastify("Error saving product:"+ error);
     }
   };
 
@@ -86,10 +122,28 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
               <Form.Control
                 type="text"
                 name="productName"
+                MaxLength={50}
                 value={productReq.productName}
                 onChange={handleChange}
                 required
               />
+            </Form.Group>
+            <Form.Group controlId="formCategoryId">
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                as="select"
+                name="categoryId"
+                value={productReq.categoryId}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category.categoryId} value={category.categoryId}>
+                    {category.category}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group controlId="formDescription">
               <Form.Label>Description</Form.Label>
@@ -97,6 +151,7 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
                 as="textarea"
                 rows={3}
                 name="description"
+                MaxLength={200}
                 value={productReq.description}
                 onChange={handleChange}
                 required
@@ -108,6 +163,16 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
                 type="date"
                 name="expirationDate"
                 value={productReq.expirationDate}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formPotentialCus">
+              <Form.Label>Potential Customer</Form.Label>
+              <Form.Control
+                type="text"
+                name="potentialCus"
+                value={productReq.potentialCus}
                 onChange={handleChange}
                 required
               />

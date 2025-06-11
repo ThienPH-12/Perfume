@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -30,6 +29,9 @@ public class Product extends AbstractEntity {
     @Column(name = "ProductName")
     private String productName;
 
+    @Column(name = "CategoryId")
+    private int categoryId;
+
     @Column(name = "Description")
     private String description;
 
@@ -45,14 +47,18 @@ public class Product extends AbstractEntity {
     @Column(name = "ExpirationDate")
     private Date expirationDate;
 
+    @Column(name = "PotentialCus")
+    private String potentialCus;
+
     public Product() {
     }
 
     // Add other fields, getters and setters
 
-    public Product(int productId, String productName, String description, String imageName, String imageType, byte[] imageData, Date expirationDate) {
+    public Product(int productId, String productName, int categoryId, String description, String imageName, String imageType, byte[] imageData, Date expirationDate) {
         this.productId = productId;
         this.productName = productName;
+        this.categoryId = categoryId;
         this.description = description;
         this.imageName = imageName;
         this.imageType = imageType;
@@ -60,7 +66,17 @@ public class Product extends AbstractEntity {
         this.expirationDate = expirationDate;
     }
 
-
+    public Product(int productId, String productName, int categoryId, String description, String imageName, String imageType, byte[] imageData, Date expirationDate, String potentialCus) {
+        this.productId = productId;
+        this.productName = productName;
+        this.categoryId = categoryId;
+        this.description = description;
+        this.imageName = imageName;
+        this.imageType = imageType;
+        this.imageData = imageData;
+        this.expirationDate = expirationDate;
+        this.potentialCus = potentialCus;
+    }
 
     public int getProductId() {
         return productId;
@@ -78,6 +94,14 @@ public class Product extends AbstractEntity {
         this.productName = productName;
     }
 
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -85,7 +109,6 @@ public class Product extends AbstractEntity {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public Date getExpirationDate() {
         return expirationDate;
@@ -117,6 +140,14 @@ public class Product extends AbstractEntity {
 
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
+    }
+
+    public String getPotentialCus() {
+        return potentialCus;
+    }
+
+    public void setPotentialCus(String potentialCus) {
+        this.potentialCus = potentialCus;
     }
 
 }

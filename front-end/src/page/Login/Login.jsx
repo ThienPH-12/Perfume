@@ -49,9 +49,9 @@ const Login = () => {
   return (
     <div id="Login" className="d-flex" style={{ marginTop: "50px" }}>
       <div className="container">
-        <h2>Đăng nhập</h2>
+        <h1>Đăng nhập</h1>
         <div className="error-message">{error}</div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="inputForm">
           <div className="input-container">
             <input className="input"
               type="text"

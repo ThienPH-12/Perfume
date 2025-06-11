@@ -37,17 +37,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String allowList[]={"/api/auth/login",
-                        "/api/user/sendOtp",
-                        "/api/blogs",
-                        "/api/blog/search/**",
-                        "/api/blog/image/**"};
+        String allowList[] = {"/api/auth/login",
+            "/api/user/sendOtp",
+            "/api/blogs",
+            "/api/categories",
+            "/api/products",
+            "/api/sellProducts",
+            "/api/price/search",
+            "/api/product/search/**",
+            "/api/product/image/**",
+            "/api/blog/search/**",
+            "/api/blog/image/**",
+            "/api/price/list/**",
+            "/api/createPayment",
+            "/api/order/**"
+           };
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors().and()
                 .authorizeHttpRequests(api -> api
                 .requestMatchers(allowList).permitAll() // Allow access to /api/auth/login and /api/user/register
                 .requestMatchers("/api/admin").hasAnyAuthority("1")
-                 .anyRequest().authenticated()
+                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ).authenticationProvider(authenticationProvider()).addFilterBefore(

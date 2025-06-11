@@ -7,8 +7,8 @@
     background-color: #fff; // White background
     border-radius: 3px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Black shadow
-    max-width: 800px;
-    height: 650px;
+    max-width: 600px;
+    height: 500px;
     margin: 0 auto;
     border: 5px solid #000; // Black border
     position: relative; // Enable positioning for child elements
@@ -18,16 +18,18 @@
     display: flex;
     flex-direction: column;
     width: 80%;
+    margin: 0 auto;
   }
 
-  h2 {
+  h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin: 30px;
     color: #000; // Black text
   }
 
   .register-input {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+    width: 85%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -49,7 +51,7 @@
   }
 
   .register-button {
-    width: 90px;
+    width: 100px;
     height: 65px;
     padding: 10px;
     background-color: #000; // Black background

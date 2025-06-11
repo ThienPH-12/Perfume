@@ -27,6 +27,18 @@ public class Capacity extends AbstractEntity {
 
     @Column(name = "Capacity")
     private int capacity;
+    
+    @Column(name = "DefaultPrice")
+    private BigDecimal defaultPrice;
+
+    public Capacity() {
+    }
+
+    public Capacity(Integer capacityId, int capacity, BigDecimal defaultPrice) {
+        this.capacityId = capacityId;
+        this.capacity = capacity;
+        this.defaultPrice = defaultPrice;
+    }
 
     public Integer getCapacityId() {
         return capacityId;
@@ -44,7 +56,11 @@ public class Capacity extends AbstractEntity {
         this.capacity = capacity;
     }
 
- 
+    public BigDecimal getDefaultPrice() {
+        return defaultPrice;
+    }
 
-    
+    public void setDefaultPrice(BigDecimal defaultPrice) {
+        this.defaultPrice = defaultPrice;
+    }
 }

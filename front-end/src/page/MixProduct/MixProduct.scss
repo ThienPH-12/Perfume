@@ -1,0 +1,190 @@
+#MixProduct {
+  .mix-product-page {
+    padding: 20px;
+    h1 {
+      font-weight: bold;
+      text-align: center;
+      padding: 50px;
+    }
+    .title {
+      font-weight: bold;
+      width: fit-content;
+      margin: 0 auto;
+      font-size: 1.5rem;
+      padding: 5px;
+      background-color: black;
+      color: white;
+      border-radius: 5px;
+    }
+  }
+  .saved-formulas-button{
+    font-weight: bold;
+    width: fit-content;
+    margin:auto 295px;
+    font-size: 1.5rem;
+    padding: 5px;
+    background-color: rgb(236, 213, 213);
+    color: rgb(8, 8, 8);
+    border-radius: 5px;
+    &:hover {
+      background-color: #333;
+      color: white;
+    }
+  }
+
+  .product-container {
+    max-width: 1210px;
+    padding-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .category-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding: 15px;
+  }
+
+  .catHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .category-box {
+    position: relative;
+    margin-bottom: 15px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+
+  .category-name {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 5px;
+    text-align: start;
+  }
+
+  .product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 100%;
+    flex-basis: 100%;
+    margin: 0;
+    padding: 0 15px 30px;
+  }
+
+  .product-card {
+    width: calc(32% - 10px);
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    text-align: center;
+    background-color: #f8fbfc;
+    box-shadow: 0 15px 4px rgba(0, 0, 0, 0.1);
+    height: 30rem;
+    flex-basis: 32%;
+    .product-image {
+      width: 90%;
+      height: 26rem;
+      object-fit: cover;
+      border-radius: 16px;
+      padding: 10px;
+    }
+  }
+
+  .product-card.glow {
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+    border: 2px solid #333;
+  }
+
+  .product-name {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+
+  .product-price {
+    color: #f00;
+    font-weight: bold;
+  }
+
+  .product-rating {
+    color: #888;
+  }
+
+  .selected-products-section {
+    max-width: 1640px;
+    margin:0 auto;
+    padding: 10px;
+    background-color:  #f3f0f0;
+  }
+
+  .selected-products-grid {
+    display: flex;
+    align-items: center;
+  }
+
+  .selected-product-card {
+    display: flex;
+    width: 70%;
+    padding: 10px;
+    justify-content: space-between;
+  }
+  .selected-product-name {
+  font-size: 1rem;
+  }
+
+  .selected-product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+  }
+
+  .mix-button {
+    width: fit-content;
+    height: fit-content;
+    padding: 10px 20px;
+    background-color: #14090e;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background-color: #8b8383;
+      color: white;
+    }
+  }
+
+  .mix-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  .save-formula-button{
+    width: fit-content;
+    height: fit-content;
+    margin-left: 50px;
+    padding: 10px 20px;
+    background-color: #14090e;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background-color: #8b8383;
+      color: white;
+    }
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}

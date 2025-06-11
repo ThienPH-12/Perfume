@@ -10,9 +10,10 @@ export const SuccessToastify = (message) => {
       draggable: true,
       progress: undefined,
       theme: "colored",
-  });}
+  });
+}
 
-  export const ErrrorToastify = (message) => {  
+export const ErrorToastify = (message) => {  
     toast.error(message, {
       position: "top-right",
       autoClose: 3000,
@@ -22,4 +23,5 @@ export const SuccessToastify = (message) => {
       draggable: true,
       progress: undefined,
       theme: "colored",
-  });}
+  });
+}

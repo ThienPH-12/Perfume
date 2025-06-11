@@ -1,0 +1,62 @@
+#SavedFormulas {
+  .saved-formulas-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+
+    h1 {
+      font-weight: bold;
+      width: fit-content;
+      margin: 0 auto;
+      font-size: 1.5rem;
+      padding: 5px;
+      background-color: black;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .formula-list {
+      padding: 50px;
+      max-width: 1440px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .formula-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+
+      &:hover {
+        background-color: #f1f1f1;
+      }
+
+      .formula-index {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .formula-names {
+        flex-grow: 1;
+        margin-right: 20px;
+      }
+
+      .select-capacity-button {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+  }
+}

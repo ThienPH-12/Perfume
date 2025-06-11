@@ -3,8 +3,8 @@ import { Modal, Form } from "react-bootstrap"; // Removed Toast import
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AddBlog.scss";
 import { addBlog } from "../api/apiClient";
-import { jwtDecode } from "jwt-decode";
-import { ErrrorToastify } from "./Toastify";
+import {jwtDecode} from "jwt-decode";
+import { ErrorToastify } from "./Toastify"; // Fixed import
 
 function AddBlog({ isOpen, onClose, onBlogAdded }) {
   const [show, setShow] = useState(isOpen);
@@ -70,7 +70,7 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
       onBlogAdded(response.data);
       handleClose();
     } catch (error) {
-      ErrrorToastify("There was an error when adding the blog:"+error);
+      ErrorToastify("There was an error when adding the blog:"+error);
     }
   };
 

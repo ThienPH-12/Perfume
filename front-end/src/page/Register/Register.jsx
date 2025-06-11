@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
-import { ErrrorToastify } from "../../components/Toastify";
+import { ErrorToastify } from "../../components/Toastify"; // Fixed import
 import OtpPopup from "../../components/OtpPopup"; // Import the new OTP popup component
 import "./Register.scss";
 
@@ -27,16 +27,16 @@ const Register = () => {
 
   const validateInputs = () => {
     if (!credentials.username.trim()) {
-      ErrrorToastify("Tên không được để trống.");
+      ErrorToastify("Tên không được để trống.");
     }
     if (!credentials.email.trim() || !/\S+@\S+\.\S+/.test(credentials.email)) {
-      ErrrorToastify("Email không hợp lệ.");
+      ErrorToastify("Email không hợp lệ.");
     }
     if (!credentials.password.trim() || credentials.password.length < 6) {
-      ErrrorToastify("Mật khẩu phải có ít nhất 6 ký tự.");
+      ErrorToastify("Mật khẩu phải có ít nhất 6 ký tự.");
     }
     if (!credentials.gender) {
-      ErrrorToastify("Vui lòng chọn giới tính.");
+      ErrorToastify("Vui lòng chọn giới tính.");
     }
     return null;
   };
@@ -53,7 +53,7 @@ const Register = () => {
       setOtp(response.data); // Store the generated OTP in the state
       setShowOtpPopup(true); // Show OTP popup after sending OTP
     } catch (error) {
-      ErrrorToastify("Không thể gửi OTP. Vui lòng thử lại." + error);
+      ErrorToastify("Không thể gửi OTP. Vui lòng thử lại." + error);
     }
   };
 
@@ -63,10 +63,10 @@ const Register = () => {
         await apiClient.post(apiPaths.saveUser, credentials); // Call saveUser API
         navigate("/"); // Navigate after successful user registration
       } catch (error) {
-        ErrrorToastify("Không thể lưu thông tin người dùng. Vui lòng thử lại." + error);
+        ErrorToastify("Không thể lưu thông tin người dùng. Vui lòng thử lại." + error);
       }
     } else {
-      ErrrorToastify("OTP không chính xác. Vui lòng thử lại.");
+      ErrorToastify("OTP không chính xác. Vui lòng thử lại.");
     }
   };
 
@@ -76,7 +76,7 @@ const Register = () => {
       const response = await apiClient.post(apiPaths.sendOtp, credentials); // Use the same payload as the first submit
       setOtp(response.data.otp); // Update the generated OTP in the state
     } catch (error) {
-      ErrrorToastify("Không thể gửi lại OTP. Vui lòng thử lại." + error);
+      ErrorToastify("Không thể gửi lại OTP. Vui lòng thử lại." + error);
     }
   };
 
@@ -87,7 +87,7 @@ const Register = () => {
   return (
     <div id="Register" style={{ marginTop: "50px" }}>
       <div className="register-container">
-        <h2>Đăng ký</h2>
+        <h1>Đăng ký</h1>
         <form onSubmit={handleSubmit} className="register-form">
           <input
             type="text"

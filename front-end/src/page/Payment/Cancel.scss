@@ -1,0 +1,27 @@
+#Cancel {
+  .main-box {
+    background-color: #ffebee;
+    border: 1px solid #f44336;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .payment-title {
+    color: #f44336;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  a#return-page-btn {
+    color: #ffffff;
+    background-color: #f44336;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  a#return-page-btn:hover {
+    background-color: #d32f2f;
+  }
+}
