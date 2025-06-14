@@ -14,7 +14,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.HashMap;
@@ -53,8 +52,8 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "Authority")
     private String authority;
 
-    @Column(name = "Credit")
-    private BigDecimal credit;
+    @Column(name = "Activation")
+    private String activation;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,7 +63,7 @@ public class User extends AbstractEntity implements UserDetails {
     public User() {
     }
 
-    public User(Integer userId, String userName, String password, int gender, Integer age, String email, String address, String authority, BigDecimal credit) {
+    public User(Integer userId, String userName, String password, int gender, Integer age, String email, String address, String authority, String activation) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -73,7 +72,7 @@ public class User extends AbstractEntity implements UserDetails {
         this.email = email;
         this.address = address;
         this.authority = authority;
-        this.credit = credit;
+        this.activation = activation;
     }
 
     public Integer getUserId() {
@@ -142,12 +141,12 @@ public class User extends AbstractEntity implements UserDetails {
         this.authority = authority;
     }
 
-    public BigDecimal getCredit() {
-        return credit;
+    public String getActivation() {
+        return activation;
     }
 
-    public void setCredit(BigDecimal credit) {
-        this.credit = credit;
+    public void setActivation(String activation) {
+        this.activation = activation;
     }
 
     public Map<String, Object> getAdditionalAttributes() {
@@ -157,8 +156,8 @@ public class User extends AbstractEntity implements UserDetails {
         attributes.put("age", age);
         attributes.put("email", email);
         attributes.put("address", address);
-        attributes.put("credit", credit);
-        attributes.put("authority", authority); // Include authority
+        attributes.put("authority", authority);
+        attributes.put("activation", activation); // Include activation
         return attributes;
     }
 

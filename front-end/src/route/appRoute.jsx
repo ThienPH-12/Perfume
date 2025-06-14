@@ -29,6 +29,8 @@ import Success from "../page/Payment/Success.jsx"; // Import Success page
 import Cancel from "../page/Payment/Cancel.jsx"; // Import Cancel page
 import SavedFormulas from "../page/MixProduct/SavedFormulas.jsx"; // Import SavedFormulas
 import Payment from "../page/Payment/Payment.jsx"; // Import Payment page
+import MixProductDetail from "../page/MixProduct/MixProductDetail.jsx"; // Import MixProductDetail
+import ConfirmActivated from "../page/Register/ConfirmActivated.jsx"; // Import ConfirmActivated
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "../utils/CartContext.jsx";
 
@@ -68,6 +70,8 @@ function AppRoute() {
         <Route path="/payment/cancel" element={<Cancel />} /> {/* Add Cancel route */}
         <Route path="/saved-formulas" element={<SavedFormulas />} /> {/* Add SavedFormulas route */}
         <Route path="/payment" element={<Payment />} /> {/* Add Payment route */}
+        <Route path="/mix-product-detail" element={<MixProductDetail />} /> {/* Add MixProductDetail route */}
+        <Route path="/user/activateUser" element={<ConfirmActivated />} /> {/* Add ConfirmActivated route */}
         <Route
           path="/admin/*"
           element={

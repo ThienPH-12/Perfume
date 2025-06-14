@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
 import "./SavedFormulas.scss"; // Import CSS for styling
@@ -6,6 +7,7 @@ import "./SavedFormulas.scss"; // Import CSS for styling
 const SavedFormulas = () => {
   const [formulas, setFormulas] = useState([]);
   const [productNames, setProductNames] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedFormulas = JSON.parse(localStorage.getItem("savedFormulas")) || [];
@@ -46,7 +48,14 @@ const SavedFormulas = () => {
               <div key={index} className="formula-item">
                 <span className="formula-index">{index + 1}</span>
                 <span className="formula-names">{getFormulaNames(formula)}</span>
-                <button className="select-capacity-button">
+                <button
+                  className="select-capacity-button"
+                  onClick={() =>
+                    navigate("/mix-product-detail", {
+                      state: { selectedProducts: formula.split("-").map((id) => ({ productId: id })) },
+                    })
+                  }
+                >
                   Chọn dung tích và nồng độ
                 </button>
               </div>

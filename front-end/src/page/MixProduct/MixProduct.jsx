@@ -79,7 +79,6 @@ const MixProduct = () => {
         <p className="title">MIX Nước Hoa</p>
         <button
           className="saved-formulas-button"
-          style={{ top: 20, right: 20 }}
           onClick={() => navigate("/saved-formulas")}
         >
           Công thức đã lưu
@@ -92,7 +91,7 @@ const MixProduct = () => {
                   <h2 className="category-name">{category.category}</h2>
                 </div>
                 <div style={{ justifySelf: "flex-end", marginBottom: 15 }}>
-                  SeeMore
+                  SeeMor
                 </div>
               </div>
               <div className="product-grid">
@@ -141,7 +140,7 @@ const MixProduct = () => {
             <button
               className="mix-button"
               disabled={selectedProducts.length < 2}
-              onClick={() => console.log("Mixing products:", selectedProducts)}
+              onClick={() => navigate("/mix-product-detail", { state: { selectedProducts } })}
             >
               Mix các mùi hương
             </button>

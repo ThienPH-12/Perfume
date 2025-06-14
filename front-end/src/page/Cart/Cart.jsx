@@ -20,7 +20,6 @@ const Cart = () => {
           });
           const imageUrl = URL.createObjectURL(imageResponse.data);
           const priceId = { productId: item.productId, capacityId: item.capacityId };
-          console.log("Fetching price for:", priceId);
           const priceResponse = await apiClient.post(apiPaths.getPriceById, priceId ); 
           const price = priceResponse.data; // Fetch price directly from API response
 

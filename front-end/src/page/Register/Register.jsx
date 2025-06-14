@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
-import { ErrorToastify } from "../../components/Toastify"; // Fixed import
-import OtpPopup from "../../components/OtpPopup"; // Import the new OTP popup component
+import { ErrorToastify, SuccessToastify } from "../../components/Toastify"; // Fixed import
 import "./Register.scss";
 
 const Register = () => {
@@ -13,8 +12,6 @@ const Register = () => {
     password: "",
     gender: "",
   });
-  const [otp, setOtp] = useState(""); // State to store the generated OTP
-  const [showOtpPopup, setShowOtpPopup] = useState(false); // State to toggle OTP popup
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -45,43 +42,15 @@ const Register = () => {
     e.preventDefault();
     const validationError = validateInputs();
     if (validationError) {
-      return; // Removed setError(validationError)
+      return;
     }
     try {
-      const response = await apiClient.post(apiPaths.sendOtp, credentials);
-      console.log(response.data);
-      setOtp(response.data); // Store the generated OTP in the state
-      setShowOtpPopup(true); // Show OTP popup after sending OTP
+      await apiClient.post(apiPaths.register, credentials); // Call the register API
+      SuccessToastify("Đăng ký thành công!,vui lòng chờ email để xác nhận tài khoản.");
+      navigate("/"); // Navigate after successful registration
     } catch (error) {
-      ErrorToastify("Không thể gửi OTP. Vui lòng thử lại." + error);
+      ErrorToastify( error.response.data ?error.response.data: "Đăng ký không thành công. Vui lòng thử lại sau.");
     }
-  };
-
-  const handleOtpSubmit = async (userInputOtp) => {
-    if (userInputOtp == otp) {
-      try {
-        await apiClient.post(apiPaths.saveUser, credentials); // Call saveUser API
-        navigate("/"); // Navigate after successful user registration
-      } catch (error) {
-        ErrorToastify("Không thể lưu thông tin người dùng. Vui lòng thử lại." + error);
-      }
-    } else {
-      ErrorToastify("OTP không chính xác. Vui lòng thử lại.");
-    }
-  };
-
-  const handleResendOtp = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await apiClient.post(apiPaths.sendOtp, credentials); // Use the same payload as the first submit
-      setOtp(response.data.otp); // Update the generated OTP in the state
-    } catch (error) {
-      ErrorToastify("Không thể gửi lại OTP. Vui lòng thử lại." + error);
-    }
-  };
-
-  const handleCloseOtpPopup = () => {
-    setShowOtpPopup(false); // Close the OTP popup
   };
 
   return (
@@ -140,15 +109,6 @@ const Register = () => {
           </button>
         </form>
       </div>
-
-      {showOtpPopup && (
-        <OtpPopup
-          email={credentials.email}
-          onSubmit={handleOtpSubmit}
-          onResend={handleResendOtp}
-          onClose={handleCloseOtpPopup} // Pass the close handler
-        />
-      )}
     </div>
   );
 };

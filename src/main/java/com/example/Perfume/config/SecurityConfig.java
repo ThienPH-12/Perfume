@@ -37,8 +37,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String allowList[] = {"/api/auth/login",
-            "/api/user/sendOtp",
+        String allowList[] = {
+            "/api/auth/login",
+            "/api/user/register", // Added new API
+            "/api/user/activateUser", // Added new API
+            "/api/user/resendActivation",
             "/api/blogs",
             "/api/categories",
             "/api/products",
@@ -51,7 +54,7 @@ public class SecurityConfig {
             "/api/price/list/**",
             "/api/createPayment",
             "/api/order/**"
-           };
+        };
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors().and()
                 .authorizeHttpRequests(api -> api

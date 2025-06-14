@@ -94,6 +94,12 @@
             <artifactId>payos-java</artifactId>
             <version>1.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-docs</artifactId>
+            <version>2.4.2</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
 
     <build>

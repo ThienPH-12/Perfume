@@ -3,19 +3,19 @@ import { useNavigate } from "react-router-dom";
 import "./Login.scss";
 import apiPaths from "../../api/apiPath";
 import apiClient from "../../api/apiClient";
-
+import { ErrorToastify } from "../../components/Toastify"; // Import ErrorToastify
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
-    username: "",
+    username: "", // Changed from email to username
     password: "",
   });
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -27,22 +27,18 @@ const Login = () => {
     e.preventDefault();
     // Validate if username and password are not empty
     if (!credentials.username || !credentials.password) {
-      setError("Username and password cannot be empty.");
+      ErrorToastify("Username and password cannot be empty.");
       return;
     }
     try {
-      setError("");
-      const response = await apiClient.post(
-         apiPaths.login,
-        credentials
-      );
+      const response = await apiClient.post(apiPaths.login, credentials);
       const data = response.data;
       const accessToken = data.accessToken;
       console.log(accessToken);
       localStorage.setItem("token", accessToken);
-      window.location.reload();
-    } catch (err) {
-      setError("Invalid username/email or password.");
+      window.location.reload(); // Reload the page to apply the new token
+    } catch (err) {  
+        ErrorToastify(err.response.data);
     }
   };
 
@@ -50,16 +46,16 @@ const Login = () => {
     <div id="Login" className="d-flex" style={{ marginTop: "50px" }}>
       <div className="container">
         <h1>Đăng nhập</h1>
-        <div className="error-message">{error}</div>
         <form onSubmit={handleSubmit} className="inputForm">
           <div className="input-container">
-            <input className="input"
-              type="text"
-              name="username"
-              placeholder="Tên tài khoản hoặc địa chỉ email *"
-              value={credentials.username}
+            <input
+              className="input"
+              type="text" // Changed type from email to text
+              name="username" // Changed name from email to username
+              placeholder="Tên đăng nhập *" // Updated placeholder
+              value={credentials.username} // Changed from email to username
               onChange={handleChange}
-              autoComplete="username"
+              autoComplete="username" // Updated autoComplete
             />
           </div>
           <div className="input-container">

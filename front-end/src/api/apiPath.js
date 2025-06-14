@@ -18,9 +18,10 @@ const apiPaths = {
   login: "/auth/login",
   logout: "/auth/logout",
 
-  sendOtp: "/user/sendOtp",
-  saveUser: "/user/saveUser",
-  initUserInfo: "/user/initUserInfo",
+  register: "/user/register", // Added field
+  activateUser: "/user/activateUser", // Added field
+  initUserInfo: "/user/initUserInfo", // Already existing, kept as is
+  resendActivation: "/user/resendActivation", // Added field
 
   mixProductSave: "/mixProduct", // Updated from sellProductSave
   deleteMixProduct: (id) => `/mixProduct/${id}`, // Updated from deleteSellProduct

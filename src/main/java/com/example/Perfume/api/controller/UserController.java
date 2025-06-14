@@ -4,7 +4,6 @@
  */
 package com.example.Perfume.api.controller;
 
-import com.example.Perfume.api.bean.req.OtpReq;
 import com.example.Perfume.api.bean.req.RegisterReq;
 import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.service.UserService;
@@ -30,25 +29,25 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    @PostMapping("/user/sendOtp")
+    @PostMapping("/user/register")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
         try {
-            String otp=userService.sendOtp(req);
-            return ResponseEntity.ok(otp);
+            String token = userService.register(req);
+            return ResponseEntity.ok("User registered successfully. Activation email sent. Token: " + token);
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error during registration: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body( ex.getMessage());
         }
     }
 
-    @PostMapping("/user/saveUser")
-    public ResponseEntity<?> saveUser(@RequestBody RegisterReq req) {
+    @PostMapping("/user/activateUser")
+    public ResponseEntity<?> activateUser(@RequestParam String token) {
         try {
-            userService.saveUser(req);
-            return ResponseEntity.ok("User registered successfully");
+            String result = userService.activateUser(token);
+            return ResponseEntity.ok(result);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error during saving user: " + ex.getMessage());
+                    .body("Lỗi trong lúc xác nhận: " + ex.getMessage());
         }
     }
     
@@ -63,6 +62,17 @@ public class UserController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error during fetching user info: " + ex.getMessage());
+        }
+    }
+
+    @PostMapping("/user/resendActivation")
+    public ResponseEntity<?> resendActivation(@RequestParam String token) {
+        try {
+            userService.resendActivationEmail(token);
+            return ResponseEntity.ok("Activation email resent successfully.");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error during resending activation email: " + ex.getMessage());
         }
     }
 }

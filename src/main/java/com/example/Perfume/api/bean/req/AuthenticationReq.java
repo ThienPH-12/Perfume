@@ -29,7 +29,4 @@ public class AuthenticationReq {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
-  
 }

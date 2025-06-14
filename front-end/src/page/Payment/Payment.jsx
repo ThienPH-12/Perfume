@@ -46,7 +46,7 @@ const Payment = () => {
             const response = await apiClient.post(apiPaths.payment, orderReq);
             if (response.data.error === 0) {
                 SuccessToastify(response.data.message);
-                window.open(response.data.data.checkoutUrl);
+                window.location.replace(response.data.data.checkoutUrl);
             } else {
                 ErrorToastify(response.data.message);
             }

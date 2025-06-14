@@ -46,24 +46,34 @@ public class AuthenticationService {
 
     public AuthenticationRes login(AuthenticationReq req) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
-            );
-            User user = userDAO.findByUserName(req.getUsername());
+            User user = userDAO.findByUserName(req.getUsername()); // Changed from findByEmail to findByUserName
+            if (user == null) {
+                throw new RuntimeException("không tồn tại tên người dùng " + req.getUsername());
+            }
+            if (!"Activated".equals(user.getActivation())) {
+                throw new RuntimeException("Tài khoản này chưa được kích hoạt!");
+            }
+            try {
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
+                );
+            } catch (AuthenticationException e) {
+                throw new RuntimeException("Sai mật khẩu");
+            }
             String accessToken = jwtUtil.generateToken(user);
             String refreshToken = jwtUtil.generateRefreshToken(user);
             return new AuthenticationRes(
-                    "Bearer", // Token type
-                    user.getUserId().toString(), // User ID (assuming User has an ID field)
-                    user.getUsername(), // Username
-                    user.getAuthority(), // User authority
-                    "Login successful", // Message
-                    accessToken, // Access token
-                    refreshToken // Refresh token
+                    "Bearer",
+                    user.getUserId().toString(),
+                    user.getUsername(), // Changed from getEmail to getUsername
+                    user.getAuthority(),
+                    "Login successful",
+                    accessToken,
+                    refreshToken
             );
         } catch (AuthenticationException e) {
-            logger.error("Authentication failed for user: {}. Reason: {}", req.getUsername(), e.getMessage());
-            throw new RuntimeException("Authentication failed", e);
+            logger.error("Authentication failed for username: {}. Reason: {}", req.getUsername(), e.getMessage()); // Changed from getEmail to getUsername
+            throw new RuntimeException(e.getMessage());
         }
     }
 

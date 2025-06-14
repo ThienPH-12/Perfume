@@ -30,24 +30,24 @@ public class AuthenticationController {
     private JavaMailSender javaMailSender;
 
     @PostMapping("/auth/login")
-    public ResponseEntity<AuthenticationRes> login(@RequestBody AuthenticationReq req) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationReq req) {
         try {
             AuthenticationRes response = authenticationService.login(req);
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthenticationRes("Bearer", "", "", "", "Authentication failed", "", ""));
+                    .body(ex.getMessage()); // Changed from getEmail to getUsername
         }
     }
 
     @PostMapping("/auth/refresh")
-    public ResponseEntity<AuthenticationRes> refresh(@RequestBody RefreshReq req) {
+    public ResponseEntity<?> refresh(@RequestBody RefreshReq req) {
         try {
             AuthenticationRes response = authenticationService.refreshToken(req);
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthenticationRes("Bearer", "", "", "", "Authentication failed", "", ""));
+                    .body(ex.getMessage());
         }
     }
 

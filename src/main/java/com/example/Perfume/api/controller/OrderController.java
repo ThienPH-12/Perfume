@@ -45,7 +45,7 @@ public class OrderController {
             long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
 
             // Set expiration time to current date plus 24 hours using Instant
-            int expiredAt = (int) Instant.now().plusSeconds(24 * 60 * 60).getEpochSecond();
+//            int expiredAt = (int) Instant.now().plusSeconds(24 * 60 * 60).getEpochSecond();
 
             PaymentData paymentData = PaymentData.builder()
                     .orderCode(orderCode)
@@ -58,7 +58,6 @@ public class OrderController {
                     .buyerEmail(requestBody.getBuyerEmail())
                     .buyerPhone(requestBody.getBuyerPhone())
                     .buyerAddress(requestBody.getBuyerAddress())
-                    .expiredAt(expiredAt) // Set expiration time
                     .build();
 
             CheckoutResponseData data = payOS.createPaymentLink(paymentData);

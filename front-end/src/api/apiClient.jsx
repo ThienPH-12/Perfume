@@ -28,7 +28,6 @@ apiClient.interceptors.response.use(
     }
     if (error.response.status === 401) {
       console.log("Unauthorized", error);
-      window.location.reload();
     }
     return Promise.reject(error);
   }

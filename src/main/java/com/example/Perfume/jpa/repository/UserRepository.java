@@ -14,10 +14,12 @@ import org.springframework.data.repository.query.Param;
  * @author badao
  */
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUserName(@Param("userName") String username);
     
     boolean existsByUserName(@Param("userName") String username);
     
     boolean existsByEmail(@Param("email") String email);
+    
+    User findByEmail(@Param("email") String email);
 }
