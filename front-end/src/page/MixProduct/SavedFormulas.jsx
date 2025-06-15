@@ -29,11 +29,35 @@ const SavedFormulas = () => {
     fetchProductNames();
   }, []);
 
-  const getFormulaNames = (formula) => {
-    return formula
+  const getFormulaNames = (compIds) => {
+    return compIds
       .split("-")
       .map((id) => productNames[id] || `Unknown (${id})`)
       .join(" - ");
+  };
+
+  const deleteFormula = (index) => {
+    const updatedFormulas = [...formulas];
+    updatedFormulas.splice(index, 1);
+    setFormulas(updatedFormulas);
+    localStorage.setItem("savedFormulas", JSON.stringify(updatedFormulas));
+  };
+
+  const updateMixProdName = (index, newName) => {
+    const updatedFormulas = [...formulas];
+    updatedFormulas[index].mixProdName = newName;
+    setFormulas(updatedFormulas);
+    localStorage.setItem("savedFormulas", JSON.stringify(updatedFormulas));
+  };
+
+  const navigateToDetail = (formula, index) => {
+    const mixProdName = formula.mixProdName.trim() || `Sản Phẩm Mix ${index + 1}`; // Default name if blank
+    navigate("/mix-product-detail", {
+      state: {
+        compIds: formula.compIds.split("-").map((id) => ({ productId: id })),
+        mixProdName, // Pass mixProdName to the detail page
+      },
+    });
   };
 
   return (
@@ -47,16 +71,25 @@ const SavedFormulas = () => {
             {formulas.map((formula, index) => (
               <div key={index} className="formula-item">
                 <span className="formula-index">{index + 1}</span>
-                <span className="formula-names">{getFormulaNames(formula)}</span>
+                <input
+                  type="text"
+                  className="mix-name-input"
+                  placeholder="Đặt tên cho sản phẩm mix"
+                  value={formula.mixProdName}
+                  onChange={(e) => updateMixProdName(index, e.target.value)}
+                />
+                <span className="formula-names">{getFormulaNames(formula.compIds)}</span>
                 <button
                   className="select-capacity-button"
-                  onClick={() =>
-                    navigate("/mix-product-detail", {
-                      state: { selectedProducts: formula.split("-").map((id) => ({ productId: id })) },
-                    })
-                  }
+                  onClick={() => navigateToDetail(formula, index)}
                 >
                   Chọn dung tích và nồng độ
+                </button>
+                <button
+                  className="delete-formula-button"
+                  onClick={() => deleteFormula(index)}
+                >
+                  Xóa
                 </button>
               </div>
             ))}

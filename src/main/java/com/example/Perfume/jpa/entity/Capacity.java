@@ -28,7 +28,7 @@ public class Capacity extends AbstractEntity {
     @Column(name = "Capacity")
     private int capacity;
     
-    @Column(name = "DefaultPrice")
+    @Column(name = "DefaultPrice", precision = 18, scale = 3)
     private BigDecimal defaultPrice;
 
     public Capacity() {

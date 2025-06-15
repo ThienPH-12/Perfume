@@ -112,4 +112,81 @@
       font-size: 1rem;
     }
   }
+
+  .quantity-selection {
+    margin: 20px 0;
+    text-align: center;
+
+    label {
+      font-weight: bold;
+      margin-right: 10px;
+      color: #444;
+    }
+
+    .quantity-buttons {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+
+      button {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+
+        &:disabled {
+          background-color: #eee;
+          color: #aaa;
+          cursor: not-allowed;
+        }
+
+        &:hover:not(:disabled) {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+
+      span {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        width: 2rem;
+        text-align: center;
+      }
+    }
+  }
+
+  .mix-product-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+
+    .add-to-cart {
+      width: 11rem;
+      height: 5rem;
+      background-color: #000; /* Black background for active button */
+      color: #fff; /* White text for active button */
+      font-size: 1rem; /* Font size adjustment */
+      font-weight: bold; /* Bold text */
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+
+      &:hover {
+        background-color: #fff; /* White background on hover */
+        color: #333; /* Dark text on hover */
+      }
+    }
+
+    .add-to-cart:disabled {
+      background-color: #ccc; /* Gray background for disabled button */
+      color: #666; /* Light gray text for disabled button */
+      cursor: not-allowed; /* Change cursor to indicate disabled state */
+    }
+  }
 }

@@ -17,7 +17,7 @@ public class MixPrice extends AbstractEntity {
     @EmbeddedId
     private MixPriceId mixPriceId;
 
-    @Column(name = "Price")
+    @Column(name = "Price", precision = 18, scale = 3)
     private BigDecimal price;
 
     public MixPrice() {

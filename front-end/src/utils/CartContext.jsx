@@ -7,7 +7,8 @@ export const CartProvider = ({ children }) => {
 
   const updateCartCount = () => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const totalCount = storedCart.length; // Count the number of unique products
+    const storedMixCart = JSON.parse(localStorage.getItem("mixCart")) || [];
+    const totalCount = storedCart.length + storedMixCart.length; // Count items in both cart and mixCart
     setCartCount(totalCount);
   };
 

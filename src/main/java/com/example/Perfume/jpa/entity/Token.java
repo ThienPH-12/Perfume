@@ -12,10 +12,10 @@ public class Token extends AbstractEntity {
     @Column(name = "TokenId")
     private Long tokenId;
 
-    @Column(name = "Token")
+    @Column(name = "Token", length = 1000, nullable = false)
     private String token;
 
-    @Column(name = "UserName")
+    @Column(name = "UserName", length = 30, nullable = false)
     private String userName;
 
     @Column(name = "ExpirationDate")

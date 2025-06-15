@@ -56,18 +56,18 @@ const MixProduct = () => {
     selectedProducts.some((item) => item.productId === productId);
 
   const saveFormula = () => {
-    const formula = selectedProducts
+    const compIds = selectedProducts
       .map((product) => product.productId)
       .sort((a, b) => a - b)
       .join("-");
     const updatedFormulas = JSON.parse(localStorage.getItem("savedFormulas")) || [];
 
-    if (updatedFormulas.includes(formula)) {
+    if (updatedFormulas.some((item) => item.compIds === compIds)) {
       ErrorToastify("trùng công thức");
       return;
     }
 
-    updatedFormulas.push(formula);
+    updatedFormulas.push({ compIds, mixProdName: "" });
     localStorage.setItem("savedFormulas", JSON.stringify(updatedFormulas));
     SuccessToastify("đã lưu công thức");
   };

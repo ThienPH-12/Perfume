@@ -25,19 +25,19 @@ public class Blog extends AbstractEntity {
     @Column(name = "BlogId")
     private Integer blogId;
 
-    @Column(name = "BlogTitle")
+    @Column(name = "BlogTitle", length = 100)
     private String blogTitle;
 
     @Column(name = "BlogContent")
     private String blogContent;
 
-    @Column(name = "ImageName")
+    @Column(name = "ImageName", length = 50)
     private String imageName;
     
-    @Column(name = "ImageType")
+    @Column(name = "ImageType", length = 50)
     private String imageType;
     @Lob
-    @Column(name = "ImageData")
+    @Column(name = "ImageData",length=100000)
     private byte[] imageData;
 
     public Blog() {

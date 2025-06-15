@@ -105,10 +105,22 @@
       line-clamp: 2;
       -webkit-box-orient: vertical;
     }
+    .btnContainer {
+      max-width: 1000px;
+      width: 80%;
+      
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+      flex-flow: row wrap;
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+    }
     .add-button {
       font-weight: bold;
       width: fit-content;
-      margin: auto 440px;
+     
       font-size: 1.5rem;
       background-color: rgb(240, 235, 235);
       color: rgb(8, 8, 8);

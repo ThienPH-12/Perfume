@@ -31,7 +31,7 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "UserId")
     private Integer userId;
 
-    @Column(name = "UserName")
+    @Column(name = "UserName", length = 30, nullable = false)
     private String userName;
 
     @Column(name = "Password")
@@ -43,16 +43,16 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "Age")
     private Integer age;
 
-    @Column(name = "Email")
+    @Column(name = "Email", length = 30)
     private String email;
 
     @Column(name = "Address")
     private String address;
 
-    @Column(name = "Authority")
+    @Column(name = "Authority", length = 10)
     private String authority;
 
-    @Column(name = "Activation")
+    @Column(name = "Activation", length = 10)
     private String activation;
 
     @Override

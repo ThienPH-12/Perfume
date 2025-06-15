@@ -26,7 +26,7 @@ public class Product extends AbstractEntity {
     @Column(name = "ProductId")
     private int productId;
 
-    @Column(name = "ProductName")
+    @Column(name = "ProductName", length = 50)
     private String productName;
 
     @Column(name = "CategoryId")
@@ -35,19 +35,19 @@ public class Product extends AbstractEntity {
     @Column(name = "Description")
     private String description;
 
-    @Column(name = "ImageName")
+    @Column(name = "ImageName", length = 50)
     private String imageName;
 
-    @Column(name = "ImageType")
+    @Column(name = "ImageType", length = 50)
     private String imageType;
     @Lob
-    @Column(name = "ImageData")
+    @Column(name = "ImageData",length=100000)
     private byte[] imageData;
 
     @Column(name = "ExpirationDate")
     private Date expirationDate;
 
-    @Column(name = "PotentialCus")
+    @Column(name = "PotentialCus", length = 15)
     private String potentialCus;
 
     public Product() {

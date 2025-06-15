@@ -19,7 +19,7 @@ public class Category extends AbstractEntity {
     @Column(name = "CategoryId")
     private Integer categoryId;
 
-    @Column(name = "Category")
+    @Column(name = "Category", length = 50)
     private String category;
 
     // Getters and Setters

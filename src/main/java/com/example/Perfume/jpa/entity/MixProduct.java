@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 public class MixProduct extends AbstractEntity {
 
     @Id
-    @Column(name = "CompIds")
+    @Column(name = "CompIds", length = 15)
     private String compIds;
 
     @Column(name = "MixProdName")
@@ -22,7 +22,7 @@ public class MixProduct extends AbstractEntity {
     @Column(name = "Description")
     private String description;
 
-    @Column(name = "PotentialCus")
+    @Column(name = "PotentialCus", length = 15)
     private String potentialCus;
 
     // Getters and Setters

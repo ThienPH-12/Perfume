@@ -10,12 +10,15 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class AbstractEntity {
 
-    @Column(name = "CreateUserId")
+    @Column(name = "CreateUserId", nullable = false, length = 30)
     private String createUserId;
+
     @Column(name = "CreateDateTime")
     private Date createDateTime;
-    @Column(name = "UpdateUserId")
+
+    @Column(name = "UpdateUserId", length = 30)
     private String updateUserId;
+
     @Column(name = "UpdateDateTime")
     private Date updateDateTime;
 

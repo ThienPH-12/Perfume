@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
 import "./MixProductDetail.scss"; // Import CSS for styling
+import { SuccessToastify ,ErrorToastify} from "../../components/Toastify"; // Import SuccessToastify
 
 const MixProductDetail = () => {
     const { state } = useLocation();
-    const { selectedProducts } = state || { selectedProducts: [] };
+    const navigate = useNavigate();
+    const { compIds, mixProdName } = state || { compIds: [], mixProdName: "" }; // Receive mixProdName
     const [productDetails, setProductDetails] = useState([]);
     const [capacities, setCapacities] = useState([]);
     const [levels, setLevels] = useState({});
     const [selectedCapacity, setSelectedCapacity] = useState(""); // Add state for global capacity selection
+    const [quantity, setQuantity] = useState(1); // Add state for quantity
 
     useEffect(() => {
         const fetchProductDetails = async () => {
             const details = await Promise.all(
-                selectedProducts.map(async (product) => {
+                compIds.map(async (product) => {
                     const productResponse = await apiClient.get(apiPaths.getProductById(product.productId));
                     const imageResponse = await apiClient.get(apiPaths.getProductImageById(product.productId), {
                         responseType: "blob",
@@ -38,16 +41,66 @@ const MixProductDetail = () => {
 
         fetchProductDetails();
         fetchCapacities();
-    }, [selectedProducts]);
+    }, [compIds]);
 
     const handleLevelChange = (productId, level) => {
         setLevels((prev) => ({ ...prev, [productId]: level }));
     };
 
+    const handleIncreaseQuantity = () => {
+        if (quantity < 10) setQuantity((prev) => prev + 1);
+    };
+
+    const handleDecreaseQuantity = () => {
+        if (quantity > 1) setQuantity((prev) => prev - 1);
+    };
+
+    const handleAddToCart = () => {
+        const mixCart = JSON.parse(localStorage.getItem("mixCart")) || [];
+        const newMixItem = {
+            compIds,
+            mixProdName,
+            capacityId: selectedCapacity, // Only store capacityId
+            quantity,
+            levels,
+        };
+        mixCart.push(newMixItem);
+        localStorage.setItem("mixCart", JSON.stringify(mixCart));
+        SuccessToastify("Item added to mix cart successfully!");
+    };
+
+    const handleBuyNow = () => {
+        const selectedCapacityData = capacities.find((cap) => cap.capacityId == selectedCapacity); // Correctly find capacity
+
+        if (!selectedCapacityData) {
+            ErrorToastify("Invalid capacity selected.");
+            return;
+        }
+
+        const effectivePrice = selectedCapacityData.defaultPrice; // Use default price for the selected capacity
+
+        const paymentData = {
+            description: "Mua ngay sản phẩm", // Updated description
+            totalPrice: effectivePrice * quantity, // Calculate total price
+            items: [
+                {
+                    name: `${mixProdName} (${productDetails.map((p) => p.productName).join("-")}) (${Object.values(levels).join("-")}) ${selectedCapacityData.capacity}ml`,
+                    price: effectivePrice,
+                    quantity: quantity,
+                },
+            ], // Include items with quantity
+        };
+
+        navigate("/payment", { state: paymentData }); // Navigate to Payment page with data
+    };
+
+    const isActionEnabled = selectedCapacity && Object.keys(levels).length === productDetails.length;
+
     return (
         <div id="MixProductDetail">
             <h1>FRAGRANCES</h1>
             <p className="title">MIX Nước Hoa</p>
+            <h1 className="mix-prod-name-display">Tên sản phẩm mix: {mixProdName}</h1> {/* Display mixProdName */}
             <div className="capacity-selection-global">
                 <label>Chọn dung tích cho hỗn hợp:</label>
                 <select
@@ -83,6 +136,34 @@ const MixProductDetail = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className="quantity-selection">
+                <label>Số lượng:</label>
+                <div className="quantity-buttons">
+                    <button onClick={handleDecreaseQuantity} disabled={!isActionEnabled || quantity <= 1}>
+                        -
+                    </button>
+                    <span>{quantity}</span>
+                    <button onClick={handleIncreaseQuantity} disabled={!isActionEnabled || quantity >= 10}>
+                        +
+                    </button>
+                </div>
+            </div>
+            <div className="mix-product-actions">
+                <button
+                    className="add-to-cart"
+                    disabled={!isActionEnabled}
+                    onClick={handleAddToCart}
+                >
+                    Thêm vào giỏ hàng
+                </button>
+                <button
+                    className="add-to-cart"
+                    disabled={!isActionEnabled}
+                    onClick={handleBuyNow}
+                >
+                    Mua ngay
+                </button>
             </div>
         </div>
     );

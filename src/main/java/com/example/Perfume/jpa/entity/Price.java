@@ -17,7 +17,7 @@ public class Price extends AbstractEntity{
     @EmbeddedId
     private PriceId priceId;
 
-    @Column(name = "Price")
+    @Column(name = "Price", precision = 18, scale = 3)
     private BigDecimal price; // Changed to BigDecimal
 
     public Price() {

@@ -90,42 +90,27 @@ const ProductDetail = () => {
     const handleAddToCart = (e) => {
         e.preventDefault();
 
-        // Check if the product has a selected capacity
-        if (!selectedCapacity) {
-            ErrorToastify("Sản phẩm chưa tồn tại dung tích");
-            return; // Exit the function
-        }
-
-        // Retrieve the existing cart from local storage
-        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        // Find the selected capacity to get the original price
-        const selectedCapacityData = capacities.find((capacity) => capacity.capacityId === selectedCapacity);
-
-        if (!selectedCapacityData) {
-            ErrorToastify("Invalid capacity selected.");
-            return; // Exit the function
-        }
-
-        // Create a new cart item including the level field
+        // Create a new cart item including only capacityId and level
         const newCartItem = {
             productId: id,
             productName: product.productName, // Include product name
-            capacityId: selectedCapacity,
-            capacity: selectedCapacityData.capacity, // Include capacity
+            capacityId: selectedCapacity, // Only store capacityId
             quantity: quantity, // Store the quantity
             level: level, // Include selected level
         };
+
+        // Retrieve the existing cart from local storage
+        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
 
         // Check if the item already exists in the cart
         const existingItemIndex = existingCart.findIndex(
             (item) =>
                 item.productId === newCartItem.productId &&
-                item.capacityId === newCartItem.capacityId
+                item.capacityId === newCartItem.capacityId &&
+                item.level === newCartItem.level
         );
 
         if (existingItemIndex !== -1) {
-            // If the item exists, display an error message
             ErrorToastify("Sản phẩm với dung tích và nồng độ này đã có trong giỏ hàng.");
             return; // Exit the function
         }
@@ -137,7 +122,6 @@ const ProductDetail = () => {
         localStorage.setItem("cart", JSON.stringify(existingCart));
         updateCartCount(); // Update cart count in context
 
-        // Show a success message
         SuccessToastify("Item added to cart successfully!");
     };
 
@@ -159,7 +143,7 @@ const ProductDetail = () => {
         const effectivePrice = selectedCapacityData.price || selectedCapacityData.defaultPrice; // Use default price if price is null
 
         const paymentData = {
-            description: `Tên sản phẩm: ${product.productName}, Dung tích: ${selectedCapacityData.capacity}ml, Nồng độ: ${level}`,
+            description: "Mua ngay sản phẩm", // Updated description
             totalPrice: priceRef.current, // Send original price only
             items: [
                 {

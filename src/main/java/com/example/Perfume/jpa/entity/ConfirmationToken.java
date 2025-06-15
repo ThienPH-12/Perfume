@@ -18,14 +18,14 @@ public class ConfirmationToken {
     @Column(name = "UserId", nullable = false)
     private Integer userId;
 
-    @Column(name = "createdAt", nullable = false)
-    private Date createdAt; // Updated to match AbstractEntity's time type
+    @Column(name = "createdAt", nullable = false, columnDefinition = "DATETIME")
+    private Date createdAt;
 
-    @Column(name = "expiresAt", nullable = false)
-    private Date expiresAt; // Updated to match AbstractEntity's time type
+    @Column(name = "expiresAt", nullable = false, columnDefinition = "DATETIME")
+    private Date expiresAt;
 
-    @Column(name = "confirmedAt")
-    private Date confirmedAt; // Updated to match AbstractEntity's time type
+    @Column(name = "confirmedAt", columnDefinition = "DATETIME")
+    private Date confirmedAt;
 
     public ConfirmationToken() {
     }

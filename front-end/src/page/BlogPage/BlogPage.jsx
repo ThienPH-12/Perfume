@@ -81,11 +81,12 @@ function BlogPage() {
     <div id="BlogPage">
       <div className="blog-page">
         <h1 className="blog-page__title">Blog</h1>
-        {token && (
-          <button onClick={handleOpenModal} className="add-button">
-            Thêm mới Blog
-          </button>
-        )}
+        <div className="btnContainer">
+          {token && (
+            <button onClick={handleOpenModal} className="add-button">
+              Thêm mới Blog
+            </button>
+          )}</div>
         <AddBlog
           isOpen={isModalOpen}
           onClose={handleCloseModal}
