@@ -53,8 +53,14 @@ function ProductManage() {
 
   const handleProductAddedOrUpdated = (message) => {
     fetchProducts();
-    handleCloseModal();
+    setIsModalOpen(false);
+    setSelectedProduct(null); // Reset selected product
     SuccessToastify(message);
+  };
+
+  const handleAddProduct = () => {
+    setSelectedProduct(null); // Reset selected product
+    setIsModalOpen(true); // Open modal for adding
   };
 
   const handleDeleteClick = (productId) => {
@@ -83,7 +89,7 @@ function ProductManage() {
   return (
     <div className="productCrud">
       <h2>Products</h2>
-      <button onClick={() => handleOpenModal()} className="add-button">
+      <button onClick={() => handleAddProduct()} className="add-button">
         Add Product
       </button>
       <table className="product-table">

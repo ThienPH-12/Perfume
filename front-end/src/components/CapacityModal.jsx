@@ -26,22 +26,22 @@ function CapacityModal({ isOpen, onClose, onCapacityAddedOrUpdated, capacity }) 
   };
 
   useEffect(() => {
-    if (capacity) {
-      setCapacityReq({
-        capacityId: capacity.capacityId,
-        capacity: capacity.capacity,
-        defaultPrice: capacity.defaultPrice, // Set defaultPrice
-        createUserId: capacity.createUserId,
-        updateUserId: capacity.updateUserId,
-      });
-    }
-  }, [capacity]);
-
-  useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      if (capacity) {
+        setCapacityReq({
+          capacityId: capacity.capacityId,
+          capacity: capacity.capacity,
+          defaultPrice: capacity.defaultPrice, // Set defaultPrice
+          createUserId: capacity.createUserId,
+          updateUserId: capacity.updateUserId,
+        });
+      } else {
+        clearForm();
+      }
+    } else {
       clearForm();
     }
-  }, [isOpen]);
+  }, [isOpen, capacity]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -40,7 +40,7 @@ function AdminPage() {
     <div id="admin-page">
       <nav className="sidebar" ref={sidebarRef}>
         <ul>
-          <li>
+          <li className="LogoContainer">
             <span className="logo"> AdminPanel</span>
             <button onClick={toggleSidebar} className="toggle-btn" ref={toggleButtonRef}>
               <CaretLeft style={{ height: 24 }} />
@@ -58,7 +58,7 @@ function AdminPage() {
                 <li> <Link to="/admin/capacities">Capacities</Link> {/* Full path: /admin/capacities */}</li>
                 <li> <Link to="/admin/products">Products</Link> {/* Full path: /admin/products */}</li>
                 <li> <Link to="/admin/mix-products">Mix Products</Link> {/* Updated from sell-products */}</li>
-                <li> <Link to="/admin/prices">Prices</Link> {/* Full path: /admin/prices */}</li>
+                <li> <Link to="/admin/prices">Custom Prices</Link> {/* Full path: /admin/prices */}</li>
               </div>
             </ul>
           </li>

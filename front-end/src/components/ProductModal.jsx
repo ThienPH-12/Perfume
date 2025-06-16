@@ -36,25 +36,25 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
   };
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      if (product) {
+        setProductReq({
+          productId: product.productId,
+          productName: product.productName,
+          description: product.description,
+          expirationDate: product.expirationDate.split("T")[0],
+          createUserId: product.createUserId,
+          updateUserId: product.updateUserId,
+          categoryId: product.categoryId || "",
+          potentialCus: product.potentialCus || "", // Populate potentialCus if available
+        });
+      } else {
+        clearForm();
+      }
+    } else {
       clearForm();
     }
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (product) {
-      setProductReq({
-        productId: product.productId,
-        productName: product.productName,
-        description: product.description,
-        expirationDate: product.expirationDate.split("T")[0],
-        createUserId: product.createUserId,
-        updateUserId: product.updateUserId,
-        categoryId: product.categoryId || "",
-        potentialCus: product.potentialCus || "", // Populate potentialCus if available
-      });
-    } 
-  }, [product]);
+  }, [isOpen, product]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -78,13 +78,14 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
     const token = localStorage.getItem("token");
     const decodedToken = token ? jwtDecode(token) : null;
     var message = "";
-
+    var Id=decodedToken.userId;
     if (product) {
-      setProductReq({ ...productReq, updateUserId: decodedToken.userId });
+      setProductReq({ ...productReq, updateUserId: Id });
     } else {
-      setProductReq({ ...productReq, createUserId: decodedToken.userId });
+      setProductReq({ ...productReq, createUserId: Id });
     }
-
+    console.log(decodedToken.userId);
+    console.log(productReq);
     const formData = new FormData();
     formData.append("imageFile", image);
     formData.append(
@@ -97,7 +98,6 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
         await apiClient.put(apiPaths.productSave, formData);
         message = "Product updated successfully!";
       } else {
-        console.log("Product Request:", productReq);
         await apiClient.post(apiPaths.productSave, formData);
         message = "Product added successfully!";
       }

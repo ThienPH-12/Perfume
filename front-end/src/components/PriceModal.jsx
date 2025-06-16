@@ -41,28 +41,26 @@ function PriceModal({ isOpen, onClose, onPriceAddedOrUpdated, price, productId, 
   }, []);
 
   useEffect(() => {
-    if (price) {
-      setPriceReq({
-        productId: productId,
-        capacityId: price.capacityId,
-        price: price.price,
-        createUserId: price.createUserId,
-        updateUserId: price.updateUserId,
-      });
+    if (isOpen) {
+      if (price) {
+        setPriceReq({
+          productId: productId,
+          capacityId: price.capacityId,
+          price: price.price,
+          createUserId: price.createUserId,
+          updateUserId: price.updateUserId,
+        });
+      } else {
+        setPriceReq((prev) => ({
+          ...prev,
+          productId,
+          capacityId,
+        }));
+      }
     } else {
-      setPriceReq((prev) => ({
-        ...prev,
-        productId,
-        capacityId,
-      }));
-    }
-  }, [price, productId, capacityId]);
-
-  useEffect(() => {
-    if (!isOpen) {
       clearForm();
     }
-  }, [isOpen]);
+  }, [isOpen, price, productId, capacityId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

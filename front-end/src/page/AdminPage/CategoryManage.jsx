@@ -25,10 +25,12 @@ function CategoryManage() {
   const handleCategoryAddedOrUpdated = (message) => {
     fetchCategories();
     setIsCategoryModalOpen(false);
-    setSelectedCategory(null);
     SuccessToastify(message);
   };
-
+const handleAddCategory = () => {
+  setSelectedCategory(null);
+  setIsCategoryModalOpen(true);
+}
   const handleEditCategory = (category) => {
     setSelectedCategory(category);
     setIsCategoryModalOpen(true);
@@ -47,7 +49,7 @@ function CategoryManage() {
   return (
     <div className="categoryCrud">
       <h2>Categories</h2>
-      <button onClick={() => setIsCategoryModalOpen(true)} className="add-button">
+      <button onClick={() => handleAddCategory()} className="add-button">
         Add Category
       </button>
       <table className="category-table">

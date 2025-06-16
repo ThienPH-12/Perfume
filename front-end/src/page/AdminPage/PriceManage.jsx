@@ -63,8 +63,13 @@ function PriceManage() {
   const handlePriceAddedOrUpdated = (message) => {
     fetchPrices(selectedProduct);
     setIsPriceModalOpen(false);
-    setSelectedPrice(null);
+    setSelectedPrice(null); // Reset selected price
     SuccessToastify(message);
+  };
+
+  const handleAddPrice = () => {
+    setSelectedPrice(null); // Reset selected price
+    setIsPriceModalOpen(true); // Open modal for adding
   };
 
   const handleEditPrice = (price) => {
@@ -109,7 +114,7 @@ function PriceManage() {
         </select>
       </div>
       <button
-        onClick={() => setIsPriceModalOpen(true)}
+        onClick={() => handleAddPrice()}
         className="add-button"
         disabled={!selectedProduct}
       >

@@ -24,21 +24,23 @@ function CategoryModal({ isOpen, onClose, onCategoryAddedOrUpdated, category }) 
   };
 
   useEffect(() => {
-    if (category) {
-      setCategoryReq({
-        categoryId: category.categoryId,
-        category: category.category,
-        createUserId: category.createUserId,
-        updateUserId: category.updateUserId,
-      });
+    if (isOpen) {
+      if (category) {
+        setCategoryReq({
+          categoryId: category.categoryId,
+          category: category.category,
+          createUserId: category.createUserId,
+          updateUserId: category.updateUserId,
+        });
+      }
+      else {
+        clearForm();
+      }
     }
-  }, [category]);
-
-  useEffect(() => {
-    if (!isOpen) {
+    else{
       clearForm();
     }
-  }, [isOpen]);
+  }, [isOpen, category]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,24 +51,24 @@ function CategoryModal({ isOpen, onClose, onCategoryAddedOrUpdated, category }) 
     e.preventDefault();
     const token = localStorage.getItem("token");
     const decodedToken = token ? jwtDecode(token) : null;
-
+console.log(decodedToken.userId)
     if (category) {
-        setCategoryReq({ ...categoryReq, updateUserId: decodedToken.userId });
+      setCategoryReq({ ...categoryReq, updateUserId: decodedToken.userId });
     } else {
-        setCategoryReq({ ...categoryReq, createUserId: decodedToken.userId });
+      setCategoryReq({ ...categoryReq, createUserId: decodedToken.userId });
     }
 
     try {
-        if (category) {
-            await apiClient.put(apiPaths.categorySave, categoryReq);
-            onCategoryAddedOrUpdated("Category updated successfully!"); // Success message for update
-        } else {
-            await apiClient.post(apiPaths.categorySave, categoryReq);
-            onCategoryAddedOrUpdated("Category added successfully!"); // Success message for addition
-        }
-        onClose();
+      if (category) {
+        await apiClient.put(apiPaths.categorySave, categoryReq);
+        onCategoryAddedOrUpdated("Category updated successfully!"); // Success message for update
+      } else {
+        await apiClient.post(apiPaths.categorySave, categoryReq);
+        onCategoryAddedOrUpdated("Category added successfully!"); // Success message for addition
+      }
+      onClose();
     } catch (error) {
-        ErrorToastify("Error saving category: " + error); // Error message
+      ErrorToastify("Error saving category: " + error); // Error message
     }
   };
 

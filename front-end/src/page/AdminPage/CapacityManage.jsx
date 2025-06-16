@@ -25,8 +25,13 @@ function CapacityManage() {
   const handleCapacityAddedOrUpdated = (message) => {
     fetchCapacities();
     setIsCapacityModalOpen(false);
-    setSelectedCapacity(null);
+    setSelectedCapacity(null); // Reset selected capacity
     SuccessToastify(message);
+  };
+
+  const handleAddCapacity = () => {
+    setSelectedCapacity(null); // Reset selected capacity
+    setIsCapacityModalOpen(true); // Open modal for adding
   };
 
   const handleEditCapacity = (capacity) => {
@@ -47,7 +52,7 @@ function CapacityManage() {
   return (
     <div className="capacityCrud">
       <h2>Capacities</h2>
-      <button onClick={() => setIsCapacityModalOpen(true)} className="add-button">
+      <button onClick={() => handleAddCapacity()} className="add-button">
         Add Capacity
       </button>
       <table className="capacity-table">

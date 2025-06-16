@@ -66,7 +66,7 @@
       list-style: none;
       padding: 0;
 
-      li:first-child {
+      li.LogoContainer {
         display: flex;
         justify-content: flex-end;
         margin-bottom: 16px;
@@ -104,7 +104,7 @@
       color: var(--text-clr);
       display: flex;
       align-items: center;
-      gap: 1em;
+      gap: 1.5em;
     }
  
     svg {
