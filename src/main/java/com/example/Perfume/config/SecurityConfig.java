@@ -82,6 +82,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.addAllowedOrigin("http://localhost:3000"); // Corrected URL
+        corsConfig.addAllowedOrigin("https://perfume-q6dv.onrender.com"); //Deploy URL
         corsConfig.addAllowedMethod("*");
         corsConfig.addAllowedHeader("*");
         corsConfig.setAllowCredentials(true); // Add this line
