@@ -10,7 +10,6 @@ package com.example.Perfume.am;
  */
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -92,7 +91,7 @@ public class JwtUtil {
     }
 
     public boolean isTokenValid(String token, String userName) {
-        Token tokenEntity = tokenRepository.findByToken(token);
+        Token tokenEntity = tokenRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Token không tồn tại."));
         return tokenEntity != null && !isTokenExpired(token) && tokenEntity.getUserName().equals(userName);
     }
 

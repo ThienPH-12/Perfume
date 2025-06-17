@@ -59,8 +59,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                     // Validate the token against the database
-                    Token tokenEntity = tokenRepository.findByToken(jwt);
-                    if (tokenEntity != null && jwtUtil.isTokenValid(jwt, userDetails.getUsername())) {
+                    if (jwtUtil.isTokenValid(jwt, userDetails.getUsername())) {
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                                 userDetails,
                                 null,
@@ -72,14 +71,17 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                 }
 
             } catch (ExpiredJwtException ex) {
-                logger.error("JWT token has expired", ex);
-                if (jwt != null) {
-                    jwtUtil.invalidateToken(jwt);
-                }
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is expired");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"message\": \"JWT token has expired\"}");
+                SecurityContextHolder.clearContext();
+                tokenRepository.deleteByToken(jwt);
+                return; // <--- This is important!
             } catch (Exception ex) {
-                logger.error("Error occurred during JWT token validation", ex);
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"message\": \"Other error has occured\"}");
+                return; // <--- This is important!
             }
         }
         // Proceed with the next filter in the chain
