@@ -17,6 +17,8 @@ const Payment = () => {
     const shippingCost = 30000; // Default shipping cost
     const totalPrice = state.totalPrice + shippingCost - discount; // Add shipping cost and subtract discount
 
+    const FRONTEND_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3000";
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -29,8 +31,8 @@ const Payment = () => {
 
             const orderReq = {
                 description: `${state.description}`,
-                returnUrl: "http://localhost:3000/payment/success",
-                cancelUrl: "http://localhost:3000/payment/cancel",
+                returnUrl: FRONTEND_BASE_URL + "/payment/success",
+                cancelUrl: FRONTEND_BASE_URL + "/payment/cancel",
                 price: totalPrice,
                 buyerName: name,
                 buyerEmail: buyerEmail,

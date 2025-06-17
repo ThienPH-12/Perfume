@@ -11,6 +11,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,10 +44,13 @@ public class UserService {
     @Autowired
     private ConfirmationTokenService confirmationTokenService;
 
+    @Value("${frontend.base-url}")
+    private String frontendBaseUrl;
+    
     public void sendActivationEmail(User user) {
         String token =generateConfirmationToken(user);
-        String link = "http://localhost:3000/user/activateUser?token=" + token; // Updated route
-
+        // String link = "http://localhost:3000/user/activateUser?token=" + token; // Updated route dev env
+        String link = frontendBaseUrl + "/user/activateUser?token=" + token; // Updated route public
         // Use EmailConfig's JavaMailSender
         JavaMailSender javaMailSender=emailConfig.getJavaMailSender();
     try {
