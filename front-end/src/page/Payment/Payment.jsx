@@ -17,7 +17,7 @@ const Payment = () => {
     const shippingCost = 30000; // Default shipping cost
     const totalPrice = state.totalPrice + shippingCost - discount; // Add shipping cost and subtract discount
 
-    const FRONTEND_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3000";
+    const FRONTEND_BASE_URL = process.env.REACT_APP_API_BASE_URL_FE || "http://localhost:3000";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
