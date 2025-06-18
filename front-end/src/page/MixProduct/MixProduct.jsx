@@ -77,12 +77,14 @@ const MixProduct = () => {
       <div className="mix-product-page">
         <h1>FRAGRANCES</h1>
         <p className="title">MIX Nước Hoa</p>
-        <button
-          className="saved-formulas-button"
-          onClick={() => navigate("/saved-formulas")}
-        >
-          Công thức đã lưu
-        </button>
+        <div className="btnContainer">
+          <button
+            className="saved-formulas-button"
+            onClick={() => navigate("/saved-formulas")}
+          >
+            Công thức đã lưu
+          </button>
+        </div>
         <div className="container">
           {categories.map((category) => (
             <div key={category.categoryId} className="category-section">

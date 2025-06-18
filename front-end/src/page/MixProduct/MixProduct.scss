@@ -17,10 +17,21 @@
       border-radius: 5px;
     }
   }
+  .btnContainer {
+    max-width: 1000px;
+    width: 80%;
+    
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+  }
   .saved-formulas-button{
     font-weight: bold;
     width: fit-content;
-    margin:auto 295px;
     font-size: 1.5rem;
     padding: 5px;
     background-color: rgb(236, 213, 213);
