@@ -110,6 +110,7 @@ const Payment = () => {
                             type="number"
                             value={discount}
                             onChange={(e) => setDiscount(Number(e.target.value))}
+                            disabled // Disable the discount input field
                         />
                     </label>
                     <label>
