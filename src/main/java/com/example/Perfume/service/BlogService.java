@@ -10,6 +10,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.example.Perfume.jpa.entity.User;
 
 @Service
 public class BlogService {
@@ -26,7 +28,8 @@ public class BlogService {
         blog.setImageData(imageFile.getBytes());
         blog.setImageType(imageFile.getContentType());
         blog.setCreateDateTime(new Date(System.currentTimeMillis()));
-        blog.setCreateUserId(blogReq.getCreateUserId());
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        blog.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         return blogRepository.save(blog);
     }
 

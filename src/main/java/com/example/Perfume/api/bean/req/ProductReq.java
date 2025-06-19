@@ -16,8 +16,6 @@ public class ProductReq {
     private String productName;
     private String description;
     private Date expirationDate;
-    private String createUserId;
-    private String updateUserId;
     private int categoryId;
     private String potentialCus;
 
@@ -51,22 +49,6 @@ public class ProductReq {
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
-    }
-
-    public String getCreateUserId() {
-        return createUserId;
-    }
-
-    public void setCreateUserId(String createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public String getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(String updateUserId) {
-        this.updateUserId = updateUserId;
     }
 
     public int getCategoryId() {

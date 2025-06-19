@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.example.Perfume.jpa.repository.MixProductRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.example.Perfume.jpa.entity.User;
 
 @Service
 public class MixlProdService {
@@ -26,7 +28,8 @@ public class MixlProdService {
         mixProduct.setMixProdName(mixProdReq.getMixProdName());
         mixProduct.setDescription(mixProdReq.getDescription());
         mixProduct.setPotentialCus(mixProdReq.getPotentialCus());
-        mixProduct.setCreateUserId(mixProdReq.getCreateUserId());
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        mixProduct.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         mixProduct.setCreateDateTime(new Date(System.currentTimeMillis()));
         return mixProductRepository.save(mixProduct);
     }
@@ -41,7 +44,8 @@ public class MixlProdService {
         old.setMixProdName(mixProdReq.getMixProdName());
         old.setDescription(mixProdReq.getDescription());
         old.setPotentialCus(mixProdReq.getPotentialCus());
-        old.setUpdateUserId(mixProdReq.getCreateUserId());
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        old.setUpdateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         old.setUpdateDateTime(new Date(System.currentTimeMillis()));
         return mixProductRepository.save(old);
     }
