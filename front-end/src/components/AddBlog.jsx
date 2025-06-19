@@ -3,7 +3,6 @@ import { Modal, Form } from "react-bootstrap"; // Removed Toast import
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AddBlog.scss";
 import { addBlog } from "../api/apiClient";
-import {jwtDecode} from "jwt-decode";
 import { ErrorToastify } from "./Toastify"; // Fixed import
 
 function AddBlog({ isOpen, onClose, onBlogAdded }) {
@@ -11,7 +10,6 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
   const [blogReq, setBlogReq] = useState({
     blogTitle: "",
     blogContent: "",
-    createUserId: "",
   });
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
@@ -53,9 +51,8 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
     if (!validateInputs()) {
       return;
     }
-    const token = localStorage.getItem("token");
-    const decodedToken = jwtDecode(token);
-    setBlogReq({ ...blogReq, createUserId: decodedToken.userId });
+
+    setBlogReq({ ...blogReq });
 
     const formDataToSend = new FormData();
     formDataToSend.append("imageFile", image);

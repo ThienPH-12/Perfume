@@ -4,24 +4,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
 import { ErrorToastify } from "./Toastify";
-import { jwtDecode } from "jwt-decode";
 
 function CapacityModal({ isOpen, onClose, onCapacityAddedOrUpdated, capacity }) {
   const [capacityReq, setCapacityReq] = useState({
     capacityId: "",
     capacity: "",
-    defaultPrice: "", // Add defaultPrice
-    createUserId: "",
-    updateUserId: "",
+    defaultPrice: "",
   });
 
   const clearForm = () => {
     setCapacityReq({
       capacityId: "",
       capacity: "",
-      defaultPrice: "", // Clear defaultPrice
-      createUserId: "",
-      updateUserId: "",
+      defaultPrice: "",
     });
   };
 
@@ -31,9 +26,7 @@ function CapacityModal({ isOpen, onClose, onCapacityAddedOrUpdated, capacity }) 
         setCapacityReq({
           capacityId: capacity.capacityId,
           capacity: capacity.capacity,
-          defaultPrice: capacity.defaultPrice, // Set defaultPrice
-          createUserId: capacity.createUserId,
-          updateUserId: capacity.updateUserId,
+          defaultPrice: capacity.defaultPrice,
         });
       } else {
         clearForm();
@@ -56,15 +49,7 @@ function CapacityModal({ isOpen, onClose, onCapacityAddedOrUpdated, capacity }) 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = token ? jwtDecode(token) : null;
-
-    if (capacity) {
-      setCapacityReq({ ...capacityReq, updateUserId: decodedToken.userId });
-    } else {
-      setCapacityReq({ ...capacityReq, createUserId: decodedToken.userId });
-    }
-
+    
     try {
       if (capacity) {
         await apiClient.put(apiPaths.capacitySave, capacityReq);

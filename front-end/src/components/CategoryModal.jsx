@@ -4,22 +4,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
 import { ErrorToastify } from "./Toastify";
-import { jwtDecode } from "jwt-decode";
 
 function CategoryModal({ isOpen, onClose, onCategoryAddedOrUpdated, category }) {
   const [categoryReq, setCategoryReq] = useState({
     categoryId: "",
     category: "",
-    createUserId: "",
-    updateUserId: "",
   });
 
   const clearForm = () => {
     setCategoryReq({
       categoryId: "",
       category: "",
-      createUserId: "",
-      updateUserId: "",
     });
   };
 
@@ -29,8 +24,6 @@ function CategoryModal({ isOpen, onClose, onCategoryAddedOrUpdated, category }) 
         setCategoryReq({
           categoryId: category.categoryId,
           category: category.category,
-          createUserId: category.createUserId,
-          updateUserId: category.updateUserId,
         });
       }
       else {
@@ -49,15 +42,7 @@ function CategoryModal({ isOpen, onClose, onCategoryAddedOrUpdated, category }) 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = token ? jwtDecode(token) : null;
-console.log(decodedToken.userId)
-    if (category) {
-      setCategoryReq({ ...categoryReq, updateUserId: decodedToken.userId });
-    } else {
-      setCategoryReq({ ...categoryReq, createUserId: decodedToken.userId });
-    }
-
+    
     try {
       if (category) {
         await apiClient.put(apiPaths.categorySave, categoryReq);

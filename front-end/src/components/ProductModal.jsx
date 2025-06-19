@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./ProductModal.scss";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
-import { jwtDecode } from "jwt-decode";
 import { ErrorToastify } from "./Toastify";
 
 function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
@@ -13,10 +12,8 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
     productName: "",
     description: "",
     expirationDate: "",
-    createUserId: "",
-    updateUserId: "",
     categoryId: "",
-    potentialCus: "", // New field
+    potentialCus: "",
   });
   const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]); // State for categories
@@ -27,8 +24,6 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
       productName: "",
       description: "",
       expirationDate: "",
-      createUserId: "",
-      updateUserId: "",
       categoryId: "",
       potentialCus: "",
     });
@@ -43,10 +38,8 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
           productName: product.productName,
           description: product.description,
           expirationDate: product.expirationDate.split("T")[0],
-          createUserId: product.createUserId,
-          updateUserId: product.updateUserId,
           categoryId: product.categoryId || "",
-          potentialCus: product.potentialCus || "", // Populate potentialCus if available
+          potentialCus: product.potentialCus || "",
         });
       } else {
         clearForm();
@@ -75,17 +68,8 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = token ? jwtDecode(token) : null;
+    
     var message = "";
-    var Id=decodedToken.userId;
-    if (product) {
-      setProductReq({ ...productReq, updateUserId: Id });
-    } else {
-      setProductReq({ ...productReq, createUserId: Id });
-    }
-    console.log(decodedToken.userId);
-    console.log(productReq);
     const formData = new FormData();
     formData.append("imageFile", image);
     formData.append(
