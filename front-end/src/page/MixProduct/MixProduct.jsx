@@ -142,7 +142,14 @@ const MixProduct = () => {
             <button
               className="mix-button"
               disabled={selectedProducts.length < 2}
-              onClick={() => navigate("/mix-product-detail", { state: { selectedProducts } })}
+              onClick={() =>
+                navigate("/mix-product-detail", {
+                  state: {
+                    compIds: selectedProducts.map((product) => ({ productId: product.productId })), // Parse compIds
+                    mixProdName: "Sản phẩm Mix", // Add "San pham Mix" field
+                  },
+                })
+              }
             >
               Mix các mùi hương
             </button>

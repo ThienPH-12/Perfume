@@ -18,9 +18,9 @@ const MixProductDetail = () => {
     useEffect(() => {
         const fetchProductDetails = async () => {
             const details = await Promise.all(
-                compIds.map(async (product) => {
-                    const productResponse = await apiClient.get(apiPaths.getProductById(product.productId));
-                    const imageResponse = await apiClient.get(apiPaths.getProductImageById(product.productId), {
+                compIds.map(async ({ productId }) => { // Destructure productId from compIds
+                    const productResponse = await apiClient.get(apiPaths.getProductById(productId));
+                    const imageResponse = await apiClient.get(apiPaths.getProductImageById(productId), {
                         responseType: "blob",
                     });
                     const imageUrl = URL.createObjectURL(imageResponse.data);
@@ -80,7 +80,7 @@ const MixProductDetail = () => {
         const effectivePrice = selectedCapacityData.defaultPrice; // Use default price for the selected capacity
 
         const paymentData = {
-            description: "Mua ngay sản phẩm", // Updated description
+            description: "Mua ngay sản phẩm Mix", // Updated description
             totalPrice: effectivePrice * quantity, // Calculate total price
             items: [
                 {
@@ -121,8 +121,8 @@ const MixProductDetail = () => {
                 {productDetails.map((product) => (
                     <div key={product.productId} className="product-detail-card">
                         <img src={product.imageUrl} alt={product.productName} className="product-image" />
-                        <h2>{product.productName}</h2>
                         <div className="level-selection">
+                        <h2>{product.productName}</h2>
                             <label>Chọn nồng độ:</label>
                             {["Thấp", "Vừa", "Cao"].map((level) => (
                                 <button
