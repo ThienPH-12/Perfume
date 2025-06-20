@@ -174,9 +174,15 @@
       }
     }
 
-    // Product Management Styling
-    .productCrud {
-      // Styling for ProductManage page
+    // Remove old CRUD-specific styles
+    // .productCrud { ... }
+    // .categoryCrud { ... }
+    // .capacityCrud { ... }
+    // .mixProductCrud { ... }
+    // .priceCrud { ... }
+
+    // Retain shared styles for CRUD components
+    .crudContainer {
       margin-bottom: 40px;
 
       h2 {
@@ -187,14 +193,23 @@
 
       .add-button {
         margin-bottom: 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #0056b3;
+        }
       }
 
-      table {
+      .crud-table {
         width: 100%;
         border-collapse: collapse;
 
-        th,
-        td {
+        th, td {
           border: 1px solid #ddd;
           padding: 10px;
           text-align: center;
@@ -212,145 +227,6 @@
         tr:hover {
           background-color: #f1f1f1;
         }
-      }
-    }
-
-    // Category Management Styling
-    .categoryCrud {
-      // Styling for CategoryManage page
-      margin-bottom: 40px;
-
-      h2 {
-        margin-bottom: 10px;
-        font-size: 1.5rem;
-        color: #333;
-      }
-
-      .add-button {
-        margin-bottom: 20px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-
-        th,
-        td {
-          border: 1px solid #ddd;
-          padding: 10px;
-          text-align: center;
-        }
-
-        th {
-          background-color: #f4f4f4;
-          font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-          background-color: #f9f9f9;
-        }
-
-        tr:hover {
-          background-color: #f1f1f1;
-        }
-      }
-    }
-
-    // Capacity Management Styling
-    .capacityCrud {
-      // Styling for CapacityManage page
-      margin-bottom: 40px;
-
-      h2 {
-        margin-bottom: 10px;
-        font-size: 1.5rem;
-        color: #333;
-      }
-
-      .add-button {
-        margin-bottom: 20px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-
-        th,
-        td {
-          border: 1px solid #ddd;
-          padding: 10px;
-          text-align: center;
-        }
-
-        th {
-          background-color: #f4f4f4;
-          font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-          background-color: #f9f9f9;
-        }
-
-        tr:hover {
-          background-color: #f1f1f1;
-        }
-      }
-    }
-
-    // Sell Product Management Styling
-    .sellProductCrud {
-      // Styling for SellProductManage page
-      margin-bottom: 40px;
-
-      h2 {
-        margin-bottom: 10px;
-        font-size: 1.5rem;
-        color: #333;
-      }
-
-      .add-button {
-        margin-bottom: 20px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-
-        th,
-        td {
-          border: 1px solid #ddd;
-          padding: 10px;
-          text-align: center;
-        }
-
-        th {
-          background-color: #f4f4f4;
-          font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-          background-color: #f9f9f9;
-        }
-
-        tr:hover {
-          background-color: #f1f1f1;
-        }
-      }
-    }
-
-    // Add Button Styling
-    .add-button {
-      display: block;
-      width: 200px;
-      padding: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: #0056b3;
       }
     }
   }

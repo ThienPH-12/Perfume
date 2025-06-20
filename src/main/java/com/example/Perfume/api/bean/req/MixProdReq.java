@@ -1,6 +1,5 @@
 package com.example.Perfume.api.bean.req;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**

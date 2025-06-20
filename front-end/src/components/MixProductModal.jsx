@@ -106,9 +106,8 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
       compIds, // Send as a list of integers
     };
 
-    console.log("Request Payload:", requestPayload);
     try {
-      await apiClient.post(apiPaths.sellProductSave, requestPayload);
+      await apiClient.post(apiPaths.mixProductSave, requestPayload);
       SuccessToastify("Mix Product added successfully!");
       onMixProductAdded();
       onClose();
