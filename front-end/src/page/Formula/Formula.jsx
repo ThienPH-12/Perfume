@@ -1,19 +1,30 @@
-import React, { useEffect, useState } from "react";
-import "./Formula.scss"; // Import the Formula styles
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Formula.scss";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
-import { Link } from "react-router-dom";
-import { ErrorToastify } from "../../components/Toastify"; // Import Toastify
+import { ErrorToastify } from "../../components/Toastify";
 
-function Formula() {
+const Formula = () => {
   const [formulas, setFormulas] = useState([]);
+  const navigate = useNavigate();
 
   const fetchFormulas = async () => {
     try {
       const response = await apiClient.get(apiPaths.getAllMixProducts);
-      setFormulas(response.data);
+      const formulasWithImages = await Promise.all(
+        response.data.map(async (formula) => {
+          const imageResponse = await apiClient.get(
+            apiPaths.getMixProductImageByCompIds(formula.compIds),
+            { responseType: "blob" }
+          );
+          const imageUrl = URL.createObjectURL(imageResponse.data);
+          return { ...formula, imageUrl };
+        })
+      );
+      setFormulas(formulasWithImages);
     } catch (error) {
-      ErrorToastify(error.message); // Display error using Toastify
+      ErrorToastify("Error fetching formulas: " + error.message);
     }
   };
 
@@ -24,48 +35,40 @@ function Formula() {
   return (
     <div id="FormulaPage">
       <div className="formula-page">
-        <h1 className="formula-page__title">Công thức</h1>
+        <h1>FORMULAS</h1>
+        <p className="title">Công thức đề cử</p>
         <div className="formula-container">
-          <div className="grid">
-            <div className="rowCustom">
-              {formulas.length === 0 ? (
-                <h2 className="text-center no-formulas">Hiện không có công thức nào</h2>
-              ) : (
-                formulas.map((formula) => {
-                  const { id, name, description, createDateTime } = formula;
-                  return (
-                    <Link
-                      to={`/formula/${id}`}
-                      key={id}
-                      className="formula-link"
-                    >
-                      <div className="formula-item">
-                        <div className="card-body">
-                          <div>
-                            <h5 className="card-title">{name}</h5>
-                            <div style={{ width: "100%" }}>
-                              <p className="card-text">{description}</p>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="card-text">
-                              <small className="text-muted">
-                                {new Date(createDateTime).toLocaleString()}
-                              </small>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })
-              )}
-            </div>
+          <div className="formula-grid">
+            {formulas.map((formula) => (
+              <div
+                key={formula.compIds}
+                className="formula-card"
+                onClick={() =>
+                  navigate("/mix-product-detail", {
+                    state: {
+                      compIds: formula.compIds.split("-").map((id) => ({ productId: id })),
+                      mixProdName: formula.mixProdName,
+                    },
+                  })
+                }
+              >
+                <img
+                  src={formula.imageUrl}
+                  alt={formula.mixProdName}
+                  className="formula-image"
+                />
+                <h3 className="formula-name">{formula.mixProdName}</h3>
+                <div className="descBtn">mô tả</div>
+                <div className="formula-description-box">
+                  <p>{formula.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Formula;

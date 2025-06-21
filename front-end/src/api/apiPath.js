@@ -26,7 +26,8 @@ const apiPaths = {
   mixProductSave: "/mixProduct", // Updated from sellProductSave
   deleteMixProduct: (id) => `/mixProduct/${id}`, // Updated from deleteSellProduct
   getAllMixProducts: "/mixProducts", // Updated from getAllSellProducts
-  getMixProductById: (id) => `/mixProduct/${id}`, // Updated from getSellProductById
+  getMixProductImageByCompIds: (compIds) => `/mixProduct/image/${compIds}`, // New API path
+  getMixProductByCompIds: (compIds) => `/mixProduct/search?compIds=${compIds}`, // New API path
 
   priceSave: "/price", // Unified for add/update
   deletePrice:"/price",

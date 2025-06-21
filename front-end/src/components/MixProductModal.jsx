@@ -6,113 +6,118 @@ import apiPaths from "../api/apiPath";
 import { ErrorToastify, SuccessToastify } from "./Toastify";
 import "./MixProductModal.scss";
 
-function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
+function MixProductModal({ isOpen, onClose, onMixProductAddedOrUpdated, mixProduct }) {
   const [mixProdReq, setMixProdReq] = useState({
-    compIds: [], // Kept as an array of integers
+    compIds: [],
     mixProdName: "",
     description: "",
     potentialCus: "",
   });
+  const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [productsByCategory, setProductsByCategory] = useState({}); // Track products for each category
-  const [selectedCategories, setSelectedCategories] = useState([]); // Track selected categories for each mix item
+  const [productsByCategory, setProductsByCategory] = useState({});
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [mixItemCount, setMixItemCount] = useState(1);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await apiClient.get(apiPaths.getAllCategories);
-      setCategories(response.data);
-    } catch (error) {
-      ErrorToastify("Error fetching categories: " + error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([fetchCategories()]);
-    };
-    fetchData();
-  }, []);
-
-  const handleCategoryChange = async (e, index) => {
-    const categoryId = e.target.value;
-
-    if (!categoryId) {
-      // If "Select a category" is chosen, clear products for this category
-      const updatedCategories = [...selectedCategories];
-      updatedCategories[index] = "";
-      setSelectedCategories(updatedCategories);
-
-      const updatedProductsByCategory = { ...productsByCategory };
-      delete updatedProductsByCategory[index];
-      setProductsByCategory(updatedProductsByCategory);
-      return;
-    }
-
-    const updatedCategories = [...selectedCategories];
-    updatedCategories[index] = categoryId;
-    setSelectedCategories(updatedCategories);
-
-    try {
-      const response = await apiClient.get(apiPaths.getProductsByCategory(categoryId));
-      setProductsByCategory((prev) => ({
-        ...prev,
-        [index]: response.data,
-      }));
-    } catch (error) {
-      ErrorToastify("Error fetching products: " + error);
-    }
-  };
-
-  const handleMixItemCountChange = (e) => {
-    setMixItemCount(parseInt(e.target.value, 10));
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setMixProdReq({ ...mixProdReq, [name]: value });
-  };
 
   const clearForm = () => {
     setMixProdReq({
-      compIds: [], // Kept as an array of integers
+      compIds: [],
       mixProdName: "",
       description: "",
       potentialCus: "",
     });
     setSelectedCategories([]);
     setMixItemCount(1);
+    setImage(null);
   };
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      if (mixProduct) {
+        const compIds = mixProduct.compIds.split("-").map(Number);
+        setMixProdReq({
+          compIds,
+          mixProdName: mixProduct.mixProdName,
+          description: mixProduct.description,
+          potentialCus: mixProduct.potentialCus,
+        });
+        setMixItemCount(compIds.length);
+
+        const fetchPreSelectedData = async () => {
+          const updatedProductsByCategory = {};
+          for (let i = 0; i < compIds.length; i++) {
+            const categoryId = mixProduct.categoryIds[i];
+            const categoryProductsResponse = await apiClient.get(apiPaths.getProductsByCategory(categoryId));
+            updatedProductsByCategory[i] = categoryProductsResponse.data;
+          }
+          setSelectedCategories(mixProduct.categoryIds);
+          setProductsByCategory(updatedProductsByCategory);
+        };
+
+        fetchPreSelectedData();
+      } else {
+        clearForm();
+      }
+    } else {
       clearForm();
     }
-  }, [isOpen]);
+  }, [isOpen, mixProduct]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await apiClient.get(apiPaths.getAllCategories);
+        setCategories(response.data);
+      } catch (error) {
+        ErrorToastify("Error fetching categories: " + error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const handleCategoryChange = async (e, index) => {
+    const categoryId = e.target.value;
+    const updatedCategories = [...selectedCategories];
+    updatedCategories[index] = categoryId || "";
+    setSelectedCategories(updatedCategories);
+
+    if (categoryId) {
+      try {
+        const response = await apiClient.get(apiPaths.getProductsByCategory(categoryId));
+        setProductsByCategory((prev) => ({ ...prev, [index]: response.data }));
+      } catch (error) {
+        ErrorToastify("Error fetching products: " + error);
+      }
+    } else {
+      const updatedProductsByCategory = { ...productsByCategory };
+      delete updatedProductsByCategory[index];
+      setProductsByCategory(updatedProductsByCategory);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const compIds = [];
-    for (let i = 0; i < mixItemCount; i++) {
+    const compIds = Array.from({ length: mixItemCount }, (_, i) => {
       const productSelect = document.getElementById(`formProductIds${i}`);
-      if (productSelect) {
-        compIds.push(...Array.from(productSelect.selectedOptions, (option) => parseInt(option.value, 10)));
-      }
-    }
+      return productSelect ? Array.from(productSelect.selectedOptions, (option) => parseInt(option.value, 10)) : [];
+    }).flat();
 
-    const requestPayload = {
-      ...mixProdReq,
-      compIds, // Send as a list of integers
-    };
+    const formData = new FormData();
+    formData.append("imageFile", image);
+    formData.append("mixProdReq", new Blob([JSON.stringify({ ...mixProdReq, compIds })], { type: "application/json" }));
 
     try {
-      await apiClient.post(apiPaths.mixProductSave, requestPayload);
-      SuccessToastify("Mix Product added successfully!");
-      onMixProductAdded();
+      if (mixProduct) {
+        await apiClient.put(apiPaths.mixProductSave, formData);
+        SuccessToastify("Mix Product updated successfully!");
+      } else {
+        await apiClient.post(apiPaths.mixProductSave, formData);
+        SuccessToastify("Mix Product added successfully!");
+      }
+      onMixProductAddedOrUpdated();
       onClose();
     } catch (error) {
-      ErrorToastify("Error adding mix product: " + error);
+      ErrorToastify("Error saving mix product: " + error);
     }
   };
 
@@ -120,7 +125,7 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
     <Modal size="lg" show={isOpen} onHide={onClose}>
       <div id="MixProductModal">
         <Modal.Header closeButton>
-          <Modal.Title>Add Mix Product</Modal.Title>
+          <Modal.Title>{mixProduct ? "Update Mix Product" : "Add Mix Product"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -130,7 +135,7 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
                 type="text"
                 name="mixProdName"
                 value={mixProdReq.mixProdName}
-                onChange={handleChange}
+                onChange={(e) => setMixProdReq({ ...mixProdReq, mixProdName: e.target.value })}
                 required
               />
             </Form.Group>
@@ -140,7 +145,7 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
                 type="text"
                 name="description"
                 value={mixProdReq.description}
-                onChange={handleChange}
+                onChange={(e) => setMixProdReq({ ...mixProdReq, description: e.target.value })}
                 required
               />
             </Form.Group>
@@ -150,9 +155,13 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
                 type="text"
                 name="potentialCus"
                 value={mixProdReq.potentialCus}
-                onChange={handleChange}
+                onChange={(e) => setMixProdReq({ ...mixProdReq, potentialCus: e.target.value })}
                 required
               />
+            </Form.Group>
+            <Form.Group controlId="formImage">
+              <Form.Label>Image</Form.Label>
+              <Form.Control type="file" onChange={(e) => setImage(e.target.files[0])} />
             </Form.Group>
             <div className="mix-item-forms">
               {[...Array(mixItemCount)].map((_, index) => (
@@ -177,9 +186,16 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
                     <Form.Label>Products for Mix Item {index + 1}</Form.Label>
                     <Form.Control
                       as="select"
-                      multiple
+                      value={mixProdReq.compIds[index] || ""}
+                      onChange={(e) => {
+                        const updatedCompIds = [...mixProdReq.compIds];
+                        updatedCompIds[index] = parseInt(e.target.value, 10);
+                        setMixProdReq({ ...mixProdReq, compIds: updatedCompIds });
+                      }}
                       required
+                      disabled={!selectedCategories[index]} // Disable dropdown if no category is selected
                     >
+                      <option value="">Select a product</option>
                       {(productsByCategory[index] || []).map((product) => (
                         <option key={product.productId} value={product.productId}>
                           {product.productName}
@@ -195,7 +211,7 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
               <Form.Control
                 as="select"
                 value={mixItemCount}
-                onChange={handleMixItemCountChange}
+                onChange={(e) => setMixItemCount(parseInt(e.target.value, 10))}
                 required
               >
                 {[1, 2, 3, 4].map((count) => (
@@ -206,7 +222,7 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
               </Form.Control>
             </Form.Group>
             <button type="submit" className="add-button">
-              Add Mix Product
+              {mixProduct ? "Update Mix Product" : "Add Mix Product"}
             </button>
           </Form>
         </Modal.Body>

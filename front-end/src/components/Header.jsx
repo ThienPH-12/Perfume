@@ -71,9 +71,14 @@ export default function Header() {
         </div>
         <div className="link-container">
           <Link to="/about">CÂU CHUYỆN THƯƠNG HIỆU</Link>
-          <Link to="/product">SẢN PHẨM</Link>
-          <Link to="/mix-product">MIX SẢN PHẨM</Link>
-          <Link to="/formula">CÔNG THỨC</Link>
+          <div className="dropdown">
+            <span>SẢN PHẨM</span>
+            <div className="dropdown-content">
+              <Link to="/product">Tinh dầu đơn</Link>
+              <Link to="/mix-product">Mix nước hoa</Link>
+            </div>
+          </div>
+          <Link to="/formula">CÔNG THỨC ĐỀ CỬ</Link>
           <Link to="/blog">BLOG</Link>
           <Link to="/contact">LIÊN HỆ</Link>
           {isAdmin && <Link to="/admin">Admin</Link>}
