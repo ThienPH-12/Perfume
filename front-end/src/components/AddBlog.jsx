@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form } from "react-bootstrap"; // Removed Toast import
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AddBlog.scss";
-import { addBlog } from "../api/apiClient";
+import apiClient from "../api/apiClient";
 import { ErrorToastify } from "./Toastify"; // Fixed import
+import apiPaths from "../api/apiPath";
 
 function AddBlog({ isOpen, onClose, onBlogAdded }) {
   const [show, setShow] = useState(isOpen);
@@ -63,7 +64,7 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
 
     try {
       await console.log("formDataToSend", formDataToSend);
-      const response = await addBlog(formDataToSend); // Use the new function from apiClient
+      const response = apiClient.post(apiPaths.blogAdd, formDataToSend);
       onBlogAdded(response.data);
       handleClose();
     } catch (error) {

@@ -1,0 +1,99 @@
+#FormulaPage {
+  .formula-page {
+    padding: 20px;
+    background-color: #f9f9f9;
+
+    &__title {
+      font-weight: bold;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .formula-container {
+      max-width: 1210px;
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+    }
+
+    @media screen and (min-width: 850px) {
+      .grid {
+        max-width: 83.3333333333%;
+        flex-basis: 83.3333333333%;
+        margin: 0;
+        padding: 0 15px 30px;
+      }
+    }
+
+    .rowCustom {
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: -15px;
+      margin-right: -15px;
+      width: auto;
+      max-width: 1210px;
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    @media screen and (min-width: 850px) {
+      .formula-link {
+        max-width: 33.3333333333%;
+        flex-basis: 33.3333333333%;
+        margin: 10px 0;
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+
+    .formula-item {
+      height: 18rem;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 1rem;
+        color: #555;
+      }
+    }
+
+    .card-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    .card-title {
+      margin: 0 0 10px 0;
+    }
+
+    .card-text {
+      height: 3rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .no-formulas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
