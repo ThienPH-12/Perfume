@@ -5,7 +5,6 @@ public class BlogReq {
 
     private String blogTitle;
     private String blogContent;
-    private String createUserId;
  
 
     public String getBlogTitle() {
@@ -27,15 +26,6 @@ public class BlogReq {
     public BlogReq(String blogTitle, String blogContent, String createUserName) {
         this.blogTitle = blogTitle;
         this.blogContent = blogContent;
-        this.createUserId = createUserName;
-    }
-
-    public String getCreateUserId() {
-        return createUserId;
-    }
-
-    public void setCreateUserId(String createUserId) {
-        this.createUserId = createUserId;
     }
 
 }

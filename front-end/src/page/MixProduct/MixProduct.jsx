@@ -92,9 +92,9 @@ const MixProduct = () => {
                 <div className="category-box">
                   <h2 className="category-name">{category.category}</h2>
                 </div>
-                <div style={{ justifySelf: "flex-end", marginBottom: 15 }}>
-                  SeeMor
-                </div>
+                {/* <div style={{ justifySelf: "flex-end", marginBottom: 15 }}>
+                  Xem thêm
+                </div> */}
               </div>
               <div className="product-grid">
                 {products
@@ -142,7 +142,14 @@ const MixProduct = () => {
             <button
               className="mix-button"
               disabled={selectedProducts.length < 2}
-              onClick={() => navigate("/mix-product-detail", { state: { selectedProducts } })}
+              onClick={() =>
+                navigate("/mix-product-detail", {
+                  state: {
+                    compIds: selectedProducts.map((product) => ({ productId: product.productId })), // Parse compIds
+                    mixProdName: "Sản phẩm Mix", // Add "San pham Mix" field
+                  },
+                })
+              }
             >
               Mix các mùi hương
             </button>

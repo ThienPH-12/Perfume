@@ -31,6 +31,7 @@ import SavedFormulas from "../page/MixProduct/SavedFormulas.jsx"; // Import Save
 import Payment from "../page/Payment/Payment.jsx"; // Import Payment page
 import MixProductDetail from "../page/MixProduct/MixProductDetail.jsx"; // Import MixProductDetail
 import ConfirmActivated from "../page/Register/ConfirmActivated.jsx"; // Import ConfirmActivated
+import Formula from "../page/Formula/Formula.jsx"; // Import Formula
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "../utils/CartContext.jsx";
 
@@ -72,6 +73,7 @@ function AppRoute() {
         <Route path="/payment" element={<Payment />} /> {/* Add Payment route */}
         <Route path="/mix-product-detail" element={<MixProductDetail />} /> {/* Add MixProductDetail route */}
         <Route path="/user/activateUser" element={<ConfirmActivated />} /> {/* Add ConfirmActivated route */}
+        <Route path="/formula" element={<Formula />} /> {/* Add Formula route */}
         <Route
           path="/admin/*"
           element={

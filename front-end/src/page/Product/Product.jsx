@@ -51,9 +51,9 @@ const Product = () => {
                 <div className="category-box">
                   <h2 className="category-name">{category.category}</h2>
                 </div>
-                <div style={{ justifySelf: "flex-end", marginBottom: 15 }}>
-                  SeeMore
-                </div>
+                {/* <div style={{ justifySelf: "flex-end", marginBottom: 15 }}>
+                  Xem thêm
+                </div> */}
               </div>
               <div className="product-grid">
                 {products

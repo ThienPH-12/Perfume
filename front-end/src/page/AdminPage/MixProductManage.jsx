@@ -5,13 +5,13 @@ import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
 import { ErrorToastify, SuccessToastify } from "../../components/Toastify"; // Fixed import
 
-function MixProductManage() { // Updated from SellProductManage
-  const [mixProducts, setMixProducts] = useState([]); // Updated from sellProducts
+function MixProductManage() { // Updated from mixProductManage
+  const [mixProducts, setMixProducts] = useState([]); // Updated from mixProducts
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [mixProductToDelete, setMixProductToDelete] = useState(null); // Updated from sellProductToDelete
+  const [mixProductToDelete, setMixProductToDelete] = useState(null); // Updated from mixProductToDelete
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const fetchMixProducts = async () => { // Updated from fetchSellProducts
+  const fetchMixProducts = async () => { // Updated from fetchmixProducts
     try {
       const response = await apiClient.get(apiPaths.getAllMixProducts); // Updated API path
       const mixProductsWithNames = await Promise.all(
@@ -36,7 +36,7 @@ function MixProductManage() { // Updated from SellProductManage
     fetchMixProducts(); // Updated function call
   }, []);
 
-  const handleDeleteClick = (mixProductId) => { // Updated from sellProductId
+  const handleDeleteClick = (mixProductId) => { // Updated from mixProductId
     setMixProductToDelete(mixProductId); // Updated state setter
     setIsConfirmModalOpen(true);
   };
@@ -67,17 +67,17 @@ function MixProductManage() { // Updated from SellProductManage
     setIsModalOpen(false);
   };
 
-  const handleMixProductAdded = () => { // Updated from handleSellProductAdded
+  const handleMixProductAdded = () => { // Updated from handlemixProductAdded
     fetchMixProducts(); // Updated function call
   };
 
   return (
-    <div className="mixProductCrud"> {/* Updated class name */}
+    <div className="crudContainer"> {/* Updated class name */}
       <h2>Mix Products</h2> {/* Updated heading */}
       <button onClick={handleOpenModal} className="add-button">
         Add Mix Product {/* Updated button text */}
       </button>
-      <table className="mix-product-table"> {/* Updated class name */}
+      <table className="crud-table"> {/* Updated class name */}
         <thead>
           <tr>
             <th>No</th>
@@ -90,7 +90,7 @@ function MixProductManage() { // Updated from SellProductManage
           </tr>
         </thead>
         <tbody>
-          {mixProducts.map((mixProduct, index) => ( // Updated from sellProducts
+          {mixProducts.map((mixProduct, index) => ( // Updated from mixProducts
             <tr key={mixProduct.mixProdId}> {/* Updated key */}
               <td>{index + 1}</td>
               {/* Removed capacityId field */}

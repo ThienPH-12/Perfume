@@ -6,8 +6,6 @@ public class PriceReq {
     private Integer productId;
     private Integer capacityId;
     private BigDecimal price;
-    private String createUserId;
-    private String updateUserId;
 
     public Integer getProductId() {
         return productId;
@@ -31,21 +29,5 @@ public class PriceReq {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public String getCreateUserId() {
-        return createUserId;
-    }
-
-    public void setCreateUserId(String createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public String getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(String updateUserId) {
-        this.updateUserId = updateUserId;
     }
 }

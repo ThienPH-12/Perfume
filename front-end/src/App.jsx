@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import AppRoute from "./route/appRoute.jsx";
 import "./App.scss";
-
-// Import Chatbox component
 import Chatbot from "./components/Chatbot.jsx";
-// Removed import of Chatbox.scss
+import { LoadingProvider, useLoading } from "./utils/LoadingContext";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { setupInterceptors } from "./api/apiClient";
+
+function AppContent() {
+  const { setLoading } = useLoading();
+
+  useEffect(() => {
+    // Setup interceptors with setLoading
+    setupInterceptors(setLoading);
+  }, [setLoading]);
+
+  return (
+    <div id="App">
+      <AppRoute />
+      <Chatbot />
+      <LoadingSpinner />
+    </div>
+  );
+}
 
 export default function App() {
- 
   return (
-      <div id="App">
-        <AppRoute />
-       <Chatbot />
-      </div>
+    <LoadingProvider>
+      <AppContent />
+    </LoadingProvider>
   );
 }
 

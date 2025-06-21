@@ -6,6 +6,8 @@ import com.example.Perfume.jpa.entity.Product;
 import com.example.Perfume.jpa.entity.Capacity;
 import com.example.Perfume.jpa.repository.ProductRepository;
 import com.example.Perfume.jpa.repository.CapacityRepository;
+import com.example.Perfume.jpa.entity.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +34,8 @@ public class ProductService {
         product.setExpirationDate(productReq.getExpirationDate());
         product.setPotentialCus(productReq.getPotentialCus());
         product.setCreateDateTime(new Date(System.currentTimeMillis()));
-        product.setCreateUserId(productReq.getCreateUserId());
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        product.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         product.setCategoryId(productReq.getCategoryId());
         return productRepository.save(product);
     }
@@ -60,7 +63,8 @@ public class ProductService {
         old.setExpirationDate(productReq.getExpirationDate());
         old.setPotentialCus(productReq.getPotentialCus());
         old.setUpdateDateTime(new Date(System.currentTimeMillis()));
-        old.setUpdateUserId(productReq.getUpdateUserId());
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        old.setUpdateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         old.setCategoryId(productReq.getCategoryId());
         return productRepository.save(old);
     }
@@ -76,8 +80,9 @@ public class ProductService {
         Capacity capacity = new Capacity();
         capacity.setCapacity(capacityReq.getCapacity());
         capacity.setDefaultPrice(capacityReq.getDefaultPrice()); // Set defaultPrice
-        capacity.setCreateUserId(capacityReq.getCreateUserId());
         capacity.setCreateDateTime(new Date(System.currentTimeMillis())); // Set createDateTime
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        capacity.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         return capacityRepository.save(capacity);
     }
 
@@ -86,8 +91,9 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Capacity not found"));
         old.setCapacity(capacityReq.getCapacity());
         old.setDefaultPrice(capacityReq.getDefaultPrice()); // Update defaultPrice
-        old.setUpdateUserId(capacityReq.getUpdateUserId()); // Set updateUserId
         old.setUpdateDateTime(new Date(System.currentTimeMillis())); // Set updateDateTime
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        old.setUpdateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         return capacityRepository.save(old);
     }
 

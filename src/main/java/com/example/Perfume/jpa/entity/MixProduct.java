@@ -19,7 +19,7 @@ public class MixProduct extends AbstractEntity {
     @Column(name = "MixProdName")
     private String mixProdName;
 
-    @Column(name = "Description")
+    @Column(name = "Description",length=1000)
     private String description;
 
     @Column(name = "PotentialCus", length = 15)

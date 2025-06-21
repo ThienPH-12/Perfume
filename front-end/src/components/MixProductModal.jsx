@@ -4,13 +4,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
 import { ErrorToastify, SuccessToastify } from "./Toastify";
-import { jwtDecode } from "jwt-decode";
 import "./MixProductModal.scss";
 
 function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
   const [mixProdReq, setMixProdReq] = useState({
     compIds: [], // Kept as an array of integers
-    createUserId: "",
     mixProdName: "",
     description: "",
     potentialCus: "",
@@ -78,7 +76,6 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
   const clearForm = () => {
     setMixProdReq({
       compIds: [], // Kept as an array of integers
-      createUserId: "",
       mixProdName: "",
       description: "",
       potentialCus: "",
@@ -95,8 +92,6 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = token ? jwtDecode(token) : null;
 
     const compIds = [];
     for (let i = 0; i < mixItemCount; i++) {
@@ -109,12 +104,10 @@ function MixProductModal({ isOpen, onClose, onMixProductAdded }) {
     const requestPayload = {
       ...mixProdReq,
       compIds, // Send as a list of integers
-      createUserId: decodedToken.userId,
     };
 
-    console.log("Request Payload:", requestPayload);
     try {
-      await apiClient.post(apiPaths.sellProductSave, requestPayload);
+      await apiClient.post(apiPaths.mixProductSave, requestPayload);
       SuccessToastify("Mix Product added successfully!");
       onMixProductAdded();
       onClose();

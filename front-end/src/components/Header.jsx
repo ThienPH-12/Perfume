@@ -72,9 +72,10 @@ export default function Header() {
         <div className="link-container">
           <Link to="/about">CÂU CHUYỆN THƯƠNG HIỆU</Link>
           <Link to="/product">SẢN PHẨM</Link>
+          <Link to="/mix-product">MIX SẢN PHẨM</Link>
+          <Link to="/formula">CÔNG THỨC</Link>
           <Link to="/blog">BLOG</Link>
           <Link to="/contact">LIÊN HỆ</Link>
-          <Link to="/mix-product">MIX SẢN PHẨM</Link>
           {isAdmin && <Link to="/admin">Admin</Link>}
         </div>
         <div className="search-container">

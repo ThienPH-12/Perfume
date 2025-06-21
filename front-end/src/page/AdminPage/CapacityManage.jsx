@@ -50,12 +50,12 @@ function CapacityManage() {
   };
 
   return (
-    <div className="capacityCrud">
+    <div className="crudContainer"> {/* Updated class name */}
       <h2>Capacities</h2>
       <button onClick={() => handleAddCapacity()} className="add-button">
         Add Capacity
       </button>
-      <table className="capacity-table">
+      <table className="crud-table"> {/* Updated class name */}
         <thead>
           <tr>
             <th>No</th>

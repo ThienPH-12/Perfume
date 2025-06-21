@@ -4,15 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
 import { ErrorToastify } from "./Toastify";
-import { jwtDecode } from "jwt-decode";
 
 function PriceModal({ isOpen, onClose, onPriceAddedOrUpdated, price, productId, capacityId }) {
   const [priceReq, setPriceReq] = useState({
     productId: productId || "",
     capacityId: capacityId || "",
     price: "",
-    createUserId: "",
-    updateUserId: "",
   });
 
   const [capacities, setCapacities] = useState([]);
@@ -31,8 +28,6 @@ function PriceModal({ isOpen, onClose, onPriceAddedOrUpdated, price, productId, 
       productId: "",
       capacityId: "",
       price: "",
-      createUserId: "",
-      updateUserId: "",
     });
   };
 
@@ -47,8 +42,6 @@ function PriceModal({ isOpen, onClose, onPriceAddedOrUpdated, price, productId, 
           productId: productId,
           capacityId: price.capacityId,
           price: price.price,
-          createUserId: price.createUserId,
-          updateUserId: price.updateUserId,
         });
       } else {
         setPriceReq((prev) => ({
@@ -69,15 +62,10 @@ function PriceModal({ isOpen, onClose, onPriceAddedOrUpdated, price, productId, 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = token ? jwtDecode(token) : null;
 
     const updatedPriceReq = {
       ...priceReq,
-      createUserId: price ? priceReq.createUserId : decodedToken?.userId,
-      ...(price && { updateUserId: decodedToken?.userId }), // Set updateUserId only in update case
     };
-    console.log("Updated Price Request:", updatedPriceReq);
     try {
       if (price) {
         await apiClient.put(apiPaths.priceSave, updatedPriceReq);

@@ -89,7 +89,7 @@ function PriceManage() {
   };
 
   return (
-    <div className="priceCrud">
+    <div className="crudContainer"> {/* Updated class name */}
       <h2>Manage Prices</h2>
       <div className="dropdowns">
         <select onChange={handleCategoryChange} value={selectedCategory || ""}>
@@ -120,7 +120,7 @@ function PriceManage() {
       >
         Add Price
       </button>
-      <table className="price-table">
+      <table className="crud-table"> {/* Updated class name */}
         <thead>
           <tr>
             <th>Capacity</th>

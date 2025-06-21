@@ -3,9 +3,11 @@ package com.example.Perfume.service;
 import com.example.Perfume.api.bean.req.PriceReq;
 import com.example.Perfume.dto.PriceDto;
 import com.example.Perfume.jpa.entity.Price;
+import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.jpa.key.PriceId;
 import com.example.Perfume.jpa.repository.PriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,7 +25,8 @@ public class PriceService {
         PriceId priceId = new PriceId(priceReq.getProductId(), priceReq.getCapacityId());
         price.setPriceId(priceId);
         price.setPrice(priceReq.getPrice());
-        price.setCreateUserId(priceReq.getCreateUserId());
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        price.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         price.setCreateDateTime(new Date(System.currentTimeMillis())); // Set createDateTime
         return priceRepository.save(price); // Use default save method
     }
@@ -43,7 +46,8 @@ public class PriceService {
         Price old = priceRepository.findById(priceId)
                 .orElseThrow(() -> new RuntimeException("Price not found"));
         old.setPrice(priceReq.getPrice());
-        old.setUpdateUserId(priceReq.getUpdateUserId());
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        old.setUpdateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         old.setUpdateDateTime(new Date(System.currentTimeMillis())); // Set updateDateTime
         return priceRepository.save(old); // Use default save method
     }

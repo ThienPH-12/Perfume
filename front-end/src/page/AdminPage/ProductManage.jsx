@@ -87,12 +87,12 @@ function ProductManage() {
   };
 
   return (
-    <div className="productCrud">
+    <div className="crudContainer"> {/* Updated class name */}
       <h2>Products</h2>
       <button onClick={() => handleAddProduct()} className="add-button">
         Add Product
       </button>
-      <table className="product-table">
+      <table className="crud-table"> {/* Updated class name */}
         <thead>
           <tr>
             <th>No</th>

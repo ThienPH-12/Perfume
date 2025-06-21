@@ -6,6 +6,8 @@ import com.example.Perfume.jpa.repository.CategoryRepository;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.example.Perfume.jpa.entity.User;
 
 import java.util.List;
 
@@ -16,9 +18,10 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public Category addCategory(CategoryReq categoryReq) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Category category = new Category();
         category.setCategory(categoryReq.getCategory());
-        category.setCreateUserId(categoryReq.getCreateUserId());
+        category.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         category.setCreateDateTime(new Date(System.currentTimeMillis())); // Set createDateTime
         return categoryRepository.save(category);
     }
@@ -32,13 +35,14 @@ public class CategoryService {
     }
 
     public Category updateCategory(CategoryReq categoryReq) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!categoryRepository.existsById(categoryReq.getCategoryId())) {
             throw new RuntimeException("Category not found");
         }
         Category old = categoryRepository.findById(categoryReq.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
         old.setCategory(categoryReq.getCategory());
-        old.setUpdateUserId(categoryReq.getUpdateUserId());
+        old.setUpdateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         old.setUpdateDateTime(new Date(System.currentTimeMillis())); // Set updateDateTime
         return categoryRepository.save(old);
     }

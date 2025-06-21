@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form } from "react-bootstrap"; // Removed Toast import
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AddBlog.scss";
-import { addBlog } from "../api/apiClient";
-import {jwtDecode} from "jwt-decode";
+import apiClient from "../api/apiClient";
 import { ErrorToastify } from "./Toastify"; // Fixed import
+import apiPaths from "../api/apiPath";
 
 function AddBlog({ isOpen, onClose, onBlogAdded }) {
   const [show, setShow] = useState(isOpen);
   const [blogReq, setBlogReq] = useState({
     blogTitle: "",
     blogContent: "",
-    createUserId: "",
   });
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
@@ -53,9 +52,8 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
     if (!validateInputs()) {
       return;
     }
-    const token = localStorage.getItem("token");
-    const decodedToken = jwtDecode(token);
-    setBlogReq({ ...blogReq, createUserId: decodedToken.userId });
+
+    setBlogReq({ ...blogReq });
 
     const formDataToSend = new FormData();
     formDataToSend.append("imageFile", image);
@@ -66,7 +64,7 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
 
     try {
       await console.log("formDataToSend", formDataToSend);
-      const response = await addBlog(formDataToSend); // Use the new function from apiClient
+      const response = apiClient.post(apiPaths.blogAdd, formDataToSend);
       onBlogAdded(response.data);
       handleClose();
     } catch (error) {
