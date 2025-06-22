@@ -122,7 +122,7 @@ const ProductDetail = () => {
         localStorage.setItem("cart", JSON.stringify(existingCart));
         updateCartCount(); // Update cart count in context
 
-        SuccessToastify("Item added to cart successfully!");
+        SuccessToastify("Sản phẩm đã được thêm vào giỏ hàng!");
     };
 
     const handleBuyNow = (e) => {

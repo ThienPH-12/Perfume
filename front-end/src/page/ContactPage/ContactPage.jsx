@@ -20,18 +20,18 @@ const ContactPage = () => {
           <h1>THÔNG TIN LIÊN HỆ</h1>
           <p>Địa chỉ chúng tôi</p>
           <p>Km29 Đại lộ Thăng Long, huyện Thạch Thất, Hà Nội</p>
-          <p>Email: Info.shineAura@gmail.com</p>
-          <p>Điện thoại: 05111.11.111 (CSKH: 051111.11.111)</p>
+          <p>Email: Shineaura.perfume@gmail.com</p>
+          <p>Điện thoại: 0338.220.364 (CSKH: 0932.712.418)</p>
           <p>Thời gian làm việc: Thứ 2 đến Thứ 7 từ 8h đến 17h</p>
           <p>
             Nhập thông tin của bạn vào Form dưới đây để được hỗ trợ tốt nhất.
           </p>
           <form>
-            <input type="text" placeholder="Tên của bạn" />
-            <input type="text" placeholder="Số điện thoại" />
-            <input type="email" placeholder="Email" />
-            <textarea placeholder="Nội dung chi tiết..."></textarea>
-            <button type="submit">GỬI ĐI</button>
+            <input type="text" placeholder="Tên của bạn" disabled />
+            <input type="text" placeholder="Số điện thoại" disabled />
+            <input type="email" placeholder="Email" disabled />
+            <textarea placeholder="Nội dung chi tiết..." disabled></textarea>
+            <button type="submit" disabled>GỬI ĐI</button>
           </form>
         </div>
       </div>

@@ -6,23 +6,40 @@
     justify-self: center;
     padding: 20px;
     font-family: Arial, sans-serif;
+
+    @media (max-width: 850px) {
+      flex-direction: column; // Stack elements vertically on smaller screens
+    }
   }
 
   .contact-info {
     height: 90vh;
-    width:45%;
+    width: 45%;
     margin-bottom: 20px;
     border: 2px solid black; // Added black 5px border
+
+    @media (max-width: 850px) {
+      width: 100%; // Full width on smaller screens
+      height: auto; // Adjust height for better fit
+    }
   }
 
   .contact-info h1 {
     font-size: 2em;
-    margin-bottom:50px;
+    margin-bottom: 50px;
     margin-left: 10px;
+
+    @media (max-width: 850px) {
+      text-align: center; // Center-align heading on smaller screens
+    }
   }
 
   .contact-info p {
     margin-left: 10px;
+
+    @media (max-width: 850px) {
+      text-align: center; // Center-align text on smaller screens
+    }
   }
 
   .contact-info form {
@@ -33,12 +50,16 @@
 
   .contact-info input,
   .contact-info textarea {
-    width:80%;
+    width: 80%;
     margin-bottom: 10px;
     padding: 10px;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 5px;
+
+    @media (max-width: 850px) {
+      width: 90%; // Slightly wider inputs on smaller screens
+    }
   }
 
   .contact-info button {
@@ -49,6 +70,10 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+
+    @media (max-width: 850px) {
+      width: 90%; // Adjust button width for smaller screens
+    }
   }
 
   .contact-info button:hover {
@@ -59,5 +84,9 @@
   .map-container {
     width: 100%;
     max-width: 700px;
+
+    @media (max-width: 850px) {
+      max-width: 100%; // Ensure map fits smaller screens
+    }
   }
 }
