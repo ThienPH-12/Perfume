@@ -85,7 +85,7 @@ const ProductDetail = () => {
     useEffect(() => {
         fetchProductDetail();
         fetchCapacities();
-    }, [id]);
+    }, [id]); // Fetch data when the product ID changes
 
     const handleAddToCart = (e) => {
         e.preventDefault();

@@ -44,7 +44,17 @@ function BlogDetail() { // Rename component to BlogDetail
         className="blog-detail__image"
       />
       <div className="blog-detail__content">
-        <p>{blogContent}</p>
+        {blogContent.split("\n").map((line, index) => (
+          <p key={index}>
+            {line.split(/(\*\*.*?\*\*)/).map((part, i) =>
+              part.startsWith("**") && part.endsWith("**") ? (
+                <strong key={i}>{part.slice(2, -2)}</strong>
+              ) : (
+                part
+              )
+            )}
+          </p>
+        ))}
         <p className="blog-detail__date">
           <small className="text-muted">
             {new Date(createDateTime).toLocaleString()}

@@ -5,7 +5,7 @@ public class BlogReq {
 
     private String blogTitle;
     private String blogContent;
- 
+    private Integer blogId; // Rename id to blogId
 
     public String getBlogTitle() {
         return blogTitle;
@@ -23,9 +23,18 @@ public class BlogReq {
         this.blogContent = blogContent;
     }
 
-    public BlogReq(String blogTitle, String blogContent, String createUserName) {
+    public Integer getBlogId() {
+        return blogId;
+    }
+
+    public void setBlogId(Integer blogId) {
+        this.blogId = blogId;
+    }
+
+    public BlogReq(String blogTitle, String blogContent, Integer blogId) {
         this.blogTitle = blogTitle;
         this.blogContent = blogContent;
+        this.blogId = blogId;
     }
 
 }

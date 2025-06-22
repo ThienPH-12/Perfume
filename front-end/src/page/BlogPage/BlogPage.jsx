@@ -1,30 +1,18 @@
 import React, { useEffect, useState } from "react";
-import AddBlog from "../../components/AddBlog";
 import "./BlogPage.scss"; // Import the BlogPage styles
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
 import { Link } from "react-router-dom";
-import { ErrorToastify, SuccessToastify } from "../../components/Toastify"; // Import Toastify
+import { ErrorToastify } from "../../components/Toastify"; // Import Toastify
 
 function BlogPage() {
   const [data, setData] = useState([]);
   const [blogs, setBlogs] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const token = localStorage.getItem("token");
 
   const fetchBlogs = async () => {
     try {
       const response = await apiClient.get(apiPaths.blogs);
       setData(response.data);
-    } catch (error) {
-      ErrorToastify(error.message); // Display error using Toastify
-    }
-  };
-
-  const handleAddBlog = async (newBlog) => {
-    try {
-      SuccessToastify("Thêm Blog thành công!"); // Display success toast
-      await fetchBlogs(); // Refresh blog list
     } catch (error) {
       ErrorToastify(error.message); // Display error using Toastify
     }
@@ -69,29 +57,10 @@ function BlogPage() {
     }
   }, [data]);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div id="BlogPage">
       <div className="blog-page">
         <h1 className="blog-page__title">Blog</h1>
-        <div className="btnContainer">
-          {token && (
-            <button onClick={handleOpenModal} className="add-button">
-              Thêm mới Blog
-            </button>
-          )}</div>
-        <AddBlog
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          onBlogAdded={handleAddBlog}
-        />
         <div className="blog-container">
           <div className="grid">
             <div className="rowCustom">
@@ -122,7 +91,7 @@ function BlogPage() {
                           <div>
                             <h5 className="card-title">{blogTitle}</h5>
                             <div style={{ width: "100%" }}>
-                              <p className="card-text">{blogContent}</p>
+                              <p className="card-text">{blogContent.substring(0, 100)}</p>
                             </div>
                           </div>
                           <div>

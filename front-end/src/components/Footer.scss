@@ -5,7 +5,7 @@
   background-color: #f8f8f8;
   // Ensure footer content does not overlap with page content
   padding-bottom: 60px;
-  height:15vh;
+  height: 15vh;
 
   .footer-section {
     flex: 1;
@@ -21,18 +21,17 @@
 
     .social-icons {
       display: flex;
-      gap: 10px;
+      justify-content: center;
 
       img {
-        width: 24px;
-        height: 24px;
+        width: 48px;
+        height: 36px;
       }
     }
   }
 }
 
 .footer-fixed {
-
   bottom: auto;
   width: 100%;
   z-index: 1000; // Ensure it stays above other content

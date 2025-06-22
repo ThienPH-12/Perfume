@@ -38,78 +38,119 @@
     margin-right: auto;
   }
 
-  .formula-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-
+  @media screen and (min-width: 550px) {
+    .formula-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+      width: 100%;
+      max-width: 100%;
+      -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+      position: relative;
+      margin: 0;
+      padding: 0 15px 30px;
+    }
+  }
+  @media screen and (min-width: 550px) {
     .formula-card {
-      position: relative; // Added for positioning the description box
-      background-color: #fff;
+      width: 100%;
+      max-width: 100%;
       border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 15px;
+      border-radius: 16px;
       text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s;
-
-      &:hover {
-        transform: scale(1.05);
+      background-color: #f8fbfc;
+      box-shadow: 0 15px 4px rgba(0, 0, 0, 0.1);
+      @media screen and (min-width: 850px) {
+        max-width: 32%;
+        -ms-flex-preferred-size: 32%;
+        flex-basis: 32%;
       }
-
+      @media screen and (max-width: 850px) and (min-width: 550px) {
+        max-width: 48%;
+        -ms-flex-preferred-size: 48%;
+        flex-basis: 50%;
+      }
       .formula-image {
-        width: 100%;
-        height: 150px;
         object-fit: cover;
-        border-radius: 5px;
-        margin-bottom: 10px;
+        aspect-ratio: 1 / 1; // Maintain square aspect ratio
+        width: 100%; // Ensure responsiveness
+        height: auto;
+        max-height: 350px;
+        max-width: 350px;
+        object-position: 50% 50%;
+        border-radius: 16px;
+        padding: 10px;
+        &:hover {
+          transition: filter 0.6s, opacity 0.6s, transform 0.6s, box-shadow 0.3s,
+            -webkit-filter 0.6s, -webkit-transform 0.6s, -webkit-box-shadow 0.3s;
+        }
       }
-
-      .formula-name {
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin: 0;
-        color: #333;
-      }
-
       .descBtn {
         position: absolute;
-        bottom: -15px; // Moved further down
-        right: 10px; // Align to the right
-        background-color: black;
-        color: white;
-        font-size: 0.8rem;
+        bottom: 10px;
+        left: 10px;
+        background-color: #f0f0f0;
         padding: 5px 10px;
-        border-radius: 3px;
-        cursor: pointer;
-        z-index: 2;
-      }
-
-      .formula-description {
-        font-size: 1rem;
-        color: #555;
-        margin-top: 10px;
-      }
-
-      .formula-description-box {
-        display: none; // Hidden by default
-        position: absolute; // Position below the card
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: #f9f9f9; // Light background
-        color: #333;
-        border: 1px solid #ddd;
         border-radius: 5px;
-        padding: 10px;
-        box-sizing: border-box;
-        text-align: center;
-        z-index: 1;
+        cursor: pointer;
       }
-
-      .descBtn:hover + .formula-description-box {
-        display: block; // Show the description box when hovering over the "mô tả" button
+      .formula-description-box {
+        margin-top: 10px;
+        p {
+          font-size: 14px;
+          color: #555;
+        }
       }
     }
+  }
+
+  .formula-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+  }
+
+  .descBtn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .formula-description {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 10px;
+  }
+
+  .formula-description-box {
+    display: none; // Hidden by default
+    position: absolute; // Position below the card
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #f9f9f9; // Light background
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 1;
+    margin-top: 10px;
+    p {
+      font-size: 14px;
+      color: #555;
+    }
+  }
+
+  .descBtn:hover + .formula-description-box {
+    display: block; // Show the description box when hovering over the "mô tả" button
   }
 }

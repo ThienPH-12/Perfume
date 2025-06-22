@@ -28,16 +28,16 @@ public class Blog extends AbstractEntity {
     @Column(name = "BlogTitle", length = 100)
     private String blogTitle;
 
-    @Column(name = "BlogContent")
+    @Column(name = "BlogContent", length = 1000)
     private String blogContent;
 
     @Column(name = "ImageName", length = 50)
     private String imageName;
-    
+
     @Column(name = "ImageType", length = 50)
     private String imageType;
     @Lob
-    @Column(name = "ImageData",length=100000)
+    @Column(name = "ImageData", length = 100000)
     private byte[] imageData;
 
     public Blog() {
@@ -99,6 +99,5 @@ public class Blog extends AbstractEntity {
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
     }
-    
 
 }

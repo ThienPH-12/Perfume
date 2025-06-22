@@ -20,6 +20,10 @@ public class BlogService {
     private BlogRepository blogRepository;
 
     public Blog addBlog(BlogReq blogReq, MultipartFile imageFile) throws IOException {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can add blogs.");
+        }
         // Logic to save blog and image
         Blog blog = new Blog();
         blog.setBlogTitle(blogReq.getBlogTitle());
@@ -28,8 +32,7 @@ public class BlogService {
         blog.setImageData(imageFile.getBytes());
         blog.setImageType(imageFile.getContentType());
         blog.setCreateDateTime(new Date(System.currentTimeMillis()));
-        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        blog.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
+        blog.setCreateUserId(String.valueOf(userContext.getUserId()));
         return blogRepository.save(blog);
     }
 
@@ -39,5 +42,32 @@ public class BlogService {
 
     public List<Blog> getAllBlogs() {
         return blogRepository.findAll();
+    }
+
+    public Blog updateBlog(BlogReq blogReq, MultipartFile imageFile) throws Exception {
+        Blog existingBlog = blogRepository.findById(blogReq.getBlogId()).orElseThrow(() -> new Exception("Blog not found"));
+        
+        existingBlog.setBlogTitle(blogReq.getBlogTitle());
+        existingBlog.setBlogContent(blogReq.getBlogContent());
+        // Update image if provided
+        if (imageFile != null && !imageFile.isEmpty()) {
+            existingBlog.setImageData(imageFile.getBytes());
+            existingBlog.setImageType(imageFile.getContentType());
+        }
+        // Set update metadata
+        existingBlog.setUpdateDateTime(new Date(System.currentTimeMillis()));
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        existingBlog.setUpdateUserId(String.valueOf(userContext.getUserId()));
+
+        return blogRepository.save(existingBlog);
+    }
+
+    public void deleteBlog(int id) throws Exception {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can delete blogs.");
+        }
+        Blog existingBlog = blogRepository.findById(id).orElseThrow(() -> new Exception("Blog not found"));
+        blogRepository.delete(existingBlog);
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.PageRequest;
 
 @Service
 public class ProductService {
@@ -106,5 +107,13 @@ public class ProductService {
 
     public List<Capacity> getAllCapacities() {
         return capacityRepository.findAll();
+    }
+
+    public List<Product> getTwoLatestProducts() {
+        return productRepository.findLatestProducts(PageRequest.of(0, 2));
+    }
+
+    public List<Product> getProductsByPotentialCus(String potentialCus) {
+        return productRepository.findByPotentialCus(potentialCus);
     }
 }

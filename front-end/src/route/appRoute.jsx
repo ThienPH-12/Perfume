@@ -32,6 +32,7 @@ import Payment from "../page/Payment/Payment.jsx"; // Import Payment page
 import MixProductDetail from "../page/MixProduct/MixProductDetail.jsx"; // Import MixProductDetail
 import ConfirmActivated from "../page/Register/ConfirmActivated.jsx"; // Import ConfirmActivated
 import Formula from "../page/Formula/Formula.jsx"; // Import Formula
+import BlogManage from "../page/AdminPage/BlogManage.jsx"; // Import BlogManage
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "../utils/CartContext.jsx";
 
@@ -87,6 +88,7 @@ function AppRoute() {
           <Route path="products" element={<ProductManage />} /> {/* Matches /admin/products */}
           <Route path="mix-products" element={<MixProductManage />} /> {/* Updated from sell-products */}
           <Route path="prices" element={<PriceManage />} /> {/* Matches /admin/prices */}
+          <Route path="blogs" element={<BlogManage />} /> {/* Add BlogManage route */}
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

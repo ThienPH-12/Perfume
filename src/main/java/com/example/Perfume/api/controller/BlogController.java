@@ -23,10 +23,10 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
-    @PostMapping("/blog/add")
-    public ResponseEntity<?> addBlog(@RequestPart BlogReq blogReq,@RequestPart MultipartFile imageFile) {
+    @PostMapping("/blog")
+    public ResponseEntity<?> addBlog(@RequestPart BlogReq blogReq, @RequestPart MultipartFile imageFile) {
         try {
-            Blog blog = blogService.addBlog(blogReq,imageFile);
+            Blog blog = blogService.addBlog(blogReq, imageFile);
             return new ResponseEntity<>(blog, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,6 +58,16 @@ public class BlogController {
             return new ResponseEntity<>(blog, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/blog")
+    public ResponseEntity<?> updateBlog(@RequestPart BlogReq blogReq, @RequestPart(required = false) MultipartFile imageFile) {
+        try {
+            Blog updatedBlog = blogService.updateBlog(blogReq, imageFile);
+            return new ResponseEntity<>(updatedBlog, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
