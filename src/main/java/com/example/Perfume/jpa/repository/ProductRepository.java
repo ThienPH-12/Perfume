@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
@@ -23,4 +24,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Override
     Optional<Product> findById(Integer id);
+
+    @Query("SELECT p FROM Product p ORDER BY p.createDateTime DESC")
+    List<Product> findLatestProducts(Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.potentialCus LIKE %:potentialCus%")
+    List<Product> findByPotentialCus(@Param("potentialCus") String potentialCus);
 }

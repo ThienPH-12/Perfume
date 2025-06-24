@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
 import "./MixProductDetail.scss"; // Import CSS for styling
-import { SuccessToastify ,ErrorToastify} from "../../components/Toastify"; // Import SuccessToastify
+import { SuccessToastify, ErrorToastify } from "../../components/Toastify"; // Import SuccessToastify
+import { CartContext } from "../../utils/CartContext";
 
 const MixProductDetail = () => {
     const { state } = useLocation();
@@ -14,6 +15,7 @@ const MixProductDetail = () => {
     const [levels, setLevels] = useState({});
     const [selectedCapacity, setSelectedCapacity] = useState(""); // Add state for global capacity selection
     const [quantity, setQuantity] = useState(1); // Add state for quantity
+    const { updateCartCount } = useContext(CartContext);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -66,7 +68,8 @@ const MixProductDetail = () => {
         };
         mixCart.push(newMixItem);
         localStorage.setItem("mixCart", JSON.stringify(mixCart));
-        SuccessToastify("Item added to mix cart successfully!");
+        updateCartCount(); // Update cart count in context
+        SuccessToastify("Sản phẩm đã được thêm vào giỏ hàng!");
     };
 
     const handleBuyNow = () => {
@@ -122,7 +125,7 @@ const MixProductDetail = () => {
                     <div key={product.productId} className="product-detail-card">
                         <img src={product.imageUrl} alt={product.productName} className="product-image" />
                         <div className="level-selection">
-                        <h2>{product.productName}</h2>
+                            <h2>{product.productName}</h2>
                             <label>Chọn nồng độ:</label>
                             {["Thấp", "Vừa", "Cao"].map((level) => (
                                 <button

@@ -69,6 +69,12 @@ const Login = () => {
               autoComplete="current-password"
             />
           </div>
+          <div className="register-link">
+            <span>Chưa có tài khoản? </span>
+            <a href="/register" style={{ color: "#007bff", textDecoration: "none" }}>
+              Đăng ký
+            </a>
+          </div>
           <button className="button" type="submit">
             Đăng nhập
           </button>

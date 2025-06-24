@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -18,9 +20,9 @@ public class MixProductController {
     private MixlProdService mixProdService;
 
     @PostMapping("/mixProduct")
-    public ResponseEntity<?> addMixProduct(@RequestBody MixProdReq mixProdReq) {
+    public ResponseEntity<?> addMixProduct(@RequestPart MixProdReq mixProdReq, @RequestPart MultipartFile imageFile) {
         try {
-            MixProduct savedMixProduct = mixProdService.addMixProduct(mixProdReq);
+            MixProduct savedMixProduct = mixProdService.addMixProduct(mixProdReq, imageFile);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedMixProduct);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -28,9 +30,9 @@ public class MixProductController {
     }
 
     @PutMapping("/mixProduct")
-    public ResponseEntity<?> updateMixProduct(@RequestBody MixProdReq mixProdReq) {
+    public ResponseEntity<?> updateMixProduct(@RequestPart MixProdReq mixProdReq, @RequestPart MultipartFile imageFile) {
         try {
-            MixProduct updatedMixProduct = mixProdService.updateMixProduct(mixProdReq);
+            MixProduct updatedMixProduct = mixProdService.updateMixProduct(mixProdReq, imageFile);
             return ResponseEntity.ok(updatedMixProduct);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -51,6 +53,16 @@ public class MixProductController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/mixProduct/image/{compIds}")
+    public ResponseEntity<byte[]> getImageByCompIds(@PathVariable String compIds) {
+        MixProduct mixProduct = mixProdService.getMixProductById(compIds);
+        byte[] imageFile = mixProduct.getImageData();
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(mixProduct.getImageType()))
+                .body(imageFile);
     }
 
     @DeleteMapping("/mixProduct")

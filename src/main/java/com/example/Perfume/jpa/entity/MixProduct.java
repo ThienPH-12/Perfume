@@ -3,6 +3,7 @@ package com.example.Perfume.jpa.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 /**
@@ -19,11 +20,21 @@ public class MixProduct extends AbstractEntity {
     @Column(name = "MixProdName")
     private String mixProdName;
 
-    @Column(name = "Description",length=1000)
+    @Column(name = "Description", length = 1000)
     private String description;
 
     @Column(name = "PotentialCus", length = 15)
     private String potentialCus;
+
+    @Column(name = "ImageName", length = 50)
+    private String imageName;
+
+    @Column(name = "ImageType", length = 50)
+    private String imageType;
+
+    @Lob
+    @Column(name = "ImageData", length = 100000)
+    private byte[] imageData;
 
     // Getters and Setters
     public String getCompIds() {
@@ -56,5 +67,29 @@ public class MixProduct extends AbstractEntity {
 
     public void setPotentialCus(String potentialCus) {
         this.potentialCus = potentialCus;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 }

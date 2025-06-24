@@ -62,12 +62,14 @@ const Product = () => {
                     <div
                       key={product.productId}
                       className="product-card"
-                      onClick={() => navigate(`/product/${product.productId}`)} // Navigate on click
+                      onClick={() => navigate(`/product/${product.productId}`)} // Navigate to ProductDetail
                     >
                       <img
                         src={product.imageUrl}
                         alt={product.productName}
                         className="product-image"
+                        width="350"
+                        height="350"
                       />
                       <h3 className="product-name">{product.productName}</h3>
                       <p className="product-price">{product.price}</p>

@@ -62,6 +62,12 @@ function AdminPage() {
               </div>
             </ul>
           </li>
+          <li>
+            <Link to="/admin/blogs">
+              <PcDisplayHorizontal style={{ height: 24 }} />
+              <span>Blog</span>
+            </Link>
+          </li>
         </ul>
       </nav>
       <div className="content">

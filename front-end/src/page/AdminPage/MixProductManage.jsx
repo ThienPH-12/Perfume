@@ -1,123 +1,153 @@
 import React, { useState, useEffect } from "react";
 import ConfirmModal from "../../components/ConfirmModal";
-import MixProductModal from "../../components/MixProductModal"; // Updated import
+import MixProductModal from "../../components/MixProductModal";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
-import { ErrorToastify, SuccessToastify } from "../../components/Toastify"; // Fixed import
+import { ErrorToastify, SuccessToastify } from "../../components/Toastify";
 
-function MixProductManage() { // Updated from mixProductManage
-  const [mixProducts, setMixProducts] = useState([]); // Updated from mixProducts
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [mixProductToDelete, setMixProductToDelete] = useState(null); // Updated from mixProductToDelete
+function MixProductManage() {
+  const [mixProducts, setMixProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMixProduct, setSelectedMixProduct] = useState(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [mixProductToDelete, setMixProductToDelete] = useState(null);
 
-  const fetchMixProducts = async () => { // Updated from fetchmixProducts
+  const fetchMixProducts = async () => {
     try {
-      const response = await apiClient.get(apiPaths.getAllMixProducts); // Updated API path
-      const mixProductsWithNames = await Promise.all(
+      const response = await apiClient.get(apiPaths.getAllMixProducts);
+      const mixProductsWithDetails = await Promise.all(
         response.data.map(async (mixProduct) => {
-          const compIds = mixProduct.compIds.split("-").map(Number); // Convert string to list of integers
-          const productNames = await Promise.all(
+          const compIds = mixProduct.compIds.split("-").map(Number);
+          const productDetails = await Promise.all(
             compIds.map(async (compId) => {
               const productResponse = await apiClient.get(apiPaths.getProductById(compId));
-              return productResponse.data.productName;
+              return {
+                productName: productResponse.data.productName,
+                categoryId: productResponse.data.categoryId,
+              };
             })
           );
-          return { ...mixProduct, productNames };
+
+          const productNames = productDetails.map((detail) => detail.productName);
+          const categoryIds = productDetails.map((detail) => detail.categoryId);
+
+          // Fetch the image for the mix product
+          const imageResponse = await apiClient.get(
+            apiPaths.getMixProductImageByCompIds(mixProduct.compIds),
+            { responseType: "blob" }
+          );
+          const imageUrl = URL.createObjectURL(imageResponse.data);
+
+          return { ...mixProduct, productNames, categoryIds, imageUrl }; // Include imageUrl
         })
       );
-      setMixProducts(mixProductsWithNames);
+      setMixProducts(mixProductsWithDetails);
     } catch (error) {
-      ErrorToastify("Error fetching mix products: " + error); // Updated error message
+      ErrorToastify("Error fetching mix products: " + error);
     }
   };
 
   useEffect(() => {
-    fetchMixProducts(); // Updated function call
+    fetchMixProducts();
   }, []);
 
-  const handleDeleteClick = (mixProductId) => { // Updated from mixProductId
-    setMixProductToDelete(mixProductId); // Updated state setter
-    setIsConfirmModalOpen(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    try {
-      await apiClient.delete(apiPaths.deleteMixProduct(mixProductToDelete)); // Updated API path
-      setMixProducts(mixProducts.filter((mp) => mp.mixProdId !== mixProductToDelete)); // Updated state setter
-      SuccessToastify("Mix Product deleted successfully"); // Updated success message
-    } catch (error) {
-      ErrorToastify("Error deleting mix product: " + error); // Updated error message
-    } finally {
-      setIsConfirmModalOpen(false);
-      setMixProductToDelete(null); // Updated state setter
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setIsConfirmModalOpen(false);
-    setMixProductToDelete(null); // Updated state setter
-  };
-
-  const handleOpenModal = () => {
+  const handleOpenModal = (mixProduct = null) => {
+    setSelectedMixProduct(mixProduct);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setSelectedMixProduct(null);
   };
 
-  const handleMixProductAdded = () => { // Updated from handlemixProductAdded
-    fetchMixProducts(); // Updated function call
+  const handleMixProductAddedOrUpdated = (message) => {
+    fetchMixProducts();
+    setIsModalOpen(false);
+    setSelectedMixProduct(null);
+    SuccessToastify(message);
+  };
+
+  const handleDeleteClick = (mixProductId) => {
+    setMixProductToDelete(mixProductId);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await apiClient.delete(apiPaths.deleteMixProduct(mixProductToDelete));
+      setMixProducts(mixProducts.filter((mp) => mp.mixProdId !== mixProductToDelete));
+      SuccessToastify("Mix Product deleted successfully");
+    } catch (error) {
+      ErrorToastify("Error deleting mix product: " + error);
+    } finally {
+      setIsConfirmModalOpen(false);
+      setMixProductToDelete(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsConfirmModalOpen(false);
+    setMixProductToDelete(null);
   };
 
   return (
-    <div className="crudContainer"> {/* Updated class name */}
-      <h2>Mix Products</h2> {/* Updated heading */}
-      <button onClick={handleOpenModal} className="add-button">
-        Add Mix Product {/* Updated button text */}
+    <div className="crudContainer">
+      <h2>Mix Products</h2>
+      <button onClick={() => handleOpenModal()} className="add-button">
+        Add Mix Product
       </button>
-      <table className="crud-table"> {/* Updated class name */}
+      <table className="crud-table">
         <thead>
           <tr>
             <th>No</th>
-            {/* Removed capacityId column */}
-            <th>Mix Product Name</th> {/* New field */}
-            <th>Description</th> {/* New field */}
-            <th>Potential Customer</th> {/* New field */}
-            <th>Product Names</th> {/* New field */}
+            <th>Image</th>
+            <th>Mix Product Name</th>
+            <th>Description</th>
+            <th>Potential Customer</th>
+            <th>Product Names</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {mixProducts.map((mixProduct, index) => ( // Updated from mixProducts
-            <tr key={mixProduct.mixProdId}> {/* Updated key */}
+          {mixProducts.map((mixProduct, index) => (
+            <tr key={mixProduct.mixProdId}>
               <td>{index + 1}</td>
-              {/* Removed capacityId field */}
-              <td>{mixProduct.mixProdName}</td> {/* New field */}
-              <td>{mixProduct.description}</td> {/* New field */}
-              <td>{mixProduct.potentialCus}</td> {/* New field */}
-              <td>{mixProduct.productNames.join(", ")}</td> {/* Display product names as a list */}
               <td>
-                <button onClick={() => handleDeleteClick(mixProduct.mixProdId)}>Delete</button> {/* Updated ID */}
+                <img
+                  src={mixProduct.imageUrl}
+                  alt={mixProduct.mixProdName}
+                  style={{ height: 400, width: 400 }} // Updated styling to match ProductManage
+                  className="product-image"
+                />
+              </td>
+              <td>{mixProduct.mixProdName}</td>
+              <td>{mixProduct.description}</td>
+              <td>{mixProduct.potentialCus}</td>
+              <td>{mixProduct.productNames.join(", ")}</td>
+              <td>
+                <button onClick={() => handleOpenModal(mixProduct)}>Edit</button>
+                <button onClick={() => handleDeleteClick(mixProduct.mixProdId)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <ConfirmModal
-        isOpen={isConfirmModalOpen}
-        message="Are you sure you want to delete this mix product?" // Updated message
-        onConfirm={handleConfirmDelete}
-        onCancel={handleCancelDelete}
-      />
       <MixProductModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        onMixProductAdded={handleMixProductAdded} // Updated callback
+        onMixProductAddedOrUpdated={handleMixProductAddedOrUpdated}
+        mixProduct={selectedMixProduct}
+        categoryIds={selectedMixProduct?.categoryIds || []} // Pass categoryIds to the modal
+      />
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        message="Are you sure you want to delete this mix product?"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
       />
     </div>
   );
 }
 
-export default MixProductManage; // Updated export
+export default MixProductManage;

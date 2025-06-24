@@ -189,3 +189,30 @@
 .chat-form .message-input:valid~button{
   display: block;
 }
+@media (max-width:550px) {
+  .chatbot-toggler{
+    right:20px;
+    bottom:20px;
+  }
+  
+  .chatbot-popup{
+    left:0;
+    bottom:0;
+    height:100%;
+    border-radius: 0;
+    width: 100%;
+    z-index: 12;
+    .chat-header {
+      padding: 12px 15px;
+    }
+  }
+  .chat-body {
+    height: calc(90% - 55px);
+    padding: 25px 15px;
+  }
+
+  .chat-footer  {
+    padding: 10px 15px 15px;
+  }
+  
+}

@@ -127,4 +127,24 @@ public class ProductController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/products/latest")
+    public ResponseEntity<?> getTwoLatestProducts() {
+        try {
+            List<Product> products = productService.getTwoLatestProducts();
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/products/potentialCus/{potentialCus}")
+    public ResponseEntity<?> getProductsByPotentialCus(@PathVariable String potentialCus) {
+        try {
+            List<Product> products = productService.getProductsByPotentialCus(potentialCus);
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

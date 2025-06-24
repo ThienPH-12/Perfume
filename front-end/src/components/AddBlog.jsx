@@ -1,31 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form } from "react-bootstrap"; // Removed Toast import
+import { Modal, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AddBlog.scss";
 import apiClient from "../api/apiClient";
-import { ErrorToastify } from "./Toastify"; // Fixed import
+import { ErrorToastify } from "./Toastify";
 import apiPaths from "../api/apiPath";
 
-function AddBlog({ isOpen, onClose, onBlogAdded }) {
-  const [show, setShow] = useState(isOpen);
+function AddBlog({ isOpen, onClose, onBlogAddedOrUpdated, blog }) {
   const [blogReq, setBlogReq] = useState({
+    blogId: null,
     blogTitle: "",
     blogContent: "",
   });
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    setBlogReq({ ...blogReq, [e.target.name]: e.target.value });
+  const clearForm = () => {
+    setBlogReq({
+      blogId: null,
+      blogTitle: "",
+      blogContent: "",
+    });
+    setImage(null);
+    setErrors({});
   };
 
   useEffect(() => {
-    setShow(isOpen);
-  }, [isOpen]);
+    if (isOpen) {
+      if (blog) {
+        setBlogReq({
+          blogId: blog.blogId,
+          blogTitle: blog.blogTitle,
+          blogContent: blog.blogContent,
+        });
+      } else {
+        clearForm();
+      }
+    } else {
+      clearForm();
+    }
+  }, [isOpen, blog]);
 
-  const handleClose = () => {
-    setShow(false);
-    onClose();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setBlogReq({ ...blogReq, [name]: value });
   };
 
   const validateInputs = () => {
@@ -40,7 +58,7 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
     } else if (blogReq.blogContent.split(" ").length < 150) {
       newErrors.blogContent = "Content must have at least 150 words.";
     }
-    if (!image) {
+    if (!image && !blog) {
       newErrors.imageFile = "Image cannot be blank.";
     }
     setErrors(newErrors);
@@ -53,88 +71,91 @@ function AddBlog({ isOpen, onClose, onBlogAdded }) {
       return;
     }
 
-    setBlogReq({ ...blogReq });
-
     const formDataToSend = new FormData();
-    formDataToSend.append("imageFile", image);
+    if (image) {
+      formDataToSend.append("imageFile", image);
+    }
     formDataToSend.append(
       "blogReq",
       new Blob([JSON.stringify(blogReq)], { type: "application/json" })
     );
 
     try {
-      await console.log("formDataToSend", formDataToSend);
-      const response = apiClient.post(apiPaths.blogAdd, formDataToSend);
-      onBlogAdded(response.data);
-      handleClose();
+      if (blog) {
+        await apiClient.put(apiPaths.blogSave, formDataToSend);
+        onBlogAddedOrUpdated("Blog updated successfully!");
+      } else {
+        await apiClient.post(apiPaths.blogSave, formDataToSend);
+        onBlogAddedOrUpdated("Blog added successfully!");
+      }
+      onClose();
     } catch (error) {
-      ErrorToastify("There was an error when adding the blog:"+error);
+      ErrorToastify("Error saving blog: " + error);
     }
   };
 
   return (
-    <>
-      <Modal size="xl" show={show} onHide={handleClose}>
-        <div id="AddBlog">
-          <Modal.Header closeButton>
-            <Modal.Title>Thêm BLog Mới</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="formBlogTitle">
-                <Form.Label>Tiêu đề</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter blog title"
-                  name="blogTitle"
-                  value={blogReq.blogTitle}
-                  onChange={handleChange}
-                  isInvalid={!!errors.blogTitle}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.blogTitle}
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId="formBlogContent">
-                <Form.Label>Nội dung</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={10}
-                  placeholder="Enter blog content"
-                  name="blogContent"
-                  value={blogReq.blogContent}
-                  onChange={handleChange}
-                  isInvalid={!!errors.blogContent}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.blogContent}
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId="formBlogImage">
-                <Form.Label>Hình ảnh</Form.Label>
-                <Form.Control
-                  type="file"
-                  name="imageFile"
-                  onChange={(e) => setImage(e.target.files[0])}
-                  isInvalid={!!errors.imageFile}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.imageFile}
-                </Form.Control.Feedback>
-              </Form.Group>
-              <button className="add-button" type="submit">
-                Xác nhận
-              </button>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <button className="add-button" onClick={handleClose}>
-              Đóng
+    <Modal size="xl" show={isOpen} onHide={onClose}>
+      <div id="AddBlog">
+        <Modal.Header closeButton>
+          <Modal.Title>{blog ? "Edit Blog" : "Add Blog"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Control type="hidden" name="blogId" value={blogReq.blogId || ""} />
+            <Form.Group controlId="formBlogTitle">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter blog title"
+                name="blogTitle"
+                value={blogReq.blogTitle}
+                onChange={handleChange}
+                isInvalid={!!errors.blogTitle}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.blogTitle}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="formBlogContent">
+              <Form.Label>Content</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={10}
+                placeholder="Enter blog content"
+                name="blogContent"
+                value={blogReq.blogContent}
+                onChange={handleChange}
+                isInvalid={!!errors.blogContent}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.blogContent}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="formBlogImage">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="file"
+                name="imageFile"
+                onChange={(e) => setImage(e.target.files[0])}
+                isInvalid={!!errors.imageFile}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.imageFile}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <button className="add-button" type="submit">
+              {blog ? "Update" : "Add"}
             </button>
-          </Modal.Footer>
-        </div>
-      </Modal>
-    </>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="add-button" onClick={onClose}>
+            Close
+          </button>
+        </Modal.Footer>
+      </div>
+    </Modal>
   );
 }
 

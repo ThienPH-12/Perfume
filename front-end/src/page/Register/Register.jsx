@@ -23,18 +23,12 @@ const Register = () => {
   };
 
   const validateInputs = () => {
-    if (!credentials.username.trim()) {
-      ErrorToastify("Tên không được để trống.");
-    }
-    if (!credentials.email.trim() || !/\S+@\S+\.\S+/.test(credentials.email)) {
-      ErrorToastify("Email không hợp lệ.");
-    }
-    if (!credentials.password.trim() || credentials.password.length < 6) {
-      ErrorToastify("Mật khẩu phải có ít nhất 6 ký tự.");
-    }
-    if (!credentials.gender) {
-      ErrorToastify("Vui lòng chọn giới tính.");
-    }
+    if (!credentials.username.trim()) return "Tên không được để trống.";
+    if (!credentials.email.trim() || !/\S+@\S+\.\S+/.test(credentials.email))
+      return "Email không hợp lệ.";
+    if (!credentials.password.trim() || credentials.password.length < 6)
+      return "Mật khẩu phải có ít nhất 6 ký tự.";
+    if (!credentials.gender) return "Vui lòng chọn giới tính.";
     return null;
   };
 
@@ -42,6 +36,7 @@ const Register = () => {
     e.preventDefault();
     const validationError = validateInputs();
     if (validationError) {
+      ErrorToastify(validationError);
       return;
     }
     try {
@@ -103,6 +98,12 @@ const Register = () => {
               />
               Nữ
             </label>
+          </div>
+          <div className="login-link">
+            <span>Đã có tài khoản? </span>
+            <a href="/login" style={{ color: "#007bff", textDecoration: "none" }}>
+              Đăng nhập
+            </a>
           </div>
           <button type="submit" className="register-button">
             Đăng ký

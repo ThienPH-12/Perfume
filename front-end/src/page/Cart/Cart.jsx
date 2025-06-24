@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react"; // Added useContext
 import { useNavigate } from "react-router-dom";
 import "./Cart.scss";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
 import { ErrorToastify } from "../../components/Toastify";
+import { CartContext } from "../../utils/CartContext"; // Import CartContext
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [mixCartItems, setMixCartItems] = useState([]); // State for mixCart items
   const [capacities, setCapacities] = useState([]); // State for capacities
   const navigate = useNavigate(); // Add navigation hook
+  const { updateCartCount } = useContext(CartContext); // Access updateCartCount from context
 
   const fetchCartItems = async () => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -133,6 +135,7 @@ const Cart = () => {
     setCartItems((prevItems) => {
       const updatedItems = prevItems.filter((_, i) => i !== index); // Remove the item at the specified index
       localStorage.setItem("cart", JSON.stringify(updatedItems)); // Update local storage
+      updateCartCount(); // Update cart count in context
       return updatedItems;
     });
   };
@@ -173,6 +176,7 @@ const handleDeleteMixItem = (index) => {
     setMixCartItems((prevItems) => {
         const updatedItems = prevItems.filter((_, i) => i !== index); // Remove the item at the specified index
         localStorage.setItem("mixCart", JSON.stringify(updatedItems)); // Update local storage
+        updateCartCount(); // Update cart count in context
         return updatedItems;
     });
 };

@@ -47,14 +47,17 @@ public class SecurityConfig {
             "/api/capacities",
             "/api/products",
             "/api/mixProducts",
+            "/api/blog/image/**",
+            "/api/product/image/**",
+            "/api/mixProduct/image/**",
             "/api/price/search",
             "/api/product/search/**",
-            "/api/product/image/**",
             "/api/blog/search/**",
-            "/api/blog/image/**",
             "/api/price/list/**",
             "/api/createPayment",
-            "/api/order/**"
+            "/api/order/**",
+            "/api/products/latest", // Added new API
+            "/api/products/potentialCus/**" // Added new API
         };
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors().and()

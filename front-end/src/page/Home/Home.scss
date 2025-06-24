@@ -11,7 +11,7 @@
       object-fit: cover;
     }
   }
-  .section{
+  .section {
     padding: 20px;
     width: 65%;
     display: flex;
@@ -25,7 +25,7 @@
   }
   .section2 {
     padding: 20px;
-    border: 10px solid rgb(250, 249, 245);    ;
+    border: 10px solid rgb(250, 249, 245);
     width: 65%;
     display: flex;
     flex-direction: column;
@@ -105,6 +105,102 @@
         p {
           margin: 5px 0;
         }
+      }
+    }
+  }
+
+  .latest-products-section {
+    margin-top: 70px; // Add separation from the section above
+
+    .latest-products-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .latest-product-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 100px;
+
+      &.row-reverse {
+        flex-direction: row-reverse;
+      }
+
+      .latest-product-image {
+        max-width: 550px;
+        max-height: 550px;
+        aspect-ratio: 1 / 1; // Maintain square aspect ratio
+        object-fit: cover;
+        object-position: 50% 50%;
+        width: 50%; // Ensure responsiveness
+        height: auto;
+        margin-right: 20px;
+      }
+
+      .latest-product-description {
+        max-width: 550px;
+        object-fit: cover;
+        aspect-ratio: 1 / 1; // Maintain square aspect ratio
+        width: 100%; // Ensure responsiveness
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        font-size: 16px;
+        color: #333;
+        text-align: start; // Align text to the start
+
+        .product-title {
+          font-size: 1.5rem;
+          font-weight: bold;
+          margin-bottom: 50px;
+        }
+      }
+    }
+  }
+
+  .faq-section {
+    margin: 100px;
+    width:75%;
+    @media screen and (max-width: 850px) {
+      width: 90%; // Adjust width for smaller screens
+      
+    }
+    border-radius: 20px;
+    border: 5px solid; // Set border width
+    border-image: linear-gradient(to right, rgb(139, 139, 139), white) 1; // Add gradient border
+    h2 {
+      font-weight: bold;
+      width: 100%;
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+
+    .faq-item {
+      text-align: center;
+      margin-bottom: 20px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 10px;
+      color: black;
+      width: 100%; // Full width for better responsiveness
+      max-width: 800px; // Limit maximum width for better responsiveness
+      margin: 10px auto;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); // Smoother transition
+
+      h4 {
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 1.2rem; // Slightly larger font size for the question
+      }
+
+      p {
+        display: none;
+        margin-top: 10px;
+        width: 100%; // Match the width of the question div
+        font-size: 1rem; // Slightly larger font size for the answer
       }
     }
   }
