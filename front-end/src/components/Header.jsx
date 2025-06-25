@@ -8,24 +8,38 @@ import apiPaths from "../api/apiPath";
 import { Bag, Search,PersonCircle } from "react-bootstrap-icons";
 import { CartContext } from "../utils/CartContext";
 
-function AuthIcons({ user, handleLogout, navigate, cartCount }) {
+function AuthIcons({ user, handleLogout, navigate, cartCount, closeSidebar }) {
   return (
     <>
       {user ? (
         <div className="auth-logged-in">
           <span className="username">Chào mừng {user.sub}!</span>
-          <button className="buttonCus" onClick={handleLogout}>
+          <button
+            className="buttonCus"
+            onClick={(e) => {
+              handleLogout(e);
+              closeSidebar && closeSidebar();
+            }}
+          >
             Đăng xuất
           </button>
         </div>
       ) : (
         <PersonCircle
           className="person-icon"
-          onClick={() => navigate("/login")}
+          onClick={() => {
+            navigate("/login");
+            closeSidebar && closeSidebar();
+          }}
           style={{ fontSize: "1.5rem", cursor: "pointer", color: "azure" }}
         />
       )}
-      <Link to="/cart">
+      <Link
+        to="/cart"
+        onClick={() => {
+          closeSidebar && closeSidebar();
+        }}
+      >
         <div className="cart-icon-container">
           <Bag className="cart-icon" />
           <span className="cart-count">{cartCount}</span>
@@ -183,6 +197,7 @@ export default function Header() {
             handleLogout={handleLogout}
             navigate={navigate}
             cartCount={cartCount}
+            closeSidebar={() => setIsSidebarOpen(false)}
           />
         </div>
       </div>

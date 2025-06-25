@@ -174,6 +174,12 @@ const ProductDetail = () => {
                 </div>
                 <div className="product-detail-info">
                     <p className="product-name">{product.productName}</p>
+                    <div className="product-detail-mobile-image">
+                    <img
+                        src={product.imageUrl}
+                        alt={product.productName}
+                    />
+                </div>
                     <p className="product-description">{product.description}</p>
                     <div className="item-selection">
                         <label>Chọn dung tích:</label>
@@ -205,7 +211,7 @@ const ProductDetail = () => {
                     </div>
                     {priceRef.current !== null && <p className="product-price">Price: {formatPrice(priceRef.current)}</p>}
                     <div className="quantity-selection">
-                        <label>Quantity:</label>
+                        <label>Số lượng:</label>
                         <div className="quantity-buttons">
                             <button className="quantity-button" onClick={handleDecreaseQuantity}>-</button>
                             <span className="quantity-display" >{quantity}</span>

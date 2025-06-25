@@ -1,44 +1,55 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./About.scss";
 import Logo from "./logo.png";
 import Img2 from "./about2.jpg";
 
 export default function About() {
+  useEffect(() => {
+    const elements = document.querySelectorAll(".article, img");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1 } // Trigger when 10% of the element is visible
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect(); // Cleanup observer on component unmount
+  }, []);
+
   return (
     <div id="About" className="container" style={{ marginTop: "50px" }}>
       <div className="article">
-        <h2>VỀ CHÚNG TÔI </h2>{" "}
+        <h2>VỀ CHÚNG TÔI</h2>
         <p>
           Câu Chuyện Thương Hiệu Shine Aura – Hương Thơm, Cá Tính, Dấu Ấn Riêng
           Shine Aura ra đời từ một niềm tin rằng mỗi con người đều có một "hào
           quang" độc nhất – một phong cách, một cảm xúc, một bản sắc riêng không
           trộn lẫn. Và hương thơm chính là cách tinh tế nhất để khắc họa dấu ấn
-          ấy. 
-          ✨ Từ đam mê cá nhân đến thương hiệu nước hoa DIY Chúng tôi bắt
+          ấy. ✨ Từ đam mê cá nhân đến thương hiệu nước hoa DIY Chúng tôi bắt
           đầu từ niềm yêu thích với nước hoa – không chỉ là một mùi hương, mà là
           một trải nghiệm, một nghệ thuật, một câu chuyện. Nhưng thay vì tìm
           kiếm một mùi hương mang dấu ấn cá nhân – một thứ độc nhất vô nhị, phản
           ánh phong cách và cảm xúc riêng của mỗi người.
         </p>
       </div>
-      <div></div>
       <img
         src={Logo}
-        style={{
-          width: "100%",
-          height: "600px",
-          objectFit: "cover",
-          padding: "5px",
-          margin: "0",
-        }}
+        className="about-image"
         alt=""
       />
       <div className="article">
-      <h2> VISION</h2>{" "}
+        <h2>VISION</h2>
         <p>
-         Mong muốn mang đến cho khách hàng sản phẩm nước hoa mang mùi
-          hương độc nhất, unique, thể hiện rõ ràng tính cách, cá tính của người
-          sử dụng. Motivation: Hiện nay, hầu hết người dùng nước hoa chỉ có thể
+          Mong muốn mang đến cho khách hàng sản phẩm nước hoa mang mùi hương
+          độc nhất, unique, thể hiện rõ ràng tính cách, cá tính của người sử
+          dụng. Motivation: Hiện nay, hầu hết người dùng nước hoa chỉ có thể
           lựa chọn từ những mùi hương có sẵn, chưa có nhiều cơ hội để tự tạo ra
           hương thơm theo sở thích cá nhân. Shine Aura mong muốn mang đến cho
           người dùng trải nghiệm độc đáo, nơi họ có thể tự do pha trộn và sáng
@@ -46,14 +57,8 @@ export default function About() {
         </p>
       </div>
       <img
-        src={Img2 }
-        style={{
-          width: "100%",
-          height: "600px",
-          objectFit: "cover",
-          padding: "5px",
-          margin: "0",
-        }}
+        src={Img2}
+        className="about-image"
         alt=""
       />
     </div>

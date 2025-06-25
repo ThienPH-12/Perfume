@@ -8,7 +8,8 @@
     font-family: Arial, sans-serif;
 
     @media (max-width: 850px) {
-      flex-direction: column; // Stack elements vertically on smaller screens
+      width: 100%; // Full width on smaller screens
+    display: inline-block;
     }
   }
 
@@ -85,8 +86,15 @@
     width: 100%;
     max-width: 700px;
 
-    @media (max-width: 850px) {
-      max-width: 100%; // Ensure map fits smaller screens
+    .map-iframe {
+      width: 600px;
+      height: 850px;
+      border: 0;
+
+      @media (max-width: 850px) {
+        width: 100%; // Adjust iframe width for smaller screens
+        height:600px; // Adjust iframe height for better fit
+      }
     }
   }
 }

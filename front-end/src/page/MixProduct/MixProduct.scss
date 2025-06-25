@@ -18,9 +18,10 @@
     }
   }
   .btnContainer {
-    max-width: 1000px;
-    width: 80%;
-    
+    max-width: 1210px;
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 15px;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     -ms-flex-flow: row wrap;
@@ -75,39 +76,29 @@
     border: 1px solid #ddd;
     border-radius: 10px;
   }
-
+  
   .category-name {
-    font-size: 25px;
-    font-weight: bold;
     margin: 5px;
     text-align: start;
   }
 
   .product-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: flex-start;
-    width: 100%;
-    max-width: 100%;
-    flex-basis: 100%;
+    position: relative;
     margin: 0;
     padding: 0 15px 30px;
-  }
-
-  @media screen and (min-width: 550px) {
-    .product-grid {
+    width: 100%;
+    max-width: 100%;
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+    @media screen and (min-width: 550px) {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       justify-content: flex-start;
-      width: 100%;
-      max-width: 100%;
-      -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-      position: relative;
-      margin: 0;
-      padding: 0 15px 30px;
+    }
+    @media screen and (max-width: 549px) {
+      overflow: auto;
+      white-space: nowrap;
     }
   }
 
@@ -129,11 +120,17 @@
       -ms-flex-preferred-size: 48%;
       flex-basis: 50%;
     }
+    @media screen and (max-width: 550px) {
+      display: inline-block;
+    }
     .product-image {
       object-fit: cover;
       aspect-ratio: 1 / 1; // Maintain square aspect ratio
       width: 100%; // Ensure responsiveness
       height: auto;
+      @media screen and (max-width: 850px) {
+        width: 90%;
+      }
       max-height: 350px;
       max-width: 350px;
       object-position: 50% 50%;
@@ -175,6 +172,10 @@
   .selected-products-grid {
     display: flex;
     align-items: center;
+    @media screen and (max-width: 850px) {
+      display:block;
+      
+    }
   }
 
   .selected-product-card {
@@ -192,7 +193,13 @@
     height: 50px;
     object-fit: cover;
   }
-
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
   .mix-button {
     width: fit-content;
     height: fit-content;
@@ -215,7 +222,6 @@
   .save-formula-button{
     width: fit-content;
     height: fit-content;
-    margin-left: 50px;
     padding: 10px 20px;
     background-color: #14090e;
     border-radius: 5px;

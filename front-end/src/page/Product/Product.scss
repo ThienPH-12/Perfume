@@ -55,8 +55,6 @@
   }
 
   .category-name {
-    font-size: 25px;
-    font-weight: bold;
     margin: 5px;
     text-align: start;
   }
@@ -66,20 +64,25 @@
     align-items: flex-start;
     margin-bottom: 30px;
   }
-
-  @media screen and (min-width: 550px) {
-    .product-grid {
+  
+  .product-grid {
+    position: relative;
+    margin: 0;
+    padding: 0 15px 30px;
+    width: 100%;
+    max-width: 100%;
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+    @media screen and (min-width: 550px) {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       justify-content: flex-start;
-      width: 100%;
-      max-width: 100%;
-      -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-      position: relative;
-      margin: 0;
-      padding: 0 15px 30px;
+    }
+    @media screen and (max-width: 549px) {
+      overflow: auto;
+      white-space: nowrap;
+  
     }
   }
   .product-card {
@@ -90,7 +93,7 @@
     text-align: center;
     background-color: #f8fbfc;
     box-shadow: 0 15px 4px rgba(0, 0, 0, 0.1);
-    @media screen and (min-width: 850px) {
+    @media screen and (min-width: 851px) {
       max-width: 32%;
       -ms-flex-preferred-size: 32%;
       flex-basis: 32%;
@@ -100,11 +103,17 @@
       -ms-flex-preferred-size: 48%;
       flex-basis: 50%;
     }
+    @media screen and (max-width: 550px) {
+      display: inline-block;
+    }
     .product-image {
       object-fit: cover;
       aspect-ratio: 1 / 1; // Maintain square aspect ratio
       width: 100%; // Ensure responsiveness
       height: auto;
+      @media screen and (max-width: 850px) {
+        width: 90%;
+      }
       max-height: 350px;
       max-width: 350px;
       object-position: 50% 50%;

@@ -155,7 +155,6 @@
     }
   }
   .sidebar {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -166,12 +165,17 @@
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     z-index: 11;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
+    opacity: 0; /* Hidden by default */
+    transform: translateX(-100%); /* Start off-screen to the left */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Smooth sliding and fading */
 
     &.open {
-      display: block;
-      transform: translateX(0);
+      opacity: 1; /* Fully visible when open */
+      transform: translateX(0); /* Slide into view */
+    }
+
+    &.close {
+      transform: translateX(-100%); /* Slide back to the left */
     }
 
     a {

@@ -25,15 +25,15 @@ const Cart = () => {
           const imageUrl = URL.createObjectURL(imageResponse.data);
           const priceId = { productId: item.productId, capacityId: item.capacityId };
           const capacity = capacities.find((cap) => cap.capacityId === item.capacityId);
-          const priceResponse = await apiClient.post(apiPaths.getPriceById, priceId ); 
+          const priceResponse = await apiClient.post(apiPaths.getPriceById, priceId);
           const price = priceResponse.data; // Fetch price directly from API response
 
           // Return the updated cart item with the image URL, price, and capacity
-          return { 
-            ...item, 
-            imageUrl, 
-            price, 
-            capacity: capacity ? capacity.capacity : "Unknown" 
+          return {
+            ...item,
+            imageUrl,
+            price,
+            capacity: capacity ? capacity.capacity : "Unknown"
           };
         } catch (error) {
           ErrorToastify(`Failed to fetch data for productId ${item.productId}: ${error.message}`);
@@ -49,32 +49,32 @@ const Cart = () => {
   const fetchMixCartItems = async () => {
     const storedMixCart = JSON.parse(localStorage.getItem("mixCart")) || [];
     const updatedMixCart = await Promise.all(
-        storedMixCart.map(async (item) => {
-            try {
-                const productDetails = await Promise.all(
-                    item.compIds.map(async (comp) => {
-                        const productResponse = await apiClient.get(apiPaths.getProductById(comp.productId));
-                        return { productId: comp.productId, productName: productResponse.data.productName };
-                    })
-                );
+      storedMixCart.map(async (item) => {
+        try {
+          const productDetails = await Promise.all(
+            item.compIds.map(async (comp) => {
+              const productResponse = await apiClient.get(apiPaths.getProductById(comp.productId));
+              return { productId: comp.productId, productName: productResponse.data.productName };
+            })
+          );
 
-                const capacity = capacities.find((cap) => cap.capacityId == item.capacityId);
+          const capacity = capacities.find((cap) => cap.capacityId == item.capacityId);
 
-                return {
-                    ...item,
-                    capacity:capacity?capacity.capacity : "Unknown",
-                    price: capacity ? capacity.defaultPrice : 0,
-                    productDetails, // Include product details with productName
-                };
-            } catch (error) {
-                console.error("Error fetching product details for mixCart:", error);
-                return { ...item, productDetails: [] }; // Fallback if fetch fails
-            }
-        })
+          return {
+            ...item,
+            capacity: capacity ? capacity.capacity : "Unknown",
+            price: capacity ? capacity.defaultPrice : 0,
+            productDetails, // Include product details with productName
+          };
+        } catch (error) {
+          console.error("Error fetching product details for mixCart:", error);
+          return { ...item, productDetails: [] }; // Fallback if fetch fails
+        }
+      })
     );
 
     setMixCartItems(updatedMixCart);
-};
+  };
 
   const fetchCapacities = async () => {
     try {
@@ -142,66 +142,66 @@ const Cart = () => {
 
   const handleIncreaseMixQuantity = (index) => {
     setMixCartItems((prevItems) => {
-        const updatedItems = prevItems.map((item, i) => {
-            if (i === index) {
-                const updatedItem = { ...item };
-                updatedItem.quantity += 1; // Increase quantity
-                return updatedItem;
-            }
-            return item;
-        });
+      const updatedItems = prevItems.map((item, i) => {
+        if (i === index) {
+          const updatedItem = { ...item };
+          updatedItem.quantity += 1; // Increase quantity
+          return updatedItem;
+        }
+        return item;
+      });
 
-        localStorage.setItem("mixCart", JSON.stringify(updatedItems));
-        return updatedItems;
+      localStorage.setItem("mixCart", JSON.stringify(updatedItems));
+      return updatedItems;
     });
-};
+  };
 
-const handleDecreaseMixQuantity = (index) => {
+  const handleDecreaseMixQuantity = (index) => {
     setMixCartItems((prevItems) => {
-        const updatedItems = prevItems.map((item, i) => {
-            if (i === index && item.quantity > 1) {
-                const updatedItem = { ...item };
-                updatedItem.quantity -= 1; // Decrease quantity
-                return updatedItem;
-            }
-            return item;
-        });
+      const updatedItems = prevItems.map((item, i) => {
+        if (i === index && item.quantity > 1) {
+          const updatedItem = { ...item };
+          updatedItem.quantity -= 1; // Decrease quantity
+          return updatedItem;
+        }
+        return item;
+      });
 
-        localStorage.setItem("mixCart", JSON.stringify(updatedItems));
-        return updatedItems;
+      localStorage.setItem("mixCart", JSON.stringify(updatedItems));
+      return updatedItems;
     });
-};
+  };
 
-const handleDeleteMixItem = (index) => {
+  const handleDeleteMixItem = (index) => {
     setMixCartItems((prevItems) => {
-        const updatedItems = prevItems.filter((_, i) => i !== index); // Remove the item at the specified index
-        localStorage.setItem("mixCart", JSON.stringify(updatedItems)); // Update local storage
-        updateCartCount(); // Update cart count in context
-        return updatedItems;
+      const updatedItems = prevItems.filter((_, i) => i !== index); // Remove the item at the specified index
+      localStorage.setItem("mixCart", JSON.stringify(updatedItems)); // Update local storage
+      updateCartCount(); // Update cart count in context
+      return updatedItems;
     });
-};
+  };
 
-const handleCheckout = () => {
-  const totalPrice = calculateTotalPrice();
-  navigate("/payment", {
-    state: {
-      description: "Mua theo giỏ hàng", // Updated description
-      totalPrice: totalPrice,
-      items: [
-        ...cartItems.map((item) => ({
-          name: `${item.productName} ${item.capacity}ml ${item.level}`,
-          price: item.price,
-          quantity: item.quantity,
-        })),
-        ...mixCartItems.map((item) => ({
-          name: `${item.mixProdName} (${item.productDetails.map((p) => p.productName).join("-")}) (${Object.values(item.levels).join("-")}) ${item.capacity}ml`,
-          price: item.price,
-          quantity: item.quantity,
-        })),
-      ], // Include items with quantity
-    },
-  });
-};
+  const handleCheckout = () => {
+    const totalPrice = calculateTotalPrice();
+    navigate("/payment", {
+      state: {
+        description: "Mua theo giỏ hàng", // Updated description
+        totalPrice: totalPrice,
+        items: [
+          ...cartItems.map((item) => ({
+            name: `${item.productName} ${item.capacity}ml ${item.level}`,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          ...mixCartItems.map((item) => ({
+            name: `${item.mixProdName} (${item.productDetails.map((p) => p.productName).join("-")}) (${Object.values(item.levels).join("-")}) ${item.capacity}ml`,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+        ], // Include items with quantity
+      },
+    });
+  };
 
   useEffect(() => {
     fetchCapacities();
@@ -237,9 +237,6 @@ const handleCheckout = () => {
                 <p>Dung tích: {item.capacity} ml</p>
               </div>
               <div className="cart-col">
-                <p>Level: {item.level}</p> {/* Display the level */}
-              </div>
-              <div className="cart-col">
                 <p>
                   Giá: {item.price ? `${item.price * item.quantity} VND` : "Price not available"}
                 </p>
@@ -261,6 +258,9 @@ const handleCheckout = () => {
                     +
                   </button>
                 </div>
+              </div>
+              <div className="cart-col">
+                <p>Level: {item.level}</p> {/* Display the level */}
               </div>
               <div className="cart-col">
                 <button
@@ -291,25 +291,25 @@ const handleCheckout = () => {
                 <p>Giá: {item.price ? `${item.price * item.quantity} VND` : "Price not available"}</p>
               </div>
               <div className="quantity-selection">
-                    <label>Số Lượng:</label>
-                    <div className="quantity-buttons">
-                        <button
-                            className="quantity-button"
-                            onClick={() => handleDecreaseMixQuantity(index)}
-                            disabled={item.quantity <= 1}
-                        >
-                            -
-                        </button>
-                        <span className="quantity-display">{item.quantity}</span>
-                        <button
-                            className="quantity-button"
-                            onClick={() => handleIncreaseMixQuantity(index)}
-                            disabled={item.quantity >= 10}
-                        >
-                            +
-                        </button>
-                    </div>
+                <label>Số Lượng:</label>
+                <div className="quantity-buttons">
+                  <button
+                    className="quantity-button"
+                    onClick={() => handleDecreaseMixQuantity(index)}
+                    disabled={item.quantity <= 1}
+                  >
+                    -
+                  </button>
+                  <span className="quantity-display">{item.quantity}</span>
+                  <button
+                    className="quantity-button"
+                    onClick={() => handleIncreaseMixQuantity(index)}
+                    disabled={item.quantity >= 10}
+                  >
+                    +
+                  </button>
                 </div>
+              </div>
               <div className="cart-col">
                 <p>Nồng độ:</p>
                 <ul>

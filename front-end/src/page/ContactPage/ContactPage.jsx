@@ -7,14 +7,12 @@ const ContactPage = () => {
       <div className="contact-page">
         <div className="map-container">
           <iframe
-            title="Company Location Map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.902214019322!2d105.7631013153324!3d21.0362377929178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab3c0c6b1b3d%3A0x4b1e8b8b8b8b8b8b!2sV%C4%83n%20ph%C3%B2ng%20nh%E1%BA%ADn%20h%C3%A0ng%20CODEDECO!5e0!3m2!1sen!2s!4v1634567890123!5m2!1sen!2s"
-            width="600"
-            height="850"
-            style={{ border: 0 }}
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3724.5063419425246!2d105.52271427608831!3d21.012416680632814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1750877683607!5m2!1sen!2sus"
+            title="Google Map Location"
+            className="map-iframe"
             allowFullScreen=""
-            loading="lazy"
-          ></iframe>
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
         </div>
         <div className="contact-info">
           <h1>THÔNG TIN LIÊN HỆ</h1>

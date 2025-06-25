@@ -53,57 +53,59 @@
       padding: 0 15px 30px;
     }
   }
-  @media screen and (min-width: 550px) {
-    .formula-card {
-      width: 100%;
-      max-width: 100%;
-      border: 1px solid #ddd;
+
+  .formula-card {
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    text-align: center;
+    background-color: #f8fbfc;
+    box-shadow: 0 15px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-bottom: 20px; // Ensure space for descBtn
+    @media screen and (min-width: 850px) {
+      max-width: 32%;
+      -ms-flex-preferred-size: 32%;
+      flex-basis: 32%;
+    }
+    @media screen and (max-width: 850px) and (min-width: 550px) {
+      max-width: 48%;
+      -ms-flex-preferred-size: 48%;
+      flex-basis: 50%;
+    }
+    .formula-image {
+      object-fit: cover;
+      aspect-ratio: 1 / 1; // Maintain square aspect ratio
+      width: 100%; // Ensure responsiveness
+      height: auto;
+      @media screen and (max-width: 850px) {
+        width: 90%;
+      }
+      max-height: 350px;
+      max-width: 350px;
+      object-position: 50% 50%;
       border-radius: 16px;
-      text-align: center;
-      background-color: #f8fbfc;
-      box-shadow: 0 15px 4px rgba(0, 0, 0, 0.1);
-      position: relative;
-      margin-bottom: 20px; // Ensure space for descBtn
-      @media screen and (min-width: 850px) {
-        max-width: 32%;
-        -ms-flex-preferred-size: 32%;
-        flex-basis: 32%;
+      padding: 10px;
+      &:hover {
+        transition: filter 0.6s, opacity 0.6s, transform 0.6s, box-shadow 0.3s,
+          -webkit-filter 0.6s, -webkit-transform 0.6s, -webkit-box-shadow 0.3s;
       }
-      @media screen and (max-width: 850px) and (min-width: 550px) {
-        max-width: 48%;
-        -ms-flex-preferred-size: 48%;
-        flex-basis: 50%;
-      }
-      .formula-image {
-        object-fit: cover;
-        aspect-ratio: 1 / 1; // Maintain square aspect ratio
-        width: 100%; // Ensure responsiveness
-        height: auto;
-        max-height: 350px;
-        max-width: 350px;
-        object-position: 50% 50%;
-        border-radius: 16px;
-        padding: 10px;
-        &:hover {
-          transition: filter 0.6s, opacity 0.6s, transform 0.6s, box-shadow 0.3s,
-            -webkit-filter 0.6s, -webkit-transform 0.6s, -webkit-box-shadow 0.3s;
-        }
-      }
-      .descBtn {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        background-color: #f0f0f0;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .formula-description-box {
-        margin-top: 10px;
-        p {
-          font-size: 14px;
-          color: #555;
-        }
+    }
+    .descBtn {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background-color: #f0f0f0;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .formula-description-box {
+      margin-top: 10px;
+      p {
+        font-size: 14px;
+        color: #555;
       }
     }
   }
@@ -158,5 +160,28 @@
 
   .descBtn:hover + .formula-description-box {
     display: block; // Show the description box when hovering over the "mô tả" button
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formula-grid {
+  opacity: 0; // Initially hidden
+  transform: translateY(50px); // Start position for sliding effect
+  transition: opacity 0.5s ease, transform 0.5s ease;
+
+  &.visible {
+    opacity: 1; // Fully visible
+    transform: translateY(0); // Reset transform
+    animation: slideIn 0.5s ease; // Apply sliding animation
   }
 }

@@ -25,6 +25,15 @@
       margin-left: auto;
       margin-right: auto;
       justify-content: center;
+      opacity: 0; // Initially hidden
+      transform: translateY(50px); // Start position for sliding effect
+      transition: opacity 0.5s ease, transform 0.5s ease;
+
+      &.visible {
+        opacity: 1; // Fully visible
+        transform: translateY(0); // Reset transform
+        animation: slideIn 0.5s ease; // Apply sliding animation
+      }
     }
     @media screen and (min-width: 850px) {
       .grid {
@@ -93,6 +102,7 @@
     }
 
     .card-title {
+      color:#333;
       margin: 0 0 10px 0;
     }
 
@@ -141,5 +151,16 @@
     position: absolute;
     top: 20px;
     right: 20px;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

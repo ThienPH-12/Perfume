@@ -26,71 +26,86 @@
     flex-flow: row wrap;
     margin-left: auto;
     margin-right: auto;
-    gap:20px;
+    gap: 20px;
     flex-direction: column;
   }
-  @media screen and (min-width: 550px) {
-    .product-detail-card {
-        display:flex;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
+
+  .product-detail-card {
+    display: flex;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    @media screen and (max-width: 850px) {
+      display: inline-block;
+    }
+    img.product-image {
+      object-fit: cover;
+      aspect-ratio: 1 / 1; // Maintain square aspect ratio
+      width: 100%; // Ensure responsiveness
+      height: auto;
+      @media screen and (max-width: 850px) {
+        width: 90%;
+      }
+      max-height: 350px;
+      max-width: 350px;
+      object-position: 50% 50%;
+      border-radius: 16px;
+      padding: 10px;
+      &:hover {
+        transition: filter 0.6s, opacity 0.6s, transform 0.6s, box-shadow 0.3s,
+          -webkit-filter 0.6s, -webkit-transform 0.6s, -webkit-box-shadow 0.3s;
+      }
+    }
+  }
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #555;
+  }
+
+  .capacity-selection,
+  .level-selection {
+ margin-right:auto;
+ margin-left:auto;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    select {
       width: 100%;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-      img.product-image {
-        height: 320px;
-        width: 400px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-      }
-    }
-    h2 {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      color: #555;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
     }
 
-    .capacity-selection,
-    .level-selection {
-     justify-self: center;
+    .level-button {
+      margin: 5px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-weight: bold; /* Bold text */
+      background-color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
 
-      label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #444;
+      &.active {
+        background-color: #0b0c0c;
+        color: #fff;
+        border-color: #0b0c0c;
       }
 
-      select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1rem;
-      }
-
-      .level-button {
-        margin: 5px;
-        padding: 8px 12px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background-color: #fff;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-
-        &.active {
-          background-color: #0b0c0c;
-          color: #fff;
-          border-color: #0b0c0c;
-        }
-
-        &:hover {
-          background-color: #0a0a0a;
-          color: #fff;
-        }
+      &:hover {
+        background-color: #0a0a0a;
+        color: #fff;
       }
     }
   }
