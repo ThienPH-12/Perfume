@@ -19,6 +19,9 @@ public class CategoryService {
 
     public Category addCategory(CategoryReq categoryReq) {
         User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can add categories.");
+        }
         Category category = new Category();
         category.setCategory(categoryReq.getCategory());
         category.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
@@ -36,6 +39,9 @@ public class CategoryService {
 
     public Category updateCategory(CategoryReq categoryReq) {
         User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can update categories.");
+        }
         if (!categoryRepository.existsById(categoryReq.getCategoryId())) {
             throw new RuntimeException("Category not found");
         }
@@ -48,6 +54,10 @@ public class CategoryService {
     }
 
     public void deleteCategory(int id) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can delete categories.");
+        }
         if (!categoryRepository.existsById(id)) {
             throw new RuntimeException("Category not found");
         }

@@ -26,6 +26,10 @@ public class ProductService {
     private CapacityRepository capacityRepository;
 
     public Product addProduct(ProductReq productReq, MultipartFile imageFile) throws IOException {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can add products.");
+        }
         Product product = new Product();
         product.setProductName(productReq.getProductName());
         product.setDescription(productReq.getDescription());
@@ -35,7 +39,6 @@ public class ProductService {
         product.setExpirationDate(productReq.getExpirationDate());
         product.setPotentialCus(productReq.getPotentialCus());
         product.setCreateDateTime(new Date(System.currentTimeMillis()));
-        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         product.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         product.setCategoryId(productReq.getCategoryId());
         return productRepository.save(product);
@@ -54,6 +57,10 @@ public class ProductService {
     }
 
     public Product updateProduct(ProductReq productReq, MultipartFile imageFile) throws IOException {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can update products.");
+        }
         Product old = productRepository.findById(productReq.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         old.setProductName(productReq.getProductName());
@@ -64,13 +71,16 @@ public class ProductService {
         old.setExpirationDate(productReq.getExpirationDate());
         old.setPotentialCus(productReq.getPotentialCus());
         old.setUpdateDateTime(new Date(System.currentTimeMillis()));
-        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         old.setUpdateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         old.setCategoryId(productReq.getCategoryId());
         return productRepository.save(old);
     }
 
     public void deleteProduct(int productId) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can delete products.");
+        }
         if (!productRepository.existsById(productId)) {
             throw new RuntimeException("Product not found");
         }
@@ -78,27 +88,37 @@ public class ProductService {
     }
 
     public Capacity addCapacity(CapacityReq capacityReq) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can add capacities.");
+        }
         Capacity capacity = new Capacity();
         capacity.setCapacity(capacityReq.getCapacity());
         capacity.setDefaultPrice(capacityReq.getDefaultPrice()); // Set defaultPrice
         capacity.setCreateDateTime(new Date(System.currentTimeMillis())); // Set createDateTime
-        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         capacity.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         return capacityRepository.save(capacity);
     }
 
     public Capacity updateCapacity(CapacityReq capacityReq) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can update capacities.");
+        }
         Capacity old = capacityRepository.findById(capacityReq.getCapacityId())
                 .orElseThrow(() -> new RuntimeException("Capacity not found"));
         old.setCapacity(capacityReq.getCapacity());
         old.setDefaultPrice(capacityReq.getDefaultPrice()); // Update defaultPrice
         old.setUpdateDateTime(new Date(System.currentTimeMillis())); // Set updateDateTime
-        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         old.setUpdateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         return capacityRepository.save(old);
     }
 
     public void deleteCapacity(int capacityId) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can delete capacities.");
+        }
         if (!capacityRepository.existsById(capacityId)) {
             throw new RuntimeException("Capacity not found");
         }

@@ -21,6 +21,10 @@ public class MixlProdService {
     private MixProductRepository mixProductRepository;
 
     public MixProduct addMixProduct(MixProdReq mixProdReq, MultipartFile imageFile) throws IOException {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can add mix products.");
+        }
         MixProduct mixProduct = new MixProduct();
         String sortedCompIds = mixProdReq.getCompIds().stream()
                 .sorted()
@@ -33,13 +37,16 @@ public class MixlProdService {
         mixProduct.setImageName(imageFile.getOriginalFilename());
         mixProduct.setImageType(imageFile.getContentType());
         mixProduct.setImageData(imageFile.getBytes());
-        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         mixProduct.setCreateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         mixProduct.setCreateDateTime(new Date(System.currentTimeMillis()));
         return mixProductRepository.save(mixProduct);
     }
 
     public MixProduct updateMixProduct(MixProdReq mixProdReq, MultipartFile imageFile) throws IOException {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can update mix products.");
+        }
         String sortedCompIds = mixProdReq.getCompIds().stream()
                 .sorted()
                 .map(String::valueOf)
@@ -52,7 +59,6 @@ public class MixlProdService {
         old.setImageName(imageFile.getOriginalFilename());
         old.setImageType(imageFile.getContentType());
         old.setImageData(imageFile.getBytes());
-        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         old.setUpdateUserId(String.valueOf(userContext.getUserId())); // Use String.valueOf
         old.setUpdateDateTime(new Date(System.currentTimeMillis()));
         return mixProductRepository.save(old);
@@ -68,6 +74,10 @@ public class MixlProdService {
     }
 
     public void deleteMixProduct(String compIds) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can delete mix products.");
+        }
         if (!mixProductRepository.existsById(compIds)) {
             throw new RuntimeException("MixProduct not found");
         }
