@@ -7,6 +7,7 @@ import { ErrorToastify } from "../../components/Toastify";
 
 const Formula = () => {
   const [formulas, setFormulas] = useState([]);
+  const [visibleDescriptions, setVisibleDescriptions] = useState({}); // Track visibility of descriptions
   const navigate = useNavigate();
 
   const fetchFormulas = async () => {
@@ -51,6 +52,13 @@ const Formula = () => {
     return () => observer.disconnect(); // Cleanup observer on component unmount
   }, []);
 
+  const toggleDescription = (id) => {
+    setVisibleDescriptions((prev) => ({
+      ...prev,
+      [id]: !prev[id], // Toggle visibility for the specific formula
+    }));
+  };
+
   return (
     <div id="FormulaPage">
       <div className="formula-page">
@@ -59,28 +67,36 @@ const Formula = () => {
         <div className="formula-container">
           <div className="formula-grid">
             {formulas.map((formula) => (
-              <div
-                key={formula.compIds}
-                className="formula-card"
-                onClick={() =>
-                  navigate("/mix-product-detail", {
-                    state: {
-                      compIds: formula.compIds.split("-").map((id) => ({ productId: id })),
-                      mixProdName: formula.mixProdName,
-                    },
-                  })
-                }
-              >
-                <img
-                  src={formula.imageUrl}
-                  alt={formula.mixProdName}
-                  className="formula-image"
-                />
-                <h3 className="formula-name">{formula.mixProdName}</h3>
-                <div className="descBtn">mô tả</div>
-                <div className="formula-description-box">
-                  <p>{formula.description}</p>
+              <div className="formula-card" key={formula.compIds}>
+                <div
+                  className="product-card"
+                  onClick={() =>
+                    navigate("/mix-product-detail", {
+                      state: {
+                        compIds: formula.compIds.split("-").map((id) => ({ productId: id })),
+                        mixProdName: formula.mixProdName,
+                      },
+                    })
+                  }
+                >
+                  <img
+                    src={formula.imageUrl}
+                    alt={formula.mixProdName}
+                    className="formula-image"
+                  />
+                  <h3 className="formula-name">{formula.mixProdName}</h3>
                 </div>
+                <div
+                  className="descBtn"
+                  onClick={() => toggleDescription(formula.compIds)}
+                >
+                  + Mô tả
+                </div>
+                {visibleDescriptions[formula.compIds] && (
+                  <div className="formula-description-box">
+                    <p>{formula.description}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>

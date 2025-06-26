@@ -45,7 +45,7 @@ const MixProduct = () => {
       if (prevSelected.find((item) => item.productId === product.productId)) {
         return prevSelected.filter((item) => item.productId !== product.productId);
       }
-      if (prevSelected.length < 4) {
+      if (prevSelected.length < 3) { // Change limit from 4 to 3
         return [...prevSelected, product];
       }
       return prevSelected;
@@ -121,6 +121,7 @@ const MixProduct = () => {
           ))}
         </div>
         <div className="selected-products-section">
+          <h5>*tối đa 3 sản phẩm</h5>
           <h2>Sản phẩm đã chọn:</h2>
           <div className="selected-products-grid">
             <div style={{ width: "70%" }}>
@@ -129,7 +130,7 @@ const MixProduct = () => {
               ) : (
                 selectedProducts.map((product) => (
                   <div key={product.productId} className="selected-product-card">
-                    <h3 className="selected-product-name">{product.productName}</h3>
+                    <p className="selected-product-name">{product.productName}</p>
                     <img
                       src={product.imageUrl}
                       alt={product.productName}
@@ -142,7 +143,7 @@ const MixProduct = () => {
             <div className="btnContainer">
               <button
                 className="mix-button"
-                disabled={selectedProducts.length < 2}
+                disabled={selectedProducts.length < 2 || selectedProducts.length > 3} // Adjust condition
                 onClick={() =>
                   navigate("/mix-product-detail", {
                     state: {
@@ -156,7 +157,7 @@ const MixProduct = () => {
               </button>
               <button
                 className="save-formula-button"
-                disabled={selectedProducts.length < 2}
+                disabled={selectedProducts.length < 2 || selectedProducts.length > 3} // Adjust condition
                 onClick={saveFormula}
               >
                 Lưu công thức

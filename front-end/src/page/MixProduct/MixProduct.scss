@@ -1,6 +1,10 @@
 #MixProduct {
   .mix-product-page {
     padding: 20px;
+    @media screen and (max-width: 550px) {
+      padding: 5px;
+      
+    }
     h1 {
       font-weight: bold;
       text-align: center;
@@ -30,7 +34,7 @@
     margin-right: auto;
     justify-content: center;
   }
-  .saved-formulas-button{
+  .saved-formulas-button {
     font-weight: bold;
     width: fit-content;
     font-size: 1.5rem;
@@ -76,7 +80,7 @@
     border: 1px solid #ddd;
     border-radius: 10px;
   }
-  
+
   .category-name {
     margin: 5px;
     text-align: start;
@@ -85,18 +89,23 @@
   .product-grid {
     position: relative;
     margin: 0;
-    padding: 0 15px 30px;
     width: 100%;
     max-width: 100%;
     -ms-flex-preferred-size: 100%;
     flex-basis: 100%;
-    @media screen and (min-width: 550px) {
+
+    @media screen and (min-width: 320px) {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      padding: 0 15px 30px;
+      @media screen and (max-width: 850px) {
+        padding:0;
+        gap: 3px;
+      }
       justify-content: flex-start;
     }
-    @media screen and (max-width: 549px) {
+    @media screen and (max-width: 320px) {
       overflow: auto;
       white-space: nowrap;
     }
@@ -120,7 +129,12 @@
       -ms-flex-preferred-size: 48%;
       flex-basis: 50%;
     }
-    @media screen and (max-width: 550px) {
+    @media screen and (min-width:320px) and (max-width: 550px) {
+      max-width: 32%;
+      -ms-flex-preferred-size: 32%;
+      flex-basis: 32%;
+    }
+    @media screen and (max-width: 320px) {
       display: inline-block;
     }
     .product-image {
@@ -128,9 +142,6 @@
       aspect-ratio: 1 / 1; // Maintain square aspect ratio
       width: 100%; // Ensure responsiveness
       height: auto;
-      @media screen and (max-width: 850px) {
-        width: 90%;
-      }
       max-height: 350px;
       max-width: 350px;
       object-position: 50% 50%;
@@ -151,6 +162,9 @@
   .product-name {
     font-size: 16px;
     margin: 10px 0;
+    @media screen and (max-width: 550px) {
+      font-size: 12px;
+    }
   }
 
   .product-price {
@@ -164,17 +178,16 @@
 
   .selected-products-section {
     max-width: 1640px;
-    margin:0 auto;
+    margin: 0 auto;
     padding: 10px;
-    background-color:  #f3f0f0;
+    background-color: #f3f0f0;
   }
 
   .selected-products-grid {
     display: flex;
     align-items: center;
     @media screen and (max-width: 850px) {
-      display:block;
-      
+      display: block;
     }
   }
 
@@ -185,7 +198,7 @@
     justify-content: space-between;
   }
   .selected-product-name {
-  font-size: 1rem;
+    font-size: 1rem;
   }
 
   .selected-product-image {
@@ -193,7 +206,7 @@
     height: 50px;
     object-fit: cover;
   }
-.btnContainer {
+  .btnContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -219,7 +232,7 @@
     background-color: #ccc;
     cursor: not-allowed;
   }
-  .save-formula-button{
+  .save-formula-button {
     width: fit-content;
     height: fit-content;
     padding: 10px 20px;

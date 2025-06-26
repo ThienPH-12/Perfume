@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./BlogPage.scss"; // Import the BlogPage styles
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ErrorToastify } from "../../components/Toastify"; // Import Toastify
 
 function BlogPage() {
   const [data, setData] = useState([]);
   const [blogs, setBlogs] = useState([]);
+  const navigate = useNavigate();
 
   const fetchBlogs = async () => {
     try {
@@ -95,10 +96,11 @@ function BlogPage() {
                     imageUrl,
                   } = blog;
                   return (
-                    <Link
-                      to={`/blog/${blogId}`}
+                    <div
                       key={blogId}
                       className="blog-link"
+                      onClick={() => navigate(`/blog/${blogId}`)}
+                      style={{ cursor: "pointer" }}
                     >
                       <div className="blog-item">
                         <img
@@ -107,22 +109,21 @@ function BlogPage() {
                           className="blog-image"
                         />
                         <div className="card-body">
-                          <div>
-                            <h5 className="card-title">{blogTitle}</h5>
-                            <div style={{ width: "100%" }}>
-                              <p className="card-text">{blogContent.substring(0, 100)}</p>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="card-text">
-                              <small className="text-muted">
-                                {new Date(createDateTime).toLocaleString()}
-                              </small>
-                            </p>
+                          <h5 className="card-title">{blogTitle}</h5>
+                          ______
+                          <div style={{ width: "100%" }}>
+                            <p className="card-text">{blogContent.substring(0, 100)}</p>
                           </div>
                         </div>
+                        <div>
+                          <p style={{ padding: "10px" }}>
+                            <small className="text-muted">
+                              {new Date(createDateTime).toLocaleString()}
+                            </small>
+                          </p>
+                        </div>
                       </div>
-                    </Link>
+                    </div>
                   );
                 })
               )}

@@ -162,7 +162,7 @@ function ProductModal({ isOpen, onClose, onProductAddedOrUpdated, product }) {
               />
             </Form.Group>
             <Form.Group controlId="formImage">
-              <Form.Label>Image</Form.Label>
+              <Form.Label>Image(Tối đa 100Kb)</Form.Label>
               <Form.Control
                 type="file"
                 onChange={(e) => setImage(e.target.files[0])}

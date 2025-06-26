@@ -1,27 +1,32 @@
 .blog-detail {
   padding: 20px;
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 .blog-detail__title {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .blog-detail__image {
   width: 100%;
-  height: auto;
-  margin-bottom: 20px;
+  height: 600px;
+  object-fit: cover;
+  padding: 30px;
+  margin: 0;
+  @media screen and (max-width: 768px) {
+    height: 350px;
+    padding: 10px;
+    
+  }
 }
 
 .blog-detail__content {
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.1;
 }
 
 .blog-detail__date {
   margin-top: 20px;
-  font-size: 0.875rem;
   color: #888;
 }

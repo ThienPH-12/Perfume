@@ -67,7 +67,7 @@
       }
     }
     .blog-item {
-      height: 24rem;
+      height: 350px;
       display: flex;
       flex-direction: column;
       padding: 15px;
@@ -87,6 +87,7 @@
 
     .blog-image {
       width: 100%;
+      aspect-ratio: 4 / 3;
       height: 180px;
       object-fit: cover;
       padding: 5px;
@@ -94,6 +95,7 @@
     }
 
     .card-body {
+      height:200px;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
@@ -102,8 +104,11 @@
     }
 
     .card-title {
-      color:#333;
+      font-size:1.15rem;
+      line-height: 1.3;
+      color:#383838;
       margin: 0 0 10px 0;
+      font-family: "Montserrat", sans-serif;
     }
 
     .card-text {

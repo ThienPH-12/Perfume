@@ -18,6 +18,9 @@ const Payment = () => {
     const totalPrice = state.totalPrice + shippingCost - discount; // Add shipping cost and subtract discount
 
     const FRONTEND_BASE_URL = process.env.REACT_APP_API_BASE_URL_FE || "http://localhost:3000";
+     const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -68,12 +71,12 @@ const Payment = () => {
                     <ul>
                         {state.items.map((item, index) => (
                             <li key={index}>
-                                {item.name} - Giá: {item.price} VND - Số lượng: {item.quantity} - Tổng: {item.price * item.quantity} VND
+                                {item.name} - Giá: {formatPrice(item.price)} - Số lượng: {item.quantity} - Tổng: {formatPrice(item.price * item.quantity)}
                             </li>
                         ))}
                     </ul>
-                    <p>Phí vận chuyển: {shippingCost} VND</p>
-                    <p>Tổng cộng: {totalPrice} VND</p>
+                    <p>Phí vận chuyển: {formatPrice(shippingCost)}</p>
+                    <p>Tổng cộng: {formatPrice(totalPrice)}</p>
                 </div>
                 <form onSubmit={handleSubmit} className="payment-form">
                     <h2>Thông tin khách hàng</h2>

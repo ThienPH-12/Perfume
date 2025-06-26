@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { BrowserRouter as Router } from "react-router-dom"; // Import Router
 import AppRoute from "./route/appRoute.jsx";
 import "./App.scss";
 import Chatbot from "./components/Chatbot.jsx";
@@ -26,7 +27,9 @@ function AppContent() {
 export default function App() {
   return (
     <LoadingProvider>
-      <AppContent />
+      <Router>
+        <AppContent />
+      </Router>
     </LoadingProvider>
   );
 }

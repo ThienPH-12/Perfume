@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  useLocation, // Import useLocation
 } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 import Login from "../page/Login/Login.jsx";
@@ -52,9 +53,14 @@ function PrivateAdminRoute({ children }) {
 }
 
 function AppRoute() {
+  const location = useLocation(); // Get the current location
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top on route change
+  }, [location]); // Trigger on location change
+
   return (
     <CartProvider>
-    <Router>
       <Header />
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -93,8 +99,7 @@ function AppRoute() {
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <ToastContainer limit={3} />
-      <Footer /> {/* Add Footer */}
-    </Router>
+      <Footer />
     </CartProvider>
   );
 }

@@ -99,6 +99,10 @@ const MixProductDetail = () => {
 
     const isActionEnabled = selectedCapacity && Object.keys(levels).length === productDetails.length;
 
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
+    };
+
     return (
         <div id="MixProductDetail">
             <h1>FRAGRANCES</h1>
@@ -115,7 +119,7 @@ const MixProductDetail = () => {
                     </option>
                     {capacities.map((capacity) => (
                         <option key={capacity.capacityId} value={capacity.capacityId}>
-                            {capacity.capacity}ml - {capacity.defaultPrice} VND
+                            {capacity.capacity}ml - {formatPrice(capacity.defaultPrice)}
                         </option>
                     ))}
                 </select>

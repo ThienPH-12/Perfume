@@ -1,6 +1,10 @@
 #Product {
   .product-page {
     padding: 20px;
+    @media screen and (max-width: 550px) {
+      padding: 0px;
+      
+    }
     h1 {
       font-weight: bold;
       text-align: center;
@@ -104,6 +108,7 @@
       flex-basis: 50%;
     }
     @media screen and (max-width: 550px) {
+      width: 90%;
       display: inline-block;
     }
     .product-image {

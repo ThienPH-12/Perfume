@@ -5,16 +5,17 @@
     height: auto;
     overflow: hidden;
 
-    .hero-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    img {
+      height: 85vh; // Default height
+      @media screen and (max-width: 850px) {
+        height: 70vh; // Adjust height for smaller screens
+      }
     }
   }
   .section {
     padding: 20px;
     max-width: 1200px;
-    width:100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     p {
@@ -154,6 +155,23 @@
           font-size: 1.5rem;
           font-weight: bold;
           margin-bottom: 50px;
+          @media screen and (max-width: 550px) {
+            font-size: 1.2rem; // Adjust font size for smaller screens
+            margin-bottom:0;
+            margin-right:15px;
+            
+          }
+        }
+        @media screen and (max-width: 550px) {
+          aspect-ratio: unset;
+          align-items: center;
+        }
+      }
+
+      @media screen and (max-width: 550px) {
+        flex-direction: column; // Force row direction
+        &.row-reverse {
+          flex-direction: column; // Override reverse direction
         }
       }
     }
@@ -161,10 +179,9 @@
 
   .faq-section {
     margin: 100px;
-    width:75%;
+    width: 75%;
     @media screen and (max-width: 850px) {
       width: 90%; // Adjust width for smaller screens
-      
     }
     border-radius: 20px;
     border: 5px solid; // Set border width

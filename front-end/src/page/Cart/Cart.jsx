@@ -212,11 +212,15 @@ const Cart = () => {
     fetchMixCartItems();
   }, [capacities]);
 
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
+  };
+
   return (
     <div id="Cart">
       <h1>Your Cart</h1>
       <div className="total-price">
-        Tổng giá: {calculateTotalPrice()} VND
+        Tổng giá: {formatPrice(calculateTotalPrice())}
       </div>
       <h2>Sản phẩm đơn</h2> {/* Title for normal cart */}
       <div className="cart-container">
@@ -238,7 +242,7 @@ const Cart = () => {
               </div>
               <div className="cart-col">
                 <p>
-                  Giá: {item.price ? `${item.price * item.quantity} VND` : "Price not available"}
+                  Giá: {item.price ? `${formatPrice(item.price * item.quantity)}` : "Price not available"}
                 </p>
               </div>
               <div className="quantity-selection">
@@ -288,7 +292,7 @@ const Cart = () => {
                 <p>Dung tích: {item.capacity} ml</p>
               </div>
               <div className="cart-col">
-                <p>Giá: {item.price ? `${item.price * item.quantity} VND` : "Price not available"}</p>
+                <p>Giá: {item.price ? `${formatPrice(item.price * item.quantity)}` : "Price not available"}</p>
               </div>
               <div className="quantity-selection">
                 <label>Số Lượng:</label>

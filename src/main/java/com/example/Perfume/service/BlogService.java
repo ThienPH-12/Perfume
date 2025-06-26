@@ -20,6 +20,12 @@ public class BlogService {
     private BlogRepository blogRepository;
 
     public Blog addBlog(BlogReq blogReq, MultipartFile imageFile) throws IOException {
+        if (blogReq.getBlogContent().length() > 10000 || blogReq.getBlogTitle().length() > 100) {
+            throw new RuntimeException("Blog content or title exceeds the allowed limit.");
+        }
+        if (imageFile.getSize() > 100000) {
+            throw new RuntimeException("Image file size exceeds the allowed limit.");
+        }
         User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!"1".equals(userContext.getAuthority())) {
             throw new RuntimeException("Permission denied: Only users with Authority = 1 can add blogs.");
@@ -45,6 +51,12 @@ public class BlogService {
     }
 
     public Blog updateBlog(BlogReq blogReq, MultipartFile imageFile) throws Exception {
+        if (blogReq.getBlogContent().length() > 10000 || blogReq.getBlogTitle().length() > 100) {
+            throw new RuntimeException("Blog content or title exceeds the allowed limit.");
+        }
+        if (imageFile != null && !imageFile.isEmpty() && imageFile.getSize() > 100000) {
+            throw new RuntimeException("Image file size exceeds the allowed limit.");
+        }
         Blog existingBlog = blogRepository.findById(blogReq.getBlogId()).orElseThrow(() -> new Exception("Blog not found"));
         
         existingBlog.setBlogTitle(blogReq.getBlogTitle());

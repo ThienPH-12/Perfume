@@ -72,8 +72,6 @@ const Product = () => {
                         height="350"
                       />
                       <h3 className="product-name">{product.productName}</h3>
-                      <p className="product-price">{product.price}</p>
-                      <p className="product-rating">{product.rating}</p>
                     </div>
                   ))}
               </div>

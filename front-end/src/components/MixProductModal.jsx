@@ -17,7 +17,7 @@ function MixProductModal({ isOpen, onClose, onMixProductAddedOrUpdated, mixProdu
   const [categories, setCategories] = useState([]);
   const [productsByCategory, setProductsByCategory] = useState({});
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [mixItemCount, setMixItemCount] = useState(1);
+  const [mixItemCount, setMixItemCount] = useState(2);
 
   const clearForm = () => {
     setMixProdReq({
@@ -27,7 +27,7 @@ function MixProductModal({ isOpen, onClose, onMixProductAddedOrUpdated, mixProdu
       potentialCus: "",
     });
     setSelectedCategories([]);
-    setMixItemCount(1);
+    setMixItemCount(2);
     setImage(null);
   };
 
@@ -160,8 +160,23 @@ function MixProductModal({ isOpen, onClose, onMixProductAddedOrUpdated, mixProdu
               />
             </Form.Group>
             <Form.Group controlId="formImage">
-              <Form.Label>Image</Form.Label>
+              <Form.Label>Image(Tối đa 100Kb)</Form.Label>
               <Form.Control type="file" onChange={(e) => setImage(e.target.files[0])} />
+            </Form.Group>
+            <Form.Group controlId="formMixItemCount">
+              <Form.Label>Number of Mix Items</Form.Label>
+              <Form.Control
+                as="select"
+                value={mixItemCount}
+                onChange={(e) => setMixItemCount(parseInt(e.target.value, 10))}
+                required
+              >
+                {[2, 3].map((count) => (
+                  <option key={count} value={count}>
+                    {count}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <div className="mix-item-forms">
               {[...Array(mixItemCount)].map((_, index) => (
@@ -206,21 +221,6 @@ function MixProductModal({ isOpen, onClose, onMixProductAddedOrUpdated, mixProdu
                 </div>
               ))}
             </div>
-            <Form.Group controlId="formMixItemCount">
-              <Form.Label>Number of Mix Items</Form.Label>
-              <Form.Control
-                as="select"
-                value={mixItemCount}
-                onChange={(e) => setMixItemCount(parseInt(e.target.value, 10))}
-                required
-              >
-                {[1, 2, 3, 4].map((count) => (
-                  <option key={count} value={count}>
-                    {count}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
             <button type="submit" className="add-button">
               {mixProduct ? "Update Mix Product" : "Add Mix Product"}
             </button>

@@ -90,7 +90,7 @@ function AddBlog({ isOpen, onClose, onBlogAddedOrUpdated, blog }) {
       }
       onClose();
     } catch (error) {
-      ErrorToastify("Error saving blog: " + error);
+      ErrorToastify(error.response.data || "An error occurred while saving the blog.");
     }
   };
 
@@ -133,7 +133,7 @@ function AddBlog({ isOpen, onClose, onBlogAddedOrUpdated, blog }) {
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formBlogImage">
-              <Form.Label>Image</Form.Label>
+              <Form.Label>Image(Tối đa 100Kb)</Form.Label>
               <Form.Control
                 type="file"
                 name="imageFile"

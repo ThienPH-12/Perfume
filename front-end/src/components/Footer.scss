@@ -2,11 +2,11 @@
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  background-color: #f8f8f8;
   // Ensure footer content does not overlap with page content
   padding-bottom: 60px;
-  height: 15vh;
-
+  background-color: #f8f7f7;
+  border-top: 1px solid #ccc; // Add a top border
+  
   .footer-section {
     flex: 1;
     margin: 0 10px;
@@ -35,6 +35,5 @@
   bottom: auto;
   width: 100%;
   z-index: 1000; // Ensure it stays above other content
-  background-color: #f8f8f8; // Ensure background color matches the footer
   /* Add any additional styling as needed */
 }

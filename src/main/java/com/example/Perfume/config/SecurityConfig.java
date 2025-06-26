@@ -57,7 +57,8 @@ public class SecurityConfig {
             "/api/createPayment",
             "/api/order/**",
             "/api/products/latest", // Added new API
-            "/api/products/potentialCus/**" // Added new API
+            "/api/products/potentialCus/**", // Added new API
+            "/api/products/category/**"
         };
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors().and()

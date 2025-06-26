@@ -75,7 +75,6 @@ export default function Home() {
           {slides.map((slide, index) => (
             <Carousel.Item key={index} interval={3000}>
               <img
-                style={{ height: "85vh" }}
                 className="d-block w-100"
                 src={slide.img}
                 alt={`Slide ${index + 1}`}

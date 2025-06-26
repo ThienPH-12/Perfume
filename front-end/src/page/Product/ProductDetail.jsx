@@ -18,7 +18,9 @@ const ProductDetail = () => {
     const priceRef = useRef(null); // Reference to price input field
     const [level, setLevel] = useState("Thấp"); // State for level selection
 
-    const formatPrice = (price) => `${price} VND`; // Helper function to format price
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
+    }; // Helper function to format price
 
     const fetchProductDetail = async () => {
         try {
