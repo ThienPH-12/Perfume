@@ -28,7 +28,7 @@ public class Blog extends AbstractEntity {
     @Column(name = "BlogTitle", length = 100)
     private String blogTitle;
 
-    @Column(name = "BlogContent", length = 1000)
+    @Column(name = "BlogContent", length = 10000)
     private String blogContent;
 
     @Column(name = "ImageName", length = 50)
