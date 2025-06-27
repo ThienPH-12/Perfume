@@ -7,6 +7,7 @@ package com.example.Perfume.api.controller;
 import com.example.Perfume.service.BlogService;
 import com.example.Perfume.jpa.entity.Blog;
 import com.example.Perfume.api.bean.req.BlogReq;
+import com.example.Perfume.dto.ImageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,10 +46,11 @@ public class BlogController {
 
     @GetMapping("/blog/image/{blogId}")
     public ResponseEntity<byte[]> getImageByBlogId(@PathVariable int blogId) {
-        Blog blog = blogService.getBlog(blogId);
-        byte[] imageFile = blog.getImageData();
+        ImageDto imageDto = blogService.getImageDataByBlogId(blogId);
 
-        return ResponseEntity.ok().contentType(MediaType.valueOf(blog.getImageType())).body(imageFile);
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(imageDto.getImageType()))
+                .body(imageDto.getImageData());
     }
 
     @GetMapping("/blog/search/{id}")

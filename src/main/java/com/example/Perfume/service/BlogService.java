@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.Perfume.jpa.entity.User;
+import com.example.Perfume.dto.ImageDto;
 
 @Service
 public class BlogService {
@@ -81,5 +82,9 @@ public class BlogService {
         }
         Blog existingBlog = blogRepository.findById(id).orElseThrow(() -> new Exception("Blog not found"));
         blogRepository.delete(existingBlog);
+    }
+
+    public ImageDto getImageDataByBlogId(int blogId) {
+        return blogRepository.findImageDataByBlogId(blogId);
     }
 }

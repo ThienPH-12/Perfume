@@ -2,6 +2,7 @@ package com.example.Perfume.service;
 
 import com.example.Perfume.api.bean.req.ProductReq;
 import com.example.Perfume.api.bean.req.CapacityReq;
+import com.example.Perfume.dto.ImageDto;
 import com.example.Perfume.jpa.entity.Product;
 import com.example.Perfume.jpa.entity.Capacity;
 import com.example.Perfume.jpa.repository.ProductRepository;
@@ -49,7 +50,7 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    return productRepository.findAll();
     }
 
     public List<Product> getProductsByCategory(int categoryId) {
@@ -135,5 +136,9 @@ public class ProductService {
 
     public List<Product> getProductsByPotentialCus(String potentialCus) {
         return productRepository.findByPotentialCus(potentialCus);
+    }
+
+    public ImageDto getImageDataByProductId(int productId) {
+        return productRepository.findImageDataByProductId(productId);
     }
 }

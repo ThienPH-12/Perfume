@@ -3,6 +3,7 @@ package com.example.Perfume.api.controller;
 import com.example.Perfume.jpa.entity.MixProduct;
 import com.example.Perfume.service.MixlProdService;
 import com.example.Perfume.api.bean.req.MixProdReq;
+import com.example.Perfume.dto.ImageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,12 +58,11 @@ public class MixProductController {
 
     @GetMapping("/mixProduct/image/{compIds}")
     public ResponseEntity<byte[]> getImageByCompIds(@PathVariable String compIds) {
-        MixProduct mixProduct = mixProdService.getMixProductById(compIds);
-        byte[] imageFile = mixProduct.getImageData();
+        ImageDto imageDto = mixProdService.getImageDataByCompIds(compIds);
 
         return ResponseEntity.ok()
-                .contentType(MediaType.valueOf(mixProduct.getImageType()))
-                .body(imageFile);
+                .contentType(MediaType.valueOf(imageDto.getImageType()))
+                .body(imageDto.getImageData());
     }
 
     @DeleteMapping("/mixProduct")

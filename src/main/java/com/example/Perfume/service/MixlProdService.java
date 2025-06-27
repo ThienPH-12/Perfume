@@ -2,6 +2,7 @@ package com.example.Perfume.service;
 
 import com.example.Perfume.jpa.entity.MixProduct;
 import com.example.Perfume.api.bean.req.MixProdReq;
+import com.example.Perfume.dto.ImageDto;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,5 +83,9 @@ public class MixlProdService {
             throw new RuntimeException("MixProduct not found");
         }
         mixProductRepository.deleteById(compIds);
+    }
+
+    public ImageDto getImageDataByCompIds(String compIds) {
+        return mixProductRepository.findImageDataByCompIds(compIds);
     }
 }

@@ -2,6 +2,7 @@ package com.example.Perfume.api.controller;
 
 import com.example.Perfume.api.bean.req.ProductReq;
 import com.example.Perfume.api.bean.req.CapacityReq;
+import com.example.Perfume.dto.ImageDto;
 import com.example.Perfume.jpa.entity.Product;
 import com.example.Perfume.jpa.entity.Capacity;
 import com.example.Perfume.service.ProductService;
@@ -52,10 +53,11 @@ public class ProductController {
 
     @GetMapping("/product/image/{productId}")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable int productId) {
-        Product product = productService.getProduct(productId);
-        byte[] imageFile = product.getImageData();
+        ImageDto imageDto = productService.getImageDataByProductId(productId);
 
-        return ResponseEntity.ok().contentType(MediaType.valueOf(product.getImageType())).body(imageFile);
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(imageDto.getImageType()))
+                .body(imageDto.getImageData());
     }
 
     @GetMapping("/product/search/{id}")

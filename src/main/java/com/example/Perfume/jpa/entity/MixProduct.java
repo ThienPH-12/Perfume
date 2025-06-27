@@ -36,6 +36,20 @@ public class MixProduct extends AbstractEntity {
     @Column(name = "ImageData", length = 100000)
     private byte[] imageData;
 
+    public MixProduct() {
+    }
+
+    public MixProduct(String compIds, String mixProdName, String description, String potentialCus, String imageName, String imageType, byte[] imageData) {
+        this.compIds = compIds;
+        this.mixProdName = mixProdName;
+        this.description = description;
+        this.potentialCus = potentialCus;
+        this.imageName = imageName;
+        this.imageType = imageType;
+        this.imageData = imageData;
+    }
+
+    
     // Getters and Setters
     public String getCompIds() {
         return compIds;
