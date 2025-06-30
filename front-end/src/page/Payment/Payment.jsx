@@ -15,7 +15,7 @@ const Payment = () => {
     const [buyerEmail, setBuyerEmail] = useState(Cookies.get("paymentBuyerEmail") || "");
 
     const shippingCost = 30000; // Default shipping cost
-    const totalPrice = state.totalPrice + shippingCost - discount; // Add shipping cost and subtract discount
+    const totalPrice = state.totalPrice - discount; // Exclude shipping cost from total price
 
     const FRONTEND_BASE_URL = process.env.REACT_APP_API_BASE_URL_FE || "http://localhost:3000";
      const formatPrice = (price) => {
@@ -75,7 +75,7 @@ const Payment = () => {
                             </li>
                         ))}
                     </ul>
-                    <p>Phí vận chuyển: {formatPrice(shippingCost)}</p>
+                    <p>Phí vận chuyển: <span style={{ textDecoration: "line-through" }}>{formatPrice(shippingCost)}</span></p> {/* Display shipping cost with a strikethrough */}
                     <p>Tổng cộng: {formatPrice(totalPrice)}</p>
                 </div>
                 <form onSubmit={handleSubmit} className="payment-form">
