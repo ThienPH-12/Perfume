@@ -7,6 +7,7 @@ package com.example.Perfume.api.controller;
 import com.example.Perfume.api.bean.req.RegisterReq;
 import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,17 @@ public class UserController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi trong lúc xác nhận: " + ex.getMessage());
+        }
+    }
+    
+    @GetMapping("/users")
+    public ResponseEntity<?> UserList(){
+        try{
+            List<User> list =userService.UserList();
+            return ResponseEntity.ok(list);
+         } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body( ex.getMessage());
         }
     }
     

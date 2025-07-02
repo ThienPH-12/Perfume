@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -34,6 +33,7 @@ import MixProductDetail from "../page/MixProduct/MixProductDetail.jsx"; // Impor
 import ConfirmActivated from "../page/Register/ConfirmActivated.jsx"; // Import ConfirmActivated
 import Formula from "../page/Formula/Formula.jsx"; // Import Formula
 import BlogManage from "../page/AdminPage/BlogManage.jsx"; // Import BlogManage
+import UserManage from "../page/AdminPage/UserManage.jsx"; // Import UserManage
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "../utils/CartContext.jsx";
 
@@ -95,6 +95,7 @@ function AppRoute() {
           <Route path="mix-products" element={<MixProductManage />} /> {/* Updated from sell-products */}
           <Route path="prices" element={<PriceManage />} /> {/* Matches /admin/prices */}
           <Route path="blogs" element={<BlogManage />} /> {/* Add BlogManage route */}
+          <Route path="users" element={<UserManage />} /> {/* Add UserManage route */}
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

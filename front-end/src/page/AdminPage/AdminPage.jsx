@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import { Link, Outlet } from "react-router-dom";
 import "./AdminPage.scss";
-import { PcDisplayHorizontal, CaretDown, CaretLeft } from "react-bootstrap-icons";
+import { Diagram3,PersonLinesFill,Newspaper,
+   CaretDown, CaretLeft } from "react-bootstrap-icons";
 
 function AdminPage() {
   const sidebarRef = useRef(null);
@@ -48,7 +49,7 @@ function AdminPage() {
           </li>
           <li>
             <button onClick={(e) => toggleSubMenu(e.currentTarget)} className="dropdown-btn">
-              <PcDisplayHorizontal style={{ height: 24 }} />
+              <Diagram3 style={{ height: 24 }} />
               <span>Item</span>
               <CaretDown style={{ height: 24 }} />
             </button>
@@ -64,8 +65,14 @@ function AdminPage() {
           </li>
           <li>
             <Link to="/admin/blogs">
-              <PcDisplayHorizontal style={{ height: 24 }} />
+              <Newspaper style={{ height: 24 }} />
               <span>Blog</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/admin/users">
+            <PersonLinesFill style={{ height: 24 }} />
+              Users
             </Link>
           </li>
         </ul>

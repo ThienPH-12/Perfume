@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,9 @@ import com.example.Perfume.jpa.entity.ConfirmationToken;
 import com.example.Perfume.config.EmailConfig; // Import EmailConfig
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import java.util.List;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -52,8 +53,8 @@ public class UserService {
         // String link = "http://localhost:3000/user/activateUser?token=" + token; // Updated route dev env
         String link = frontendBaseUrl + "/user/activateUser?token=" + token; // Updated route public
         // Use EmailConfig's JavaMailSender
-        JavaMailSender javaMailSender=emailConfig.getJavaMailSender();
-    try {
+        JavaMailSender javaMailSender = emailConfig.getJavaMailSender();
+        try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(buildEmail(user.getUsername(), link), true); // Set email content as HTML
@@ -202,6 +203,10 @@ public class UserService {
     }
 
     public User findByUsername(String username) {
+         User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!username.equals(userContext.getUsername())&&!"1".equals(userContext.getAuthority()) ) {
+            throw new RuntimeException("Permission denied:Không được truy cập vào thông tin của người khác.");
+        }
         return userRepository.findByUserName(username);
     }
 
@@ -245,5 +250,13 @@ public class UserService {
 
         // Generate a new token and send the activation email
         sendActivationEmail(user);
+    }
+
+    public List<User> UserList() {
+         User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!"1".equals(userContext.getAuthority())) {
+            throw new RuntimeException("Permission denied: Only users with Authority = 1 can get User List.");
+        }
+        return userRepository.findAll();
     }
 }
