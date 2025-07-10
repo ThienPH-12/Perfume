@@ -38,7 +38,8 @@ const Login = () => {
       localStorage.setItem("token", accessToken);
       window.location.reload(); // Reload the page to apply the new token
     } catch (err) {  
-        ErrorToastify(err.response.data);
+        const errorMessage = err.response?.data?.message || "Lỗi mạng.";
+        ErrorToastify(errorMessage);
     }
   };
 

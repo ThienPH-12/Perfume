@@ -2,21 +2,22 @@ import React, { useState, useEffect } from "react";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
 import { ErrorToastify, SuccessToastify } from "../../components/Toastify";
-import {jwtDecode}  from "jwt-decode"; // Import jwtDecode
+import { jwtDecode } from "jwt-decode"; // Import jwtDecode
 import { useAuth } from "../../utils/AuthContext"; // Import useAuth
 import "./UserInfo.scss";
+import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
     const { token, setToken } = useAuth(); // Use token and setToken from AuthContext
     const [userInfo, setUserInfo] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editedInfo, setEditedInfo] = useState({});
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
                 if (!token) {
-                    ErrorToastify("User is not authenticated.");
+                    navigate("/login"); // Redirect to login if token is not available
                     return;
                 }
 
@@ -30,7 +31,7 @@ const UserInfo = () => {
             }
         };
         fetchUserInfo();
-    }, [token]); // Trigger effect when token changes
+    }, [token,navigate]); // Trigger effect when token changes
 
     const handleEditToggle = () => {
         setIsEditing(!isEditing);
@@ -43,7 +44,7 @@ const UserInfo = () => {
     const handleSaveChanges = async () => {
         try {
             if (!token) {
-                ErrorToastify("User is not authenticated.");
+                navigate("/login"); // Redirect to login if token is not available
                 return;
             }
 
