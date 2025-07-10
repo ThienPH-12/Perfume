@@ -24,6 +24,7 @@ const apiPaths = {
   activateUser: "/user/activateUser", // Added field
   initUserInfo: "/user/initUserInfo", // Already existing, kept as is
   resendActivation: "/user/resendActivation", // Added field
+  updateUserInfo: "/user/updateInfo", // Added new API path
   userList:"/users",
 
   mixProductSave: "/mixProduct", // Updated from sellProductSave

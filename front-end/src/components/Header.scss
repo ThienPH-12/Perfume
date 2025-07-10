@@ -72,34 +72,7 @@
       cursor: pointer;
     }
   }
-  .buttonCus{
-    height:50px;
-    width:75px;
-    border-radius: 5px;
-    text-align: center;
-
-    a {
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-      font-size: 16px;
-    }
-  }
-  .buttonCus:hover{
-    height:51x;
-    width:76px;
-    border-radius: 5px;
-    text-align: center;
-    background-color: #333;
-    justify-self:flex-end;
-    align-self: flex-end;
-    a {
-      text-decoration: none;
-      color:whitesmoke;
-      font-weight: bold;
-      font-size: 16px;
-    }
-  }
+  
   .cart-icon-container {
     display: flex;
     align-items: center;
@@ -271,5 +244,36 @@
   .auth-logged-in {
     display: flex;
     align-items: center;
+    position: relative; // Ensure dropdown is positioned relative to this container
+
+    .dropdown-menu {
+      display: none; // Default hidden
+      position: absolute;
+      top: 100%; // Position below the span
+      left: 0;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      padding: 10px;
+
+      a, button {
+        color: black;
+        padding: 8px 12px;
+        text-decoration: none;
+        display: block;
+        border: none;
+        background: none;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f1f1f1;
+        }
+      }
+    }
+
+    &:hover .dropdown-menu {
+      display: block; // Show dropdown on hover
+    }
   }
 }

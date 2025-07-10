@@ -6,6 +6,7 @@ import Chatbot from "./components/Chatbot.jsx";
 import { LoadingProvider, useLoading } from "./utils/LoadingContext";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { setupInterceptors } from "./api/apiClient";
+import { AuthProvider } from "./utils/AuthContext"; // Import AuthProvider
 
 function AppContent() {
   const { setLoading } = useLoading();
@@ -26,11 +27,13 @@ function AppContent() {
 
 export default function App() {
   return (
-    <LoadingProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </LoadingProvider>
+    <AuthProvider> {/* Wrap the application with AuthProvider */}
+      <LoadingProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </LoadingProvider>
+    </AuthProvider>
   );
 }
 

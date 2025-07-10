@@ -7,22 +7,38 @@ import apiClient from "../api/apiClient";
 import apiPaths from "../api/apiPath";
 import { Bag, Search,PersonCircle } from "react-bootstrap-icons";
 import { CartContext } from "../utils/CartContext";
+import { useAuth } from "../utils/AuthContext"; // Import useAuth
 
 function AuthIcons({ user, handleLogout, navigate, cartCount, closeSidebar }) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   return (
     <>
       {user ? (
         <div className="auth-logged-in">
-          <span className="username">Chào mừng {user.sub}!</span>
-          <button
-            className="buttonCus"
-            onClick={(e) => {
-              handleLogout(e);
-              closeSidebar && closeSidebar();
-            }}
+          <span
+            className="username"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            Đăng xuất
-          </button>
+            Chào mừng {user.sub}
+          </span>
+          <div> ▼</div>
+          {isDropdownOpen && (
+            <div className="dropdown-menu">
+              <Link to="/user/info" onClick={() => setIsDropdownOpen(false)}>
+                Thông tin cá nhân
+              </Link>
+              <button
+                onClick={(e) => {
+                  handleLogout(e);
+                  setIsDropdownOpen(false);
+                  closeSidebar && closeSidebar();
+                }}
+              >
+                Đăng xuất
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <PersonCircle
@@ -51,13 +67,13 @@ function AuthIcons({ user, handleLogout, navigate, cartCount, closeSidebar }) {
 
 export default function Header() {
   const navigate = useNavigate();
+  const { token, setToken } = useAuth(); // Use token and setToken from AuthContext
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // New state for sidebar
   const { cartCount } = useContext(CartContext);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
@@ -66,8 +82,11 @@ export default function Header() {
       } catch (error) {
         console.error("Invalid token:", error);
       }
+    } else {
+      setUser(null);
+      setIsAdmin(false);
     }
-  }, []);
+  }, [token]); // Trigger effect when token changes
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -88,7 +107,6 @@ export default function Header() {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     if (!token) {
       window.location.reload();
       return;
@@ -105,10 +123,7 @@ export default function Header() {
       );
       delete apiClient.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
-
-      setUser(null);
-      setIsAdmin(false);
-      navigate("/");
+      setToken(null); // Update token in AuthContext
     } catch (error) {
       console.error("Logout failed", error);
       throw error;

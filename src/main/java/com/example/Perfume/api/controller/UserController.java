@@ -4,10 +4,12 @@
  */
 package com.example.Perfume.api.controller;
 
+import com.example.Perfume.api.bean.req.UpdateUserReq;
 import com.example.Perfume.api.bean.req.RegisterReq;
 import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.service.UserService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -64,9 +67,10 @@ public class UserController {
     }
     
     @GetMapping("/user/initUserInfo")
-    public ResponseEntity<?> initUserInfo(@RequestParam String username) {
+    public ResponseEntity<?> initUserInfo() {
         try {
-            User user = userService.findByUsername(username);
+            User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userService.findByUsername(userContext.getUsername());
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
@@ -85,6 +89,25 @@ public class UserController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error during resending activation email: " + ex.getMessage());
+        }
+    }
+
+    @PostMapping("/user/updateInfo")
+    public ResponseEntity<?> updateInfo(@RequestBody UpdateUserReq req) {
+        try {
+            User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (!userContext.getUserId().equals(req.getUserId()) && !"1".equals(userContext.getAuthority())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Permission denied: Không được chỉnh sửa thông tin của người khác.");
+            }
+            String updatedToken = userService.updateUserInfo(req); // Update user info and generate new token
+            return ResponseEntity.ok(Map.of(
+                "message", "Thông tin người dùng đã được cập nhật thành công.",
+                "token", updatedToken // Return the updated token
+            ));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi trong lúc cập nhật thông tin: " + ex.getMessage());
         }
     }
 }

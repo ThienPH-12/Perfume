@@ -36,9 +36,11 @@ import BlogManage from "../page/AdminPage/BlogManage.jsx"; // Import BlogManage
 import UserManage from "../page/AdminPage/UserManage.jsx"; // Import UserManage
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "../utils/CartContext.jsx";
+import UserInfo from "../page/UserInfo/UserInfo.jsx"; // Import UserInfo
+import { useAuth } from "../utils/AuthContext.jsx"; // Import useAuth
 
 function PrivateAdminRoute({ children }) {
-  const token = localStorage.getItem("token");
+  const { token } = useAuth(); // Use token from AuthContext
   if (token) {
     try {
       const decoded = jwtDecode(token);
@@ -81,6 +83,7 @@ function AppRoute() {
         <Route path="/mix-product-detail" element={<MixProductDetail />} /> {/* Add MixProductDetail route */}
         <Route path="/user/activateUser" element={<ConfirmActivated />} /> {/* Add ConfirmActivated route */}
         <Route path="/formula" element={<Formula />} /> {/* Add Formula route */}
+        <Route path="/user/info" element={<UserInfo />} /> {/* Add UserInfo route */}
         <Route
           path="/admin/*"
           element={

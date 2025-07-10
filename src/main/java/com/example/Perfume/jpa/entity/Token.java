@@ -18,12 +18,13 @@ public class Token extends AbstractEntity {
     @Column(name = "UserName", length = 30, nullable = false)
     private String userName;
 
+    @Column(name = "UserId", nullable = false) // Added UserId field
+    private Integer userId;
+
     @Column(name = "ExpirationDate")
     private Date expirationDate;
 
     // Getters and setters
-    // ...existing code...
-
     public Long getTokenId() {
         return tokenId;
     }
@@ -46,6 +47,14 @@ public class Token extends AbstractEntity {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Date getExpirationDate() {

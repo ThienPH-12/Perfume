@@ -53,18 +53,20 @@ public class JwtUtil {
         claims.put("iat", new Date(System.currentTimeMillis()));
         claims.put("exp", new Date(System.currentTimeMillis() + jwtExpiration));
         claims.put("authority", user.getAuthorities().toString());
-        
+        claims.put("userId", user.getUserId()); // Add UserId to claims
+
         String token = Jwts.builder()
                 .setClaims(claims)
                 .signWith(key)
                 .compact();
-        saveToken(token, userDetails.getUsername(), new Date(System.currentTimeMillis() + jwtExpiration));
+        saveToken(token,user.getUserId(), userDetails.getUsername(), new Date(System.currentTimeMillis() + jwtExpiration));
         return token;
     }
 
-    private void saveToken(String token, String username, Date expirationDate) {
+    private void saveToken(String token, Integer userId, String username, Date expirationDate) {
         Token tokenEntity = new Token();
         tokenEntity.setToken(token);
+        tokenEntity.setUserId(userId); // Save UserId
         tokenEntity.setUserName(username);
         tokenEntity.setExpirationDate(expirationDate);
         tokenEntity.setCreateDateTime(new Date(System.currentTimeMillis()));

@@ -4,6 +4,8 @@
  */
 package com.example.Perfume.service;
 
+import com.example.Perfume.am.JwtUtil;
+import com.example.Perfume.api.bean.req.UpdateUserReq;
 import com.example.Perfume.api.bean.req.RegisterReq;
 import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.jpa.repository.UserRepository;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.regex.Pattern;
 import com.example.Perfume.jpa.entity.ConfirmationToken;
 import com.example.Perfume.config.EmailConfig; // Import EmailConfig
+import com.example.Perfume.jpa.repository.TokenRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
@@ -35,6 +38,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private TokenRepository tokenRepository;
+    
+    @Autowired
+    private  JwtUtil jwtUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -258,5 +267,20 @@ public class UserService {
             throw new RuntimeException("Permission denied: Only users with Authority = 1 can get User List.");
         }
         return userRepository.findAll();
+    }
+
+    public String updateUserInfo(UpdateUserReq req) {
+        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setUserName(req.getUsername());
+        user.setGender(req.getGender());
+        user.setAge(req.getAge());
+        user.setAddress(req.getAddress());
+        userRepository.save(user);
+
+        // Delete old token from repository using UserId
+        tokenRepository.deleteByUserId(user.getUserId());
+
+        // Generate new token
+        return jwtUtil.generateToken(user);
     }
 }
