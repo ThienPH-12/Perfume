@@ -7,6 +7,7 @@ package com.example.Perfume.service;
 import com.example.Perfume.am.JwtUtil;
 import com.example.Perfume.api.bean.req.UpdateUserReq;
 import com.example.Perfume.api.bean.req.RegisterReq;
+import com.example.Perfume.api.bean.req.ResetPassReq;
 import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.jpa.repository.UserRepository;
 import java.util.Date;
@@ -38,12 +39,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private TokenRepository tokenRepository;
-    
+
     @Autowired
-    private  JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -211,12 +212,28 @@ public class UserService {
         return "Registration successful. Activation email sent.";
     }
 
-    public User findByUsername(String username) {
-         User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!username.equals(userContext.getUsername())&&!"1".equals(userContext.getAuthority()) ) {
+    public String updateUserInfo(UpdateUserReq req) {
+        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setUserName(req.getUsername());
+        user.setGender(req.getGender());
+        user.setAge(req.getAge());
+        user.setAddress(req.getAddress());
+        userRepository.save(user);
+
+        // Delete old token from repository using UserId
+        SecurityContextHolder.clearContext();
+        tokenRepository.deleteByUserId(user.getUserId());
+
+        // Generate new token
+        return jwtUtil.generateToken(user);
+    }
+
+    public User initUserInfo(Integer userId) {
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!userId.equals(userContext.getUserId()) && !"1".equals(userContext.getAuthority())) {
             throw new RuntimeException("Permission denied:Không được truy cập vào thông tin của người khác.");
         }
-        return userRepository.findByUserName(username);
+        return userRepository.initUserInfo(userId);
     }
 
     public boolean isValidEmail(String email) {
@@ -262,25 +279,57 @@ public class UserService {
     }
 
     public List<User> UserList() {
-         User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!"1".equals(userContext.getAuthority())) {
             throw new RuntimeException("Permission denied: Only users with Authority = 1 can get User List.");
         }
         return userRepository.findAll();
     }
 
-    public String updateUserInfo(UpdateUserReq req) {
-        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-        user.setUserName(req.getUsername());
-        user.setGender(req.getGender());
-        user.setAge(req.getAge());
-        user.setAddress(req.getAddress());
+    public void sendOtpForPasswordReset(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("Không tìm thấy người dùng với email: " + email);
+        }
+
+        String otp = String.valueOf((int) (Math.random() * 900000) + 100000); // Generate 6-digit OTP
+        user.setOtp(otp);
+        user.setOtpExpired(new Date(System.currentTimeMillis() + 10 * 60 * 1000)); // OTP valid for 10 minutes
         userRepository.save(user);
 
-        // Delete old token from repository using UserId
-        tokenRepository.deleteByUserId(user.getUserId());
+        // Send OTP via email
+        JavaMailSender javaMailSender = emailConfig.getJavaMailSender();
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+            helper.setText("OTP để thay đổi mật khẩu của bạn là: " + otp, false);
+            helper.setTo(email);
+            helper.setSubject("OTP thay đổi mật khẩu");
+            helper.setFrom("ShineAura@gmail.com");
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            logger.error("Failed to send OTP email", e);
+            throw new RuntimeException("Gửi OTP thất bại");
+        }
+    }
 
-        // Generate new token
-        return jwtUtil.generateToken(user);
+    public void resetPassword(ResetPassReq resetPassReq) {
+        User user = userRepository.findByEmail(resetPassReq.getEmail());
+        if (user == null) {
+            throw new RuntimeException("Không tìm thấy người dùng với email: " + resetPassReq.getEmail());
+        }
+
+        if (!resetPassReq.getOtp().equals(user.getOtp())) {
+            throw new RuntimeException("OTP không hợp lệ.");
+        }
+
+        if (user.getOtpExpired().before(new Date())) {
+            throw new RuntimeException("OTP đã hết hạn.");
+        }
+
+        user.setPassword(passwordEncoder.encode(resetPassReq.getNewPassword())); // Encode new password
+        user.setOtp(null); // Clear OTP
+        user.setOtpExpired(null); // Clear OTP expiration
+        userRepository.save(user);
     }
 }

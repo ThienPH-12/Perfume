@@ -6,6 +6,7 @@ package com.example.Perfume.api.controller;
 
 import com.example.Perfume.api.bean.req.UpdateUserReq;
 import com.example.Perfume.api.bean.req.RegisterReq;
+import com.example.Perfume.api.bean.req.ResetPassReq;
 import com.example.Perfume.jpa.entity.User;
 import com.example.Perfume.service.UserService;
 import java.util.List;
@@ -70,7 +71,7 @@ public class UserController {
     public ResponseEntity<?> initUserInfo() {
         try {
             User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = userService.findByUsername(userContext.getUsername());
+            User user = userService.initUserInfo(userContext.getUserId());
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
@@ -78,17 +79,6 @@ public class UserController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error during fetching user info: " + ex.getMessage());
-        }
-    }
-
-    @PostMapping("/user/resendActivation")
-    public ResponseEntity<?> resendActivation(@RequestParam String token) {
-        try {
-            userService.resendActivationEmail(token);
-            return ResponseEntity.ok("Activation email resent successfully.");
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error during resending activation email: " + ex.getMessage());
         }
     }
 
@@ -108,6 +98,39 @@ public class UserController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi trong lúc cập nhật thông tin: " + ex.getMessage());
+        }
+    }
+
+    @PostMapping("/user/resendActivation")
+    public ResponseEntity<?> resendActivation(@RequestParam String token) {
+        try {
+            userService.resendActivationEmail(token);
+            return ResponseEntity.ok("Gửi mail kích hoạt thành công.");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error during resending activation email: " + ex.getMessage());
+        }
+    }
+
+    @PostMapping("/user/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+        try {
+            userService.sendOtpForPasswordReset(email);
+            return ResponseEntity.ok("Gửi OTP thành công.");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi gửi OTP: " + ex.getMessage());
+        }
+    }
+
+    @PostMapping("/user/resetPassword")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPassReq resetPassReq) {
+        try {
+            userService.resetPassword(resetPassReq);
+            return ResponseEntity.ok("Mật khẩu đã được thay đổi.");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi: " + ex.getMessage());
         }
     }
 }

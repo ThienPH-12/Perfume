@@ -9,6 +9,13 @@ import { CartContext } from "../../utils/CartContext";
 const MixProductDetail = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!state) {
+            navigate("/formula"); // Redirect to Formula page if state is null
+        }
+    }, [state, navigate]);
+
     const { compIds, mixProdName } = state || { compIds: [], mixProdName: "" }; // Receive mixProdName
     const [productDetails, setProductDetails] = useState([]);
     const [capacities, setCapacities] = useState([]);

@@ -38,7 +38,7 @@ const Login = () => {
       localStorage.setItem("token", accessToken);
       window.location.reload(); // Reload the page to apply the new token
     } catch (err) {  
-        const errorMessage = err.response?.data?.message || "Lỗi mạng.";
+        const errorMessage = err.response?.data || "Lỗi mạng.";
         ErrorToastify(errorMessage);
     }
   };
@@ -74,6 +74,12 @@ const Login = () => {
             <span>Chưa có tài khoản? </span>
             <a href="/register" style={{ color: "#007bff", textDecoration: "none" }}>
               Đăng ký
+            </a>
+          </div>
+          <div className="forgot-password-link">
+            <span>Quên mật khẩu? </span>
+            <a href="/forgot-password" style={{ color: "#007bff", textDecoration: "none" }}>
+              Nhấn vào đây
             </a>
           </div>
           <button className="button" type="submit">

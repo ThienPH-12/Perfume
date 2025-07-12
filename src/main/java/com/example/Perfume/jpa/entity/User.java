@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,12 @@ public class User extends AbstractEntity implements UserDetails {
 
     @Column(name = "Activation", length = 10)
     private String activation;
+
+    @Column(name = "OTP", length = 6)
+    private String otp;
+
+    @Column(name = "OTPExpired")
+    private Date otpExpired;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -147,6 +154,22 @@ public class User extends AbstractEntity implements UserDetails {
 
     public void setActivation(String activation) {
         this.activation = activation;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public Date getOtpExpired() {
+        return otpExpired;
+    }
+
+    public void setOtpExpired(Date otpExpired) {
+        this.otpExpired = otpExpired;
     }
 
     public Map<String, Object> getAdditionalAttributes() {

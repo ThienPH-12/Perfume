@@ -38,6 +38,8 @@ import { ToastContainer } from "react-toastify";
 import { CartProvider } from "../utils/CartContext.jsx";
 import UserInfo from "../page/UserInfo/UserInfo.jsx"; // Import UserInfo
 import { useAuth } from "../utils/AuthContext.jsx"; // Import useAuth
+import ForgotPassword from "../page/Login/ForgotPassword.jsx"; // Import ForgotPassword
+import ResetPassword from "../page/Login/ResetPassword.jsx"; // Import ResetPassword
 
 function PrivateAdminRoute({ children }) {
   const { token } = useAuth(); // Use token from AuthContext
@@ -84,6 +86,8 @@ function AppRoute() {
         <Route path="/user/activateUser" element={<ConfirmActivated />} /> {/* Add ConfirmActivated route */}
         <Route path="/formula" element={<Formula />} /> {/* Add Formula route */}
         <Route path="/user/info" element={<UserInfo />} /> {/* Add UserInfo route */}
+        <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Add ForgotPassword route */}
+        <Route path="/reset-password" element={<ResetPassword />} /> {/* Add ResetPassword route */}
         <Route
           path="/admin/*"
           element={

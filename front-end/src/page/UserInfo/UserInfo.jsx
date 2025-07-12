@@ -27,7 +27,7 @@ const UserInfo = () => {
                 setUserInfo(response.data);
                 setEditedInfo(response.data);
             } catch (error) {
-                ErrorToastify("Failed to fetch user info: " + error.message);
+                ErrorToastify(error?.response?.data || "Lỗi mạng.");
             }
         };
         fetchUserInfo();

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
@@ -7,7 +7,14 @@ import Cookies from "js-cookie"; // Import js-cookie for cookie management
 import "./Payment.scss"; // Import CSS for styling
 
 const Payment = () => {
-    const { state } = useLocation(); // Get product data from navigation state
+    const { state } = useLocation();
+
+    useEffect(() => {
+        if (!state) {
+            window.location.replace("/"); // Redirect to Home page if state is null
+        }
+    }, [state]);
+
     const [name, setName] = useState(Cookies.get("paymentName") || "");
     const [contactNumber, setContactNumber] = useState(Cookies.get("paymentContactNumber") || "");
     const [address, setAddress] = useState(Cookies.get("paymentAddress") || "");
