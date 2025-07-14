@@ -69,7 +69,7 @@ function CapacityManage() {
             <tr key={capacity.capacityId}>
               <td>{index + 1}</td>
               <td>{capacity.capacity}</td>
-              <td>{capacity.defaultPrice} VND</td> {/* Format defaultPrice with VND */}
+              <td>{capacity.defaultPrice} VND</td> 
               <td>
                 <button onClick={() => handleEditCapacity(capacity)}>Edit</button>
                 <button onClick={() => handleDeleteCapacity(capacity.capacityId)}>Delete</button>

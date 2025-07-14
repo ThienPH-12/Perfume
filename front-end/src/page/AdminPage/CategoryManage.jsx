@@ -47,12 +47,12 @@ const handleAddCategory = () => {
   };
 
   return (
-    <div className="crudContainer"> {/* Updated class name */}
+    <div className="crudContainer"> 
       <h2>Categories</h2>
       <button onClick={() => handleAddCategory()} className="add-button">
         Add Category
       </button>
-      <table className="crud-table"> {/* Updated class name */}
+      <table className="crud-table"> 
         <thead>
           <tr>
             <th>No</th>

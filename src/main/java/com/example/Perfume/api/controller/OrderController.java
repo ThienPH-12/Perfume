@@ -1,6 +1,9 @@
 package com.example.Perfume.api.controller;
 
 import com.example.Perfume.api.bean.req.OrderReq;
+import com.example.Perfume.jpa.entity.TransactionRecord;
+import com.example.Perfume.jpa.entity.User;
+import com.example.Perfume.service.OrderService;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import vn.payos.PayOS;
 import vn.payos.type.CheckoutResponseData;
@@ -27,7 +34,11 @@ import vn.payos.type.PaymentLinkData;
 @RestController
 @RequestMapping("/api")
 public class OrderController {
+
     private final PayOS payOS;
+
+    @Autowired
+    private OrderService recordService;
 
     public OrderController(PayOS payOS) {
         super();
@@ -40,29 +51,39 @@ public class OrderController {
         ObjectNode response = objectMapper.createObjectNode();
         try {
             final List<ItemData> items = requestBody.getItems();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             // Gen order code
             String currentTimeString = String.valueOf(new Date().getTime());
             long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
 
+            Integer id = null;
+
             // Set expiration time to current date plus 10 minutes using Instant
             long expiredAt = Instant.now().plusSeconds(10 * 60).getEpochSecond();
 
-            PaymentData paymentData = PaymentData.builder()
+            PaymentData.PaymentDataBuilder builder = PaymentData.builder()
                     .orderCode(orderCode)
                     .description(requestBody.getDescription())
                     .amount(requestBody.getPrice())
-                    .items(items) // Handle multiple items
+                    .items(items)
                     .returnUrl(requestBody.getReturnUrl())
                     .cancelUrl(requestBody.getCancelUrl())
                     .buyerName(requestBody.getBuyerName())
                     .buyerEmail(requestBody.getBuyerEmail())
                     .buyerPhone(requestBody.getBuyerPhone())
-                    .buyerAddress(requestBody.getBuyerAddress())
-                    .expiredAt(expiredAt) // Use 30 minutes for expiredAt
-                    .build();
+                    .buyerAddress(requestBody.getBuyerAddress());
 
+            if ("anonymousUser".equals(authentication.getPrincipal())) {
+                builder.expiredAt(expiredAt); // Only add expiredAt for anonymous users
+            }
+
+            PaymentData paymentData = builder.build();
             CheckoutResponseData data = payOS.createPaymentLink(paymentData);
-
+            if (authentication.getPrincipal() != "anonymousUser") {
+                User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                id = userContext.getUserId();
+                recordService.addOrder(orderCode,id,items);
+            }
             response.put("error", 0);
             response.put("message", "tạo đơn thành công!");
             response.set("data", objectMapper.valueToTree(data));
@@ -136,6 +157,15 @@ public class OrderController {
             response.set("data", null);
             return response;
         }
+    }
+
+    @GetMapping(path = "/orders")
+    public ResponseEntity<List<TransactionRecord>> getOrderByUserId() {
+        // Logic here
+        User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int id = userContext.getUserId();
+        List<TransactionRecord> list = recordService.getUserOrders(id);
+        return ResponseEntity.ok(list);
     }
 
     @DeleteMapping(path = "/order/{orderId}")

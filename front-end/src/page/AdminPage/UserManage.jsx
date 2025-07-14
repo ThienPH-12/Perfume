@@ -21,9 +21,9 @@ function UserManage() {
   }, []);
 
   return (
-    <div className="crudContainer"> {/* Apply shared CRUD container styles */}
+    <div className="crudContainer"> 
       <h2>Users</h2>
-      <table className="crud-table"> {/* Apply shared CRUD table styles */}
+      <table className="crud-table"> 
         <thead>
           <tr>
             <th>No</th>

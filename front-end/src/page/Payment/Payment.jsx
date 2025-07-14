@@ -19,7 +19,7 @@ const Payment = () => {
     const [contactNumber, setContactNumber] = useState(Cookies.get("paymentContactNumber") || "");
     const [address, setAddress] = useState(Cookies.get("paymentAddress") || "");
     const [discount, setDiscount] = useState(Number(Cookies.get("paymentDiscount")) || 0);
-    const [buyerEmail, setBuyerEmail] = useState(Cookies.get("paymentBuyerEmail") || "");
+    const [buyerEmail, setBuyerEmail] = useState(Cookies.get("paymentBuyerEmail") || "");                                           
 
     const shippingCost = 30000; // Default shipping cost
     const totalPrice = state.totalPrice - discount; // Exclude shipping cost from total price
@@ -115,21 +115,21 @@ const Payment = () => {
                         />
                     </label>
                     <label>
-                        Mã giảm giá:
-                        <input
-                            type="number"
-                            value={discount}
-                            onChange={(e) => setDiscount(Number(e.target.value))}
-                            disabled // Disable the discount input field
-                        />
-                    </label>
-                    <label>
                         Email:
                         <input
                             type="email"
                             value={buyerEmail}
                             onChange={(e) => setBuyerEmail(e.target.value)}
                             required
+                        />
+                    </label>
+                    <label>
+                        Mã giảm giá:
+                        <input
+                            type="number"
+                            value={discount}
+                            onChange={(e) => setDiscount(Number(e.target.value))}
+                            disabled // Disable the discount input field
                         />
                     </label>
                     <button type="submit" className="submit-payment">

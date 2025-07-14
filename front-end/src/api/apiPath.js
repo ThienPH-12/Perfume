@@ -48,7 +48,7 @@ const apiPaths = {
 
   payment: "/createPayment", // Unified for add/update
   deleteOrder: (id) => `/order/${id}`,
-  getAllOrders: "/orders",
+  getUserOrders: "/orders",
   getOrderById: (id) => `/order/${id}`,
 };
 

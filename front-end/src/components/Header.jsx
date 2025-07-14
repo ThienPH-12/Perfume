@@ -28,6 +28,9 @@ function AuthIcons({ user, handleLogout, navigate, cartCount, closeSidebar }) {
               <Link to="/user/info" onClick={() => setIsDropdownOpen(false)}>
                 Thông tin cá nhân
               </Link>
+              <Link to="/user/transactionRecord" onClick={() => setIsDropdownOpen(false)}>
+                Lịch sử giao dịch
+              </Link>
               <button
                 onClick={(e) => {
                   handleLogout(e);

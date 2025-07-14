@@ -76,7 +76,7 @@ function BlogManage() {
             <th>Image</th>
             <th>Title</th>
             <th>Description</th>
-            <th>Created Date</th> {/* New column for createDateTime */}
+            <th>Created Date</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -92,8 +92,8 @@ function BlogManage() {
                 />
               </td>
               <td>{blog.blogTitle}</td>
-              <td className="text-start">{blog.blogContent}</td> {/* Display first 100 characters */}
-              <td>{new Date(blog.createDateTime).toLocaleString()}</td> {/* Display createDateTime */}
+              <td className="text-start">{blog.blogContent}</td> 
+              <td>{new Date(blog.createDateTime).toLocaleString()}</td> 
               <td>
                 <button onClick={() => handleEditBlog(blog)}>Edit</button>
                 <button onClick={() => handleDeleteBlog(blog.blogId)}>Delete</button>
