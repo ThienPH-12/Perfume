@@ -108,7 +108,7 @@ function BlogPage() {
                           alt={blogTitle}
                           className="blog-image"
                         />
-                        <div className="card-body">
+                        <div className="card-body text-break">
                           <h5 className="card-title">{blogTitle}</h5>
                           ______
                           <div style={{ width: "100%" }}>

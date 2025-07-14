@@ -22,6 +22,17 @@ public abstract class AbstractEntity {
     @Column(name = "UpdateDateTime")
     private Date updateDateTime;
 
+    public AbstractEntity() {
+    }
+
+    public AbstractEntity(String createUserId, Date createDateTime, String updateUserId, Date updateDateTime) {
+        this.createUserId = createUserId;
+        this.createDateTime = createDateTime;
+        this.updateUserId = updateUserId;
+        this.updateDateTime = updateDateTime;
+    }
+
+    
     public String getCreateUserId() {
         return createUserId;
     }

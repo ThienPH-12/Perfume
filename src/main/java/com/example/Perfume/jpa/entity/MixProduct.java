@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import java.util.Date;
 
 /**
  * Entity representing the MixProduct table.
@@ -37,6 +38,17 @@ public class MixProduct extends AbstractEntity {
     private byte[] imageData;
 
     public MixProduct() {
+    }
+
+    public MixProduct(String compIds, String mixProdName, String description, String potentialCus, String imageName, String imageType, byte[] imageData, String createUserId, Date createDateTime, String updateUserId, Date updateDateTime) {
+        super(createUserId, createDateTime, updateUserId, updateDateTime);
+        this.compIds = compIds;
+        this.mixProdName = mixProdName;
+        this.description = description;
+        this.potentialCus = potentialCus;
+        this.imageName = imageName;
+        this.imageType = imageType;
+        this.imageData = imageData;
     }
 
     public MixProduct(String compIds, String mixProdName, String description, String potentialCus, String imageName, String imageType, byte[] imageData) {

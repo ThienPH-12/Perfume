@@ -21,20 +21,25 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Product findByProductName(@Param("productName") String userName);
 
-    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus) FROM Product p WHERE p.categoryId = :categoryId")
+    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus)"
+            + " FROM Product p WHERE p.categoryId = :categoryId")
     List<Product> findByCategoryId(@Param("categoryId") int categoryId);
 
     @Override
-    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus) FROM Product p WHERE p.productId = :id")
+    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus)"
+            + " FROM Product p WHERE p.productId = :id")
     Optional<Product> findById(@Param("id") Integer id);
 
-    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus) FROM Product p ORDER BY p.createDateTime DESC")
+    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus)"
+            + " FROM Product p ORDER BY p.createDateTime DESC")
     List<Product> findLatestProducts(Pageable pageable);
 
-    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus) FROM Product p WHERE p.potentialCus LIKE %:potentialCus%")
+    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus)"
+            + " FROM Product p WHERE p.potentialCus LIKE %:potentialCus%")
     List<Product> findByPotentialCus(@Param("potentialCus") String potentialCus);
 
-    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus) FROM Product p")
+    @Query("SELECT new Product(p.productId, p.productName, p.categoryId, p.description, null, null, null, p.expirationDate, p.potentialCus,p.createUserId,p.createDateTime, null, null)"
+            + " FROM Product p")
     @Override
     List<Product> findAll();
 

@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MixProductRepository extends JpaRepository<MixProduct, String> { // Updated ID type
-    @Query("SELECT new MixProduct(m.compIds, m.mixProdName, m.description, m.potentialCus, null, null, null) FROM MixProduct m WHERE m.compIds = :compIds")
+    @Query("SELECT new MixProduct(m.compIds, m.mixProdName, m.description, m.potentialCus, null, null, null,m.createUserId,m.createDateTime, null, null) FROM MixProduct m WHERE m.compIds = :compIds")
     @Override
     Optional<MixProduct> findById(@Param("compIds") String compIds);
 
-    @Query("SELECT new MixProduct(m.compIds, m.mixProdName, m.description, m.potentialCus, null, null, null) FROM MixProduct m")
+    @Query("SELECT new MixProduct(m.compIds, m.mixProdName, m.description, m.potentialCus, null, null, null,m.createUserId,m.createDateTime, null, null) FROM MixProduct m")
     @Override
     List<MixProduct> findAll();
 

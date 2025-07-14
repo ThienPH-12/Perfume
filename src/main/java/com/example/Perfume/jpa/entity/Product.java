@@ -55,7 +55,8 @@ public class Product extends AbstractEntity {
 
     // Add other fields, getters and setters
 
-    public Product(int productId, String productName, int categoryId, String description, String imageName, String imageType, byte[] imageData, Date expirationDate) {
+    public Product(int productId, String productName, int categoryId, String description, String imageName, String imageType, byte[] imageData, Date expirationDate, String potentialCus, String createUserId, Date createDateTime, String updateUserId, Date updateDateTime) {
+        super(createUserId, createDateTime, updateUserId, updateDateTime);
         this.productId = productId;
         this.productName = productName;
         this.categoryId = categoryId;
@@ -64,6 +65,7 @@ public class Product extends AbstractEntity {
         this.imageType = imageType;
         this.imageData = imageData;
         this.expirationDate = expirationDate;
+        this.potentialCus = potentialCus;
     }
 
     public Product(int productId, String productName, int categoryId, String description, String imageName, String imageType, byte[] imageData, Date expirationDate, String potentialCus) {

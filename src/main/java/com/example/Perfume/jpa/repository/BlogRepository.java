@@ -11,11 +11,11 @@ import com.example.Perfume.dto.ImageDto;
 
 @Repository
 public interface BlogRepository extends JpaRepository<Blog, Integer> {
-    @Query("SELECT new Blog(b.blogId, b.blogTitle, b.blogContent, null, null, null) FROM Blog b WHERE b.blogId = :id")
+    @Query("SELECT new Blog(b.blogId, b.blogTitle, b.blogContent, null, null, null,b.createUserId,b.createDateTime, null, null) FROM Blog b WHERE b.blogId = :id")
     @Override
     Optional<Blog> findById(@Param("id") Integer id);
 
-    @Query("SELECT new Blog(b.blogId, b.blogTitle, b.blogContent, null, null, null) FROM Blog b")
+    @Query("SELECT new Blog(b.blogId, b.blogTitle, b.blogContent, null, null, null,b.createUserId,b.createDateTime, null, null) FROM Blog b ORDER BY b.createDateTime DESC")
     @Override
     List<Blog> findAll();
 

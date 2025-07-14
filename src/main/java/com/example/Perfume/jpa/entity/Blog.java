@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "[Blog]")
@@ -43,7 +44,18 @@ public class Blog extends AbstractEntity {
     public Blog() {
     }
 
+    public Blog(Integer blogId, String blogTitle, String blogContent, String imageName, String imageType, byte[] imageData, String createUserId, Date createDateTime, String updateUserId, Date updateDateTime) {
+        super(createUserId, createDateTime, updateUserId, updateDateTime);
+        this.blogId = blogId;
+        this.blogTitle = blogTitle;
+        this.blogContent = blogContent;
+        this.imageName = imageName;
+        this.imageType = imageType;
+        this.imageData = imageData;
+    }
+
     public Blog(Integer blogId, String blogTitle, String blogContent, String imageName, String imageType, byte[] imageData) {
+        super();
         this.blogId = blogId;
         this.blogTitle = blogTitle;
         this.blogContent = blogContent;
