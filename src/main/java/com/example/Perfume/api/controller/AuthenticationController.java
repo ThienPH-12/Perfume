@@ -26,9 +26,6 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @Autowired
-    private JavaMailSender javaMailSender;
-
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationReq req) {
         try {

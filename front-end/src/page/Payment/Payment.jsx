@@ -5,6 +5,7 @@ import apiPaths from "../../api/apiPath";
 import { ErrorToastify, SuccessToastify } from "../../components/Toastify"; // Fixed import
 import Cookies from "js-cookie"; // Import js-cookie for cookie management
 import "./Payment.scss"; // Import CSS for styling
+import ConfirmModal from "../../components/ConfirmModal";
 
 const Payment = () => {
     const { state } = useLocation();
@@ -19,7 +20,8 @@ const Payment = () => {
     const [contactNumber, setContactNumber] = useState(Cookies.get("paymentContactNumber") || "");
     const [address, setAddress] = useState(Cookies.get("paymentAddress") || "");
     const [discount, setDiscount] = useState(Number(Cookies.get("paymentDiscount")) || 0);
-    const [buyerEmail, setBuyerEmail] = useState(Cookies.get("paymentBuyerEmail") || "");                                           
+    const [buyerEmail, setBuyerEmail] = useState(Cookies.get("paymentBuyerEmail") || "");
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
     const shippingCost = 30000; // Default shipping cost
     const totalPrice = state.totalPrice - discount; // Exclude shipping cost from total price
@@ -28,9 +30,21 @@ const Payment = () => {
      const formatPrice = (price) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
     };
+    const handleSubmitClick = () => {
+        setIsConfirmModalOpen(true);
+    };
 
-    const handleSubmit = async (e) => {
+    const handleCancel = () => {
+        setIsConfirmModalOpen(false);
+    };
+
+    const handleConfirm = async (e) => {
         e.preventDefault();
+
+        if (!state || !state.items || !state.totalPrice) {
+            ErrorToastify("Lỗi: Dữ liệu thanh toán không hợp lệ.");
+            return;
+        }
         try {
             // Set cookies when the form is submitted
             Cookies.set("paymentName", name, { expires: 1 });
@@ -85,7 +99,7 @@ const Payment = () => {
                     <p>Phí vận chuyển: <span style={{ textDecoration: "line-through" }}>{formatPrice(shippingCost)}</span></p> {/* Display shipping cost with a strikethrough */}
                     <p>Tổng cộng: {formatPrice(totalPrice)}</p>
                 </div>
-                <form onSubmit={handleSubmit} className="payment-form">
+                <div className="payment-form">
                     <h2>Thông tin khách hàng</h2>
                     <label>
                         Tên:
@@ -132,11 +146,17 @@ const Payment = () => {
                             disabled // Disable the discount input field
                         />
                     </label>
-                    <button type="submit" className="submit-payment">
+                    <button onClick={() => handleSubmitClick()} className="submit-payment">
                         Thanh toán
                     </button>
-                </form>
+                </div>
             </div>
+            <ConfirmModal
+                isOpen={isConfirmModalOpen}
+                message="Bạn có chắc muốn thanh toán mà không đăng nhập?Đăng nhập sẽ giúp bạn theo dõi đơn hàng và nhận ưu đãi hấp dẫn!"
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
         </div>
     );
 };

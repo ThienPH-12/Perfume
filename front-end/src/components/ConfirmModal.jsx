@@ -11,10 +11,10 @@ function ConfirmModal({ isOpen, message, onConfirm, onCancel }) {
                     <p>{message}</p>
                     <div className="modal-actions">
                         <button className="confirm-button" onClick={onConfirm}>
-                            Confirm
+                            Xác nhận
                         </button>
                         <button className="cancel-button" onClick={onCancel}>
-                            Cancel
+                            Hủy
                         </button>
                     </div>
                 </div>
