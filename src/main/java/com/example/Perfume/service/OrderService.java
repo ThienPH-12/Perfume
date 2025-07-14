@@ -22,12 +22,12 @@ public class OrderService {
     @Autowired
     private TransactionRecordRepository recordRepository;
 
-    public TransactionRecord addOrder(long orderCode, int id, List<ItemData> items) {
+    public TransactionRecord addOrder(long orderCode, int id,String checkoutUrl, List<ItemData> items) {
         String itemsString = items.stream()
                 .map(item -> item.getName() + "|" + item.getPrice() + "|" + item.getQuantity())
                 .collect(Collectors.joining(";"));
 
-        TransactionRecord data = new TransactionRecord(orderCode, id,itemsString);
+        TransactionRecord data = new TransactionRecord(orderCode, id,checkoutUrl,itemsString);
         return recordRepository.save(data);
     }
 

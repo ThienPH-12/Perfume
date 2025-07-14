@@ -24,15 +24,19 @@ public class TransactionRecord {
     @Column(name = "UserId")
     private Integer userId;
 
-    @Column(name = "items", length = 5000)
+    @Column(name = "Link", length = 1000)
+    private String link;
+
+    @Column(name = "Items", length = 5000)
     private String items;
 
     public TransactionRecord() {
     }
 
-    public TransactionRecord(Long orderCode, Integer userId, String items) {
+    public TransactionRecord(Long orderCode, Integer userId, String link, String items) {
         this.orderCode = orderCode;
         this.userId = userId;
+        this.link = link;
         this.items = items;
     }
 
@@ -50,6 +54,14 @@ public class TransactionRecord {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getItems() {

@@ -82,7 +82,7 @@ public class OrderController {
             if (authentication.getPrincipal() != "anonymousUser") {
                 User userContext = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 id = userContext.getUserId();
-                recordService.addOrder(orderCode,id,items);
+                recordService.addOrder(orderCode,id,data.getCheckoutUrl(),items);
             }
             response.put("error", 0);
             response.put("message", "tạo đơn thành công!");

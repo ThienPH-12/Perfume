@@ -40,7 +40,8 @@ const TransactionRecord = () => {
                 })
             );
             //clear the paymentInfo state after fetching
-            setRecords(updatedRecords);
+            const sortedRecords = [...updatedRecords].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setRecords(sortedRecords);
         } catch (error) {
             ErrorToastify("Lỗi: " + error.response?.data || "Lỗi mạng.");
         }
@@ -62,6 +63,20 @@ const TransactionRecord = () => {
         fetchRecords();
     }, []);
 
+    const formatted = (date) => {
+        return new Date(date).toLocaleString("vi-VN", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            timeZoneName: "short" // optional
+        });
+    }
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VND";
+    };
     return (
         <div className="crudContainer">
             <h2>Giao dịch</h2>
@@ -84,24 +99,32 @@ const TransactionRecord = () => {
                     {Records.map((order, index) => (
                         <tr key={order.index}>
                             <td>{order.orderCode}</td>
-                            <td>{order.amount}</td>
-                            <td>{order.amountPaid}</td>
-                            <td>{order.createdAt}</td>
+                            <td>{formatPrice(order.amount)}</td>
+                            <td>{formatPrice(order.amountPaid)}</td>
+                            <td className="text-start">{formatted(order.createdAt)}</td>
                             <td>{order.transactions}</td>
                             <td>{order.status}</td>
-                            <td>{order.items &&
+                            <td className="text-start">{order.items &&
                                 order.items.split(";").map((item, i) => {
                                     const [name, price, quantity] = item.split("|");
                                     return (
                                         <div key={i}>
-                                            {name} x{quantity}x{Number(price).toLocaleString("vi-VN")}VND
+                                            -{name} x Số lượng:{quantity} x Giá:{Number(price).toLocaleString("vi-VN")}VND
                                         </div>
                                     );
                                 })}</td>
-                            <td>{order.canceledAt}</td>
-                            <td>{order.cancellationReason}</td>
+                            <td className="text-start">{formatted(order.canceledAt)}</td>
+                            <td className="text-start">{order.cancellationReason}</td>
                             <td>
-                                <button onClick={() => handleCancelOrder(order.orderCode)} >Hủy giao dịch</button>
+                                <button
+                                    onClick={() => window.location.replace(order.link)}
+                                    disabled={order.status === "CANCELLED"}
+                                >
+                                    Tiếp tục thanh toán
+                                </button>
+                                <button onClick={() => handleCancelOrder(order.orderCode)
+                                } disabled={order.status === "CANCELLED" || order.status === "COMPLETED"
+                                } >Hủy giao dịch</button>
                             </td>
                         </tr>
                     ))}
