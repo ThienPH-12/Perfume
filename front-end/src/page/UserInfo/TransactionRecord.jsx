@@ -97,7 +97,7 @@ const TransactionRecord = () => {
                 </thead>
                 <tbody>
                     {Records.map((order, index) => (
-                        <tr key={order.index}>
+                        <tr key={index}>
                             <td>{order.orderCode}</td>
                             <td>{formatPrice(order.amount)}</td>
                             <td>{formatPrice(order.amountPaid)}</td>
@@ -113,7 +113,7 @@ const TransactionRecord = () => {
                                         </div>
                                     );
                                 })}</td>
-                            <td className="text-start">{formatted(order.canceledAt)}</td>
+                            <td className="text-start">{order.canceledAt&&formatted(order.canceledAt)}</td>
                             <td className="text-start">{order.cancellationReason}</td>
                             <td>
                                 <button

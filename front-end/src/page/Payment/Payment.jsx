@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../../utils/AuthContext"; // Import useAuth
 import apiClient from "../../api/apiClient";
 import apiPaths from "../../api/apiPath";
 import { ErrorToastify, SuccessToastify } from "../../components/Toastify"; // Fixed import
@@ -9,7 +10,7 @@ import ConfirmModal from "../../components/ConfirmModal";
 
 const Payment = () => {
     const { state } = useLocation();
-
+    const { token } = useAuth();
     useEffect(() => {
         if (!state) {
             window.location.replace("/"); // Redirect to Home page if state is null
@@ -146,9 +147,15 @@ const Payment = () => {
                             disabled // Disable the discount input field
                         />
                     </label>
-                    <button onClick={() => handleSubmitClick()} className="submit-payment">
-                        Thanh toán
-                    </button>
+                    {token ? (
+                        <button onClick={handleConfirm} className="submit-payment">
+                            Thanh toán
+                        </button>
+                    ) : (
+                        <button onClick={() => handleSubmitClick()} className="submit-payment">
+                            Thanh toán
+                        </button>
+                    )}
                 </div>
             </div>
             <ConfirmModal
