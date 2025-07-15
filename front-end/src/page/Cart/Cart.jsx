@@ -342,7 +342,7 @@ const Cart = () => {
           <p>Không có sản phẩm mix trong giỏ hàng.</p>
         )}
       </div>
-      {cartItems.length > 0 && (
+      {(cartItems.length > 0 ||mixCartItems.length>0)&& (
         <button className="checkout-button" onClick={handleCheckout}>
           Thanh toán
         </button>
