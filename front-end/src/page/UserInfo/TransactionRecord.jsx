@@ -37,7 +37,7 @@ const TransactionRecord = () => {
                         cancellationReason: Record.data.data.cancellationReason ?? null,
                         canceledAt: Record.data.data.canceledAt ?? null
                     };
-                })
+                }, 5000)//add delay to avoid rate limit issues,the fetch image is not met this issue because it heavier
             );
             //clear the paymentInfo state after fetching
             const sortedRecords = [...updatedRecords].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
